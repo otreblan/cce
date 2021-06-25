@@ -1,0 +1,8 @@
+= hello(1)
+otreblan
+0.0.0
+:doctype: manpage
+:manmanual: Manual
+
+== Name
+cce - Compilador CEs

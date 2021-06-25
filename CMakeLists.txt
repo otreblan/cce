@@ -1,25 +1,25 @@
-# A C++ template
-# Copyright © 2019-2020 otreblan
+# Compilador
+# Copyright © 2021 otreblan
 #
-# hello is free software: you can redistribute it and/or modify
+# cce is free software: you can redistribute it and/or modify
 # it under the terms of the GNU General Public License as published by
 # the Free Software Foundation, either version 3 of the License, or
 # (at your option) any later version.
 #
-# hello is distributed in the hope that it will be useful,
+# cce is distributed in the hope that it will be useful,
 # but WITHOUT ANY WARRANTY; without even the implied warranty of
 # MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
 # GNU General Public License for more details.
 #
 # You should have received a copy of the GNU General Public License
-# along with hello.  If not, see <http://www.gnu.org/licenses/>.
+# along with cce.  If not, see <http://www.gnu.org/licenses/>.
 
 cmake_minimum_required(VERSION 3.13.0)
 
-project(hello
-	VERSION 4.0
-	DESCRIPTION "A C++ template"
-	HOMEPAGE_URL "https://github.com/otreblan/hello"
+project(cce
+	VERSION 0.0.0
+	DESCRIPTION "Compilador CEs"
+	HOMEPAGE_URL "https://github.com/otreblan/cce"
 )
 
 # Without this, paths are not relative in the sources list
