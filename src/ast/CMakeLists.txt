@@ -19,4 +19,5 @@ target_sources(${PROJECT_NAME}
 		# C
 		programa.c
 		tipo.c
+		var_declaracion.c
 )
