@@ -36,6 +36,10 @@ ast_programa* ast_programa1(ast_lista_declaracion* lista_declaraciones)
 
 void ast_programa_free(ast_programa* programa)
 {
-	//if(programa)
-	//	ast_lista_declaracion_free(programa->lista_declaraciones);
+	if(programa)
+	{
+		ast_lista_declaracion_free(programa->lista_declaraciones);
+	}
+	free(programa);
+
 }
