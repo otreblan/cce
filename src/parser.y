@@ -1,6 +1,7 @@
 %{
 #include <stdio.h>
 
+int yylex();
 void yyerror(void** tree, const char* s);
 %}
 
@@ -34,7 +35,7 @@ programa
 	;
 
 lista_declaracion
-	: lista_declaracion
+	: lista_declaracion declaracion
 	| declaracion
 	;
 
@@ -44,12 +45,8 @@ declaracion
 	;
 
 var_declaracion
-	: entero ID var_modificadores
-	;
-
-var_modificadores
-	: ';'
-	| '[' NUM '[' ';'
+	: tipo ID ';'
+	| tipo ID '[' NUM ']' ';'
 	;
 
 tipo
