@@ -44,8 +44,12 @@ declaracion
 	;
 
 var_declaracion
-	: entero ID ';'
-	| entero ID '[' NUM ']' ';'
+	: entero ID var_modificadores
+	;
+
+var_modificadores
+	: ';'
+	| '[' NUM '[' ';'
 	;
 
 tipo
