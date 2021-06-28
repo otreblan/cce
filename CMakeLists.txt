@@ -25,6 +25,16 @@ project(cce
 # Without this, paths are not relative in the sources list
 cmake_policy(SET CMP0076 NEW)
 
+# Default flags
+if(UNIX)
+	if(NOT (DEFINED ENV{CFLAGS} OR CMAKE_C_FLAGS))
+		set(CMAKE_C_FLAGS "-Wall -Wextra -g")
+	endif()
+	if(NOT (DEFINED ENV{CXXFLAGS} OR CMAKE_CXX_FLAGS))
+		set(CMAKE_CXX_FLAGS "-Wall -Wextra -g")
+	endif()
+endif()
+
 include(GNUInstallDirs)
 include(FindPkgConfig)
 include(CPack)
@@ -67,16 +77,6 @@ set_target_properties(${PROJECT_NAME}
 #	INTERFACE
 #		PkgConfig::header_only
 #)
-
-# Default flags
-if(UNIX)
-	if(NOT (DEFINED ENV{CFLAGS} OR CMAKE_C_FLAGS))
-		set(CMAKE_C_FLAGS "-Wall -Wextra -g")
-	endif()
-	if(NOT (DEFINED ENV{CXXFLAGS} OR CMAKE_CXX_FLAGS))
-		set(CMAKE_CXX_FLAGS "-Wall -Wextra -g")
-	endif()
-endif()
 
 # Bash completion
 file(WRITE ${CMAKE_BINARY_DIR}/bash-completion/${PROJECT_NAME}
