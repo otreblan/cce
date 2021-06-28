@@ -39,8 +39,8 @@ typedef struct _ast_declaracion
 	} declaracion;
 } ast_declaracion;
 
-ast_declaracion* ast_declaracion1(ast_var_declaracion* declaracion);
-//ast_declaracion* ast_declaracion2(ast_fun_declaracion* declaracion);
+ast_declaracion* ast_declaracion1(ast_var_declaracion* var_declaracion);
+//ast_declaracion* ast_declaracion2(ast_fun_declaracion* fun_declaracion);
 
 void ast_declaracion_free(ast_declaracion* declaracion);
 

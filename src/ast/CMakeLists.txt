@@ -17,6 +17,7 @@
 target_sources(${PROJECT_NAME}
 	PRIVATE
 		# C
+		declaracion.c
 		programa.c
 		tipo.c
 		var_declaracion.c
