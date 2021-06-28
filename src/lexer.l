@@ -1,5 +1,6 @@
 %{
 #include <stdlib.h>
+#include "parser.h"
 %}
 
 %option noinput
