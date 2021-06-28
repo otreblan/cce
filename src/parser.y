@@ -14,6 +14,9 @@ void yyerror(void** tree, const char* s);
 %left '+' '-'
 %left '*' '/'
 
+%nonassoc "entonces"
+%nonassoc sino
+
 %token entero
 %token main
 %token mientras
@@ -96,7 +99,7 @@ sentencia_expresion
 	;
 
 sentencia_seleccion
-	: si '(' expresion ')' sentencia
+	: si '(' expresion ')' sentencia %prec "entonces"
 	| si '('expresion ')' sentencia sino sentencia
 	;
 
