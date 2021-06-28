@@ -16,8 +16,26 @@
 
 #pragma once
 
-#include "ast/declaracion.h"
-#include "ast/lista_declaracion.h"
-#include "ast/programa.h"
-#include "ast/tipo.h"
-#include "ast/var_declaracion.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+enum ast_tipo_sin_tipo
+{
+	AST_ENTERO,
+	AST_SIN_TIPO
+};
+
+typedef struct _ast_tipo
+{
+	int tipo;
+} ast_tipo;
+
+ast_tipo* ast_tipo_entero();
+ast_tipo* ast_tipo_sin_tipo();
+
+void ast_tipo_free(ast_tipo* tipo);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
