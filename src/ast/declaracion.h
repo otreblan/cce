@@ -26,7 +26,7 @@ typedef struct _ast_fun_declaracion ast_fun_declaracion;
 enum ast_declaracion_tipo
 {
 	AST_VAR_DECLARACION,
-	AST_FUN_DECLARACION
+	//AST_FUN_DECLARACION
 };
 
 typedef struct _ast_declaracion
@@ -35,12 +35,12 @@ typedef struct _ast_declaracion
 	union
 	{
 		ast_var_declaracion* var;
-		ast_fun_declaracion* fun;
+		//ast_fun_declaracion* fun;
 	} declaracion;
 } ast_declaracion;
 
 ast_declaracion* ast_declaracion1(ast_var_declaracion* declaracion);
-ast_declaracion* ast_declaracion2(ast_fun_declaracion* declaracion);
+//ast_declaracion* ast_declaracion2(ast_fun_declaracion* declaracion);
 
 void ast_declaracion_free(ast_declaracion* declaracion);
 

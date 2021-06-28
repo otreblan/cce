@@ -16,7 +16,28 @@
 
 #pragma once
 
-#include "ast/declaracion.h"
-#include "ast/lista_declaracion.h"
-#include "ast/programa.h"
-#include "ast/var_declaracion.h"
+#include <stdbool.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef struct _ast_tipo ast_tipo;
+
+typedef struct _ast_var_declaracion
+{
+	ast_tipo* tipo;
+	char* id;
+
+	bool es_arreglo;
+	int num;
+} ast_var_declaracion;
+
+ast_var_declaracion* ast_var_declaracion1(ast_tipo* tipo, char* id);
+ast_var_declaracion* ast_var_declaracion2(ast_tipo* tipo, char* id, int num);
+
+void ast_var_declaracion_free(ast_var_declaracion* var_declaracion);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
