@@ -29,21 +29,21 @@ include(GNUInstallDirs)
 include(FindPkgConfig)
 include(CPack)
 
-# The program itself
-add_executable(${PROJECT_NAME})
-
-# C++ version
-set_target_properties(${PROJECT_NAME}
-	PROPERTIES
-		CXX_STANDARD 17
-)
-
 # Packages
+find_package(BISON)
+find_package(FLEX)
 find_package(bash-completion)
 
 add_subdirectory(src) # Sources list
 add_subdirectory(doc) # Documentation
 add_subdirectory(pkg) # Packaging
+
+# C++ version
+set_target_properties(${PROJECT_NAME}
+	PROPERTIES
+		RUNTIME_OUTPUT_DIRECTORY "${CMAKE_CURRENT_BINARY_DIR}"
+		CXX_STANDARD 17
+)
 
 ## Shared libraries
 #pkg_check_modules(shared
