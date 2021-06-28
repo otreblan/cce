@@ -8,7 +8,9 @@
 
 * `asciidoctor`
 * `bash-completion`
+* `bison`
 * `cmake`
+* `libfl-dev`
 
 ## Build
 ``` bash
