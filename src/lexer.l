@@ -1,5 +1,7 @@
 %{
 #include <stdlib.h>
+
+#include "cce/parser.h"
 #include "parser.h"
 %}
 
@@ -20,3 +22,13 @@ sino        {  return sino;       }
 
 
 %%
+
+void __parse_file_init(FILE* infile)
+{
+	yyin = infile;
+}
+
+void __parse_file_free(void)
+{
+	yyin = stdin;
+}

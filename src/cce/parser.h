@@ -16,5 +16,22 @@
 
 #pragma once
 
-#include "cce/compiler.hpp"
-#include "cce/parser.h"
+#include <stdio.h>
+
+#include "ast.h"
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+#if __GNUC__ >= 11
+__attribute__ ((malloc (ast_programa_free, 1)))
+#endif
+ast_programa* parse_file(FILE* infile);
+
+void __parse_file_init(FILE* infile);
+void __parse_file_free(void);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif

@@ -1,6 +1,8 @@
 %{
 #include <stdio.h>
 
+#include "cce/parser.h"
+
 typedef struct _ast_programa ast_programa;
 
 int yylex();
@@ -212,4 +214,19 @@ void yyerror(ast_programa** programa, const char* s)
 	fprintf(stderr, "Parser error: %s\n", s);
 	if(programa)
 		ast_programa_free(*programa);
+}
+
+ast_programa* parse_file(FILE* infile)
+{
+	ast_programa* programa = NULL;
+	__parse_file_init(infile);
+
+	if(yyparse(&programa) != 0)
+	{
+		// TODO
+		fprintf(stderr, "Parser error\n");
+	}
+
+	__parse_file_free();
+	return programa;
 }
