@@ -1,15 +1,29 @@
 %{
 #include <stdio.h>
 
+typedef struct _ast_programa ast_programa;
+
 int yylex();
-void yyerror(void** tree, const char* s);
+void yyerror(ast_programa** programa, const char* s);
 %}
 
-%parse-param {void** tree}
+%code requires {
+#include "ast.h"
+}
+
+%parse-param {ast_programa** programa}
 
 %union {
-	int intval;
+	// Literales
+	int   intval;
 	char* strval;
+
+	// Nodos
+	ast_declaracion*       declaracion;
+	ast_lista_declaracion* lista_declaracion;
+	ast_programa*          programa;
+	ast_tipo*              tipo;
+	ast_var_declaracion*   var_declaracion;
 }
 
 %left '+' '-'
@@ -181,7 +195,7 @@ lista_arg
 vacio: %empty;
 %%
 
-void yyerror(void** tree, const char* s)
+void yyerror(ast_programa** programa, const char* s)
 {
 	// TODO: tree
 	fprintf(stderr, "Parser error: %s\n", s);
