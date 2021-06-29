@@ -27,15 +27,15 @@ typedef struct _ast_tipo ast_tipo;
 typedef struct _ast_param
 {
 	ast_tipo* tipo;
-	char* ID;
-	bool arreglo;
+	char*     ID;
+	bool      arreglo;
 } ast_param;
 
 /// Escalar.
-ast_param* ast_param_1(ast_tipo* tipo, char* ID);
+ast_param* ast_param1(ast_tipo* tipo, char* ID);
 
 /// Arreglo.
-ast_param* ast_param_2(ast_tipo* tipo, char* ID);
+ast_param* ast_param2(ast_tipo* tipo, char* ID);
 
 void ast_param_free(ast_param* param);
 
