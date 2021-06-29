@@ -21,7 +21,6 @@ void yyerror(ast_programa** programa, const char* s);
 	// Nodos
 	ast_declaracion*       declaracion;
 	ast_lista_declaracion* lista_declaracion;
-	ast_programa*          programa;
 	ast_tipo*              tipo;
 	ast_var_declaracion*   var_declaracion;
 }
@@ -32,6 +31,7 @@ void yyerror(ast_programa** programa, const char* s);
 %nonassoc "entonces"
 %nonassoc sino
 
+// Reservados
 %token entero
 %token main
 %token mientras
@@ -40,12 +40,20 @@ void yyerror(ast_programa** programa, const char* s);
 %token si
 %token sino
 
+// Nodos
+
+// Literales
 %token <intval> NUM
 %token <strval> ID
 
 %%
 programa
-	: lista_declaracion
+	: lista_declaracion {
+		if(programa)
+			*programa = ast_programa1(NULL);
+		else
+			ast_lista_declaracion_free(NULL);
+	}
 	;
 
 lista_declaracion
@@ -197,6 +205,7 @@ vacio: %empty;
 
 void yyerror(ast_programa** programa, const char* s)
 {
-	// TODO: tree
 	fprintf(stderr, "Parser error: %s\n", s);
+	if(programa)
+		ast_programa_free(*programa);
 }
