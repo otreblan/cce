@@ -16,17 +16,22 @@
 
 #pragma once
 
-#include "ast/declaracion.h"
-#include "ast/declaracion_local.h"
-#include "ast/fun_declaracion.h"
-#include "ast/lista_declaracion.h"
-#include "ast/lista_params.h"
-#include "ast/lista_sentencias.h"
-#include "ast/param.h"
-#include "ast/params.h"
-#include "ast/programa.h"
-#include "ast/sent_compuesta.h"
-#include "ast/sentencia.h"
-#include "ast/sentencia_expresion.h"
-#include "ast/tipo.h"
-#include "ast/var_declaracion.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef struct _ast_expresion ast_expresion;
+
+typedef struct _ast_sentencia_expresion
+{
+	ast_expresion* expresion;
+} ast_sentencia_expresion;
+
+ast_sentencia_expresion* ast_sentencia_expresion1(ast_expresion* expresion);
+ast_sentencia_expresion* ast_sentencia_expresion2();
+
+void ast_sentencia_expresion_free(ast_sentencia_expresion* expresion);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
