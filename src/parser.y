@@ -42,8 +42,9 @@ void yyerror(ast_programa** programa, const char* s);
 
 // Nodos
 %type <lista_declaracion> lista_declaracion
-%type <declaracion> declaracion
-%type <var_declaracion> var_declaracion
+%type <declaracion>       declaracion
+%type <var_declaracion>   var_declaracion
+%type <tipo>              tipo
 
 // Literales
 %token <intval> NUM
@@ -70,13 +71,13 @@ declaracion
 	;
 
 var_declaracion
-	: tipo ID ';'             { $$ = ast_var_declaracion1(NULL, $2); }
-	| tipo ID '[' NUM ']' ';' { $$ = ast_var_declaracion2(NULL, $2, $4); }
+	: tipo ID ';'             { $$ = ast_var_declaracion1($1, $2); }
+	| tipo ID '[' NUM ']' ';' { $$ = ast_var_declaracion2($1, $2, $4); }
 	;
 
 tipo
-	: entero
-	| sin_tipo
+	: entero   {$$ = ast_tipo_entero(); }
+	| sin_tipo {$$ = ast_tipo_sin_tipo(); }
 	;
 
 fun_declaracion
