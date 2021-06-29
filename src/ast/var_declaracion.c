@@ -41,7 +41,7 @@ static ast_var_declaracion* ast_var_declaracion_alloc()
 
 ast_var_declaracion* ast_var_declaracion1(ast_tipo* tipo, char* id)
 {
-	ast_var_declaracion* var_declaracion = malloc(sizeof(ast_var_declaracion));
+	ast_var_declaracion* var_declaracion = ast_var_declaracion_alloc();
 
 	if(var_declaracion)
 	{
