@@ -102,7 +102,7 @@ params
 	;
 
 lista_params
-	: lista_params ',' param
+	: param ',' lista_params
 	| param
 	;
 

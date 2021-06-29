@@ -16,11 +16,23 @@
 
 #pragma once
 
-#include "ast/declaracion.h"
-#include "ast/fun_declaracion.h"
-#include "ast/lista_declaracion.h"
-#include "ast/lista_params.h"
-#include "ast/params.h"
-#include "ast/programa.h"
-#include "ast/tipo.h"
-#include "ast/var_declaracion.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef struct _ast_param ast_param;
+
+typedef struct _ast_lista_params
+{
+	struct _ast_lista_params* next;
+	ast_param* param;
+} ast_lista_params;
+
+ast_lista_params* ast_lista_params1(ast_lista_params* next, ast_param* param);
+ast_lista_params* ast_lista_params2(ast_param* param);
+
+void ast_lista_params_free(ast_lista_params* lista_params);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
