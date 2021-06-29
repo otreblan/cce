@@ -23,8 +23,9 @@
 void cce::compiler::usage(int exit_code) const
 {
 	std::cout <<
-		"Usage: cce [OPTIONS] file\n"
-		"\t-h, --help Show this help.\n"
+		"Usage: cce [options] infile\n"
+		"\t-h, --help           Show this help.\n"
+		"\t-o, --output=outfile Set output file.\n"
 	;
 
 	exit(exit_code);
@@ -43,10 +44,11 @@ void cce::compiler::parse(int argc, char* argv[])
 		usage(EXIT_FAILURE);
 
 	int c;
-	static const char shortopts[] = "h";
+	static const char shortopts[] = "ho:";
 	static const option options[] =
 	{
-		{"help", no_argument, nullptr, 'h'},
+		{"help",   no_argument,       nullptr, 'h'},
+		{"output", required_argument, nullptr, 'o'},
 	};
 
 	while((c = getopt_long(argc, argv, shortopts, options, nullptr)) != -1)
@@ -56,14 +58,22 @@ void cce::compiler::parse(int argc, char* argv[])
 				usage(EXIT_SUCCESS);
 				break;
 
+			case 'o':
+				outfile_path = optarg;
+				break;
+
 			default:
 				exit(EXIT_FAILURE);
 		}
 	}
+
+	for(int i = optind; i < argc; i++)
+		infile_path = argv[i];
 }
 
 int cce::compiler::run()
 {
 	// TODO
+	std::cout << "Outfile: " << outfile_path << '\n';
 	return EXIT_FAILURE;
 }

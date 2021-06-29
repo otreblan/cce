@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <string>
+
 namespace cce
 {
 
@@ -23,6 +25,9 @@ class compiler
 {
 	[[noreturn]]
 	void usage(int exit_code) const;
+
+	std::string infile_path;
+	std::string outfile_path = "a.tm";
 
 public:
 	compiler();
