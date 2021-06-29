@@ -9,13 +9,14 @@ int yylex();
 void yyerror(ast_programa** programa, const char* s);
 %}
 
+%require "3.4"
 %code requires {
 #include "ast.h"
 }
 
 %parse-param {ast_programa** programa}
 %define parse.lac full
-%define parse.error detailed
+%define parse.error verbose
 
 %union {
 	// Literales
@@ -28,6 +29,13 @@ void yyerror(ast_programa** programa, const char* s);
 	ast_tipo*              tipo;
 	ast_var_declaracion*   var_declaracion;
 }
+
+%destructor { }                                 <intval>
+%destructor { free($$); }                       <strval>
+%destructor { ast_declaracion_free($$); }       <declaracion>
+%destructor { ast_lista_declaracion_free($$); } <lista_declaracion>
+%destructor { ast_tipo_free($$); }              <tipo>
+%destructor { ast_var_declaracion_free($$); }   <var_declaracion>
 
 %left '+' '-'
 %left '*' '/'
