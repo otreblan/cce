@@ -16,12 +16,29 @@
 
 #pragma once
 
-#include "ast/declaracion.h"
-#include "ast/fun_declaracion.h"
-#include "ast/lista_declaracion.h"
-#include "ast/lista_params.h"
-#include "ast/param.h"
-#include "ast/params.h"
-#include "ast/programa.h"
-#include "ast/tipo.h"
-#include "ast/var_declaracion.h"
+#include <stdbool.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef struct _ast_tipo ast_tipo;
+
+typedef struct _ast_param
+{
+	ast_tipo* tipo;
+	char* ID;
+	bool arreglo;
+} ast_param;
+
+/// Escalar.
+ast_param* ast_param_1(ast_tipo* tipo, char* ID);
+
+/// Arreglo.
+ast_param* ast_param_2(ast_tipo* tipo, char* ID);
+
+void ast_param_free(ast_param* param);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
