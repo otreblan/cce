@@ -26,5 +26,6 @@
 #include "ast/params.h"
 #include "ast/programa.h"
 #include "ast/sent_compuesta.h"
+#include "ast/sentencia.h"
 #include "ast/tipo.h"
 #include "ast/var_declaracion.h"
