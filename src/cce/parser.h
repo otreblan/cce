@@ -27,7 +27,7 @@ extern "C" {
 #if __GNUC__ >= 11
 __attribute__ ((malloc (ast_programa_free, 1)))
 #endif
-ast_programa* parse_file(FILE* infile);
+ast_programa* parse_file(FILE* infile, int* _yynerrs);
 
 void __parse_file_init(FILE* infile);
 void __parse_file_free(void);

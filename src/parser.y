@@ -14,6 +14,8 @@ void yyerror(ast_programa** programa, const char* s);
 }
 
 %parse-param {ast_programa** programa}
+%define parse.lac full
+%define parse.error detailed
 
 %union {
 	// Literales
@@ -209,23 +211,18 @@ lista_arg
 vacio: %empty;
 %%
 
-void yyerror(ast_programa** programa, const char* s)
+void yyerror(__attribute__((unused)) ast_programa** programa, const char* s)
 {
 	fprintf(stderr, "Parser error: %s\n", s);
-	if(programa)
-		ast_programa_free(*programa);
 }
 
-ast_programa* parse_file(FILE* infile)
+ast_programa* parse_file(FILE* infile, int* _yynerrs)
 {
 	ast_programa* programa = NULL;
 	__parse_file_init(infile);
 
-	if(yyparse(&programa) != 0)
-	{
-		// TODO
-		fprintf(stderr, "Parser error\n");
-	}
+	yyparse(&programa);
+	*_yynerrs = yynerrs;
 
 	__parse_file_free();
 	return programa;

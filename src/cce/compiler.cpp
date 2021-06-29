@@ -20,6 +20,7 @@
 #include <fmt/core.h>
 
 #include "compiler.hpp"
+#include "parser.h"
 
 void cce::compiler::usage(int exit_code) const
 {
@@ -74,7 +75,43 @@ void cce::compiler::parse(int argc, char* argv[])
 
 int cce::compiler::run()
 {
+	FILE* infile = fopen(infile_path.c_str(), "r");
+	FILE* outfile = fopen(outfile_path.c_str(), "w");
+
+	if(!infile)
+	{
+		perror(infile_path.c_str());
+		fclose(outfile);
+		return EXIT_FAILURE;
+	}
+
+	if(!outfile)
+	{
+		perror(outfile_path.c_str());
+		return EXIT_FAILURE;
+	}
+
+	int exit_code = EXIT_SUCCESS;
+	int errors = 0;
+
+	ast_programa* programa = parse_file(infile, &errors);
+	exit_code |= compile(programa, errors);
+	ast_programa_free(programa);
+
+	fclose(infile);
+	fclose(outfile);
+
+	return exit_code;
+}
+
+int cce::compiler::compile(ast_programa* programa, int yynerrs)
+{
+	if(!programa)
+		return EXIT_FAILURE;
+
+	if(yynerrs > 0)
+		return EXIT_FAILURE;
+
 	// TODO
-	fmt::print("Outfile: {}\n", outfile_path);
-	return EXIT_FAILURE;
+	return EXIT_SUCCESS;
 }

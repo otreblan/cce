@@ -18,6 +18,8 @@
 
 #include <string>
 
+typedef struct _ast_programa ast_programa;
+
 namespace cce
 {
 
@@ -29,6 +31,7 @@ class compiler
 	std::string infile_path;
 	std::string outfile_path = "a.tm";
 
+	int compile(ast_programa* programa, int yynerrs);
 public:
 	compiler();
 	compiler(int argc, char* argv[]);
