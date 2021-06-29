@@ -41,6 +41,7 @@ void yyerror(ast_programa** programa, const char* s);
 %token sino
 
 // Nodos
+%type <lista_declaracion> lista_declaracion
 
 // Literales
 %token <intval> NUM
@@ -50,15 +51,15 @@ void yyerror(ast_programa** programa, const char* s);
 programa
 	: lista_declaracion {
 		if(programa)
-			*programa = ast_programa1(NULL);
+			*programa = ast_programa1($1);
 		else
-			ast_lista_declaracion_free(NULL);
+			ast_lista_declaracion_free($1);
 	}
 	;
 
 lista_declaracion
-	: lista_declaracion declaracion
-	| declaracion
+	: declaracion lista_declaracion { $$ = ast_lista_declaracion1($2, NULL); }
+	| declaracion { $$ = ast_lista_declaracion2(NULL); }
 	;
 
 declaracion
