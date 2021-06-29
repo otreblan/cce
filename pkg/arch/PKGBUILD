@@ -1,7 +1,7 @@
 # Maintainer: Otreblan <otreblain@gmail.com>
 
 pkgname=cce-git
-pkgver=r2.05c996d
+pkgver=r31.48d9016
 pkgrel=1
 epoch=
 pkgdesc="Compilador CEs"
@@ -9,8 +9,8 @@ arch=('x86_64')
 url="https://github.com/otreblan/cce"
 license=('GPL3')
 groups=()
-depends=('gcc-libs')
-makedepends=('git' 'asciidoctor' 'cmake' 'bash-completion' 'bison' 'flex')
+depends=('gcc-libs' 'flex')
+makedepends=('git' 'asciidoctor' 'cmake' 'bash-completion' 'bison')
 checkdepends=()
 optdepends=()
 provides=(${pkgname%-git})
