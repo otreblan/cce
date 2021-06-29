@@ -222,7 +222,8 @@ ast_programa* parse_file(FILE* infile, int* _yynerrs)
 	__parse_file_init(infile);
 
 	yyparse(&programa);
-	*_yynerrs = yynerrs;
+	if(yynerrs)
+		*_yynerrs = yynerrs;
 
 	__parse_file_free();
 	return programa;

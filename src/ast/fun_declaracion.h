@@ -16,9 +16,31 @@
 
 #pragma once
 
-#include "ast/declaracion.h"
-#include "ast/fun_declaracion.h"
-#include "ast/lista_declaracion.h"
-#include "ast/programa.h"
-#include "ast/tipo.h"
-#include "ast/var_declaracion.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef struct _ast_tipo           ast_tipo;
+typedef struct _ast_params         ast_params;
+typedef struct _ast_sent_compuesta ast_sent_compuesta;
+
+typedef struct _ast_fun_declaracion
+{
+	ast_tipo*           tipo;
+	char*               id;
+	ast_params*         params;
+	ast_sent_compuesta* sent_compuesta;
+} ast_fun_declaracion;
+
+ast_fun_declaracion* ast_fun_declaracion1(
+	ast_tipo*           tipo,
+	char*               id,
+	ast_params*         params,
+	ast_sent_compuesta* sent_compuesta
+);
+
+void ast_fun_declaracion_free(ast_fun_declaracion* fun_declaracion);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif

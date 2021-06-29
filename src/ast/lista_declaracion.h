@@ -25,7 +25,7 @@ typedef struct _ast_declaracion ast_declaracion;
 typedef struct _ast_lista_declaracion
 {
 	struct _ast_lista_declaracion* next;
-	ast_declaracion* declaracion;
+	ast_declaracion*               declaracion;
 } ast_lista_declaracion;
 
 ast_lista_declaracion* ast_lista_declaracion1(ast_lista_declaracion* next, ast_declaracion* declaracion);

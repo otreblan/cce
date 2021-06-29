@@ -27,10 +27,10 @@ typedef struct _ast_tipo ast_tipo;
 typedef struct _ast_var_declaracion
 {
 	ast_tipo* tipo;
-	char* id;
+	char*     id;
 
 	bool es_arreglo;
-	int num;
+	int  num;
 } ast_var_declaracion;
 
 ast_var_declaracion* ast_var_declaracion1(ast_tipo* tipo, char* id);
