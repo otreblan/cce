@@ -121,7 +121,7 @@ declaracion_local
 	;
 
 lista_sentencias
-	: lista_sentencias sentencia
+	: sentencia lista_sentencias
 	| vacio
 	;
 
