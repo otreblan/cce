@@ -21,12 +21,18 @@ namespace cce
 
 class compiler
 {
+	[[noreturn]]
+	void usage(int exit_code) const;
+
 public:
 	compiler();
 	compiler(int argc, char* argv[]);
 
-	/// Parse command line arguments
+	/// Parse command line arguments.
 	void parse(int argc, char* argv[]);
+
+	/// Run the compiler and return an exit code for main().
+	int run();
 };
 
 };

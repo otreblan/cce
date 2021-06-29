@@ -14,10 +14,11 @@
 // You should have received a copy of the GNU General Public License
 // along with cce.  If not, see <http://www.gnu.org/licenses/>.
 
-#include <iostream>
+#include "cce.hpp"
 
-int main()
+int main(int argc, char* argv[])
 {
-	std::cout << "Hello\n";
-	return 0;
+	cce::compiler c(argc, argv);
+
+	return c.run();
 }
