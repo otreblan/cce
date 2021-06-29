@@ -16,14 +16,27 @@
 
 #pragma once
 
-#include "ast/declaracion.h"
-#include "ast/declaracion_local.h"
-#include "ast/fun_declaracion.h"
-#include "ast/lista_declaracion.h"
-#include "ast/lista_params.h"
-#include "ast/param.h"
-#include "ast/params.h"
-#include "ast/programa.h"
-#include "ast/sent_compuesta.h"
-#include "ast/tipo.h"
-#include "ast/var_declaracion.h"
+#include <stdbool.h>
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef struct _ast_var_declaracion ast_var_declaracion;
+
+typedef struct _ast_declaracion_local
+{
+	struct _ast_declaracion_local* next;
+	ast_var_declaracion*           var_declaracion;
+} ast_declaracion_local;
+
+ast_declaracion_local* ast_declaracion_local1(
+	ast_declaracion_local* next,
+	ast_var_declaracion*   var_declaracion
+);
+
+void ast_declaracion_local_free(ast_declaracion_local* declaracion_local);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif

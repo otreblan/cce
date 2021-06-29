@@ -116,7 +116,7 @@ sent_compuesta
 	;
 
 declaracion_local
-	: declaracion_local var_declaracion
+	: var_declaracion declaracion_local
 	| vacio
 	;
 
