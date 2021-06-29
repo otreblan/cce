@@ -16,17 +16,18 @@
 
 #include <cstdlib>
 #include <getopt.h>
-#include <iostream>
+
+#include <fmt/core.h>
 
 #include "compiler.hpp"
 
 void cce::compiler::usage(int exit_code) const
 {
-	std::cout <<
+	fmt::print(
 		"Usage: cce [options] infile\n"
 		"\t-h, --help           Show this help.\n"
 		"\t-o, --output=outfile Set output file.\n"
-	;
+	);
 
 	exit(exit_code);
 }
@@ -74,6 +75,6 @@ void cce::compiler::parse(int argc, char* argv[])
 int cce::compiler::run()
 {
 	// TODO
-	std::cout << "Outfile: " << outfile_path << '\n';
+	fmt::print("Outfile: {}\n", outfile_path);
 	return EXIT_FAILURE;
 }

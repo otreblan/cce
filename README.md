@@ -11,6 +11,7 @@
 * `bison`
 * `cmake`
 * `libfl-dev`
+* `libfmt-dev`
 
 ## Build
 ``` bash
