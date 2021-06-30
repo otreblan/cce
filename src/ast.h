@@ -36,6 +36,7 @@
 #include "ast/sentencia_iteracion.h"
 #include "ast/sentencia_retorno.h"
 #include "ast/sentencia_seleccion.h"
+#include "ast/term.h"
 #include "ast/tipo.h"
 #include "ast/var.h"
 #include "ast/var_declaracion.h"
