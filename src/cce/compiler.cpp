@@ -77,18 +77,10 @@ void cce::compiler::parse(int argc, char* argv[])
 int cce::compiler::run()
 {
 	FILE* infile = fopen(infile_path.c_str(), "r");
-	FILE* outfile = fopen(outfile_path.c_str(), "w");
 
 	if(!infile)
 	{
 		perror(infile_path.c_str());
-		fclose(outfile);
-		return EXIT_FAILURE;
-	}
-
-	if(!outfile)
-	{
-		perror(outfile_path.c_str());
 		return EXIT_FAILURE;
 	}
 
@@ -97,12 +89,12 @@ int cce::compiler::run()
 
 	ast_programa* programa = parse_file(infile, &errors);
 
-	write_to(outfile, compile(programa, errors, exit_code));
+	std::vector<instruction> code = compile(programa, errors, exit_code);
+	exit_code |= write_to_outfile(code);
 
 	ast_programa_free(programa);
 
 	fclose(infile);
-	fclose(outfile);
 
 	return exit_code;
 }
@@ -128,8 +120,17 @@ std::vector<cce::instruction> cce::compiler::compile(ast_programa* programa, int
 	return v;
 }
 
-void cce::compiler::write_to(FILE* outfile, const std::vector<instruction>& v)
+int cce::compiler::write_to_outfile(const std::vector<instruction>& v) const
 {
-	for(size_t i = 0; i < v.size(); i++)
-		fmt::print(outfile, "{}:    {}\n", i, v[i]);
+	if(FILE* outfile = fopen(outfile_path.c_str(), "w"))
+	{
+		for(size_t i = 0; i < v.size(); i++)
+			fmt::print(outfile, "{}:    {}\n", i, v[i]);
+
+		fclose(outfile);
+		return EXIT_SUCCESS;
+	}
+
+	perror(outfile_path.c_str());
+	return EXIT_FAILURE;
 }

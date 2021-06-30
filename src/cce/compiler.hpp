@@ -36,7 +36,7 @@ class compiler
 	std::string outfile_path = "a.tm";
 
 	std::vector<instruction> compile(ast_programa* programa, int yynerrs, int& exit_code);
-	void write_to(FILE* outfile, const std::vector<instruction>& v);
+	int write_to_outfile(const std::vector<instruction>& v) const;
 public:
 	compiler();
 	compiler(int argc, char* argv[]);
