@@ -13,3 +13,60 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with cce.  If not, see <http://www.gnu.org/licenses/>.
+
+#include <stdlib.h>
+
+#include "param.h"
+#include "tipo.h"
+
+static ast_param* ast_param_alloc();
+
+static ast_param* ast_param_alloc()
+{
+	ast_param* param = malloc(sizeof(ast_param));
+
+	if(param)
+	{
+		*param = (ast_param)
+		{
+			.tipo    = NULL,
+			.ID      = NULL,
+			.arreglo = false
+		};
+	}
+
+	return param;
+}
+
+ast_param* ast_param1(ast_tipo* tipo, char* ID)
+{
+	ast_param* param = ast_param_alloc();
+
+	if(param)
+	{
+		param->tipo = tipo;
+		param->ID   = ID;
+	}
+
+	return param;
+}
+
+ast_param* ast_param2(ast_tipo* tipo, char* ID)
+{
+	ast_param* param = ast_param1(tipo, ID);
+
+	if(param)
+		param->arreglo = true;
+
+	return param;
+}
+
+void ast_param_free(ast_param* param)
+{
+	if(param)
+	{
+		ast_tipo_free(param->tipo);
+		free(param->ID);
+	}
+	free(param);
+}
