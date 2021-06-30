@@ -41,7 +41,7 @@ ast_sentencia_seleccion* ast_sentencia_seleccion2(
 	ast_sentencia* sentencia2
 );
 
-void ast_sentencia_seleccion_free(ast_sentencia_seleccion* seleccion);
+void ast_sentencia_seleccion_free(ast_sentencia_seleccion* sentencia_seleccion);
 
 #ifdef __cplusplus
 } // extern "C"

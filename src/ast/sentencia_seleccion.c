@@ -13,3 +13,69 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with cce.  If not, see <http://www.gnu.org/licenses/>.
+
+#include <stdlib.h>
+
+#include "expresion.h"
+#include "sentencia.h"
+#include "sentencia_seleccion.h"
+
+static ast_sentencia_seleccion* ast_sentencia_seleccion_alloc();
+
+static ast_sentencia_seleccion* ast_sentencia_seleccion_alloc()
+{
+	ast_sentencia_seleccion* sentencia_seleccion = malloc(sizeof(ast_sentencia_seleccion));
+
+	if(sentencia_seleccion)
+	{
+		*sentencia_seleccion = (ast_sentencia_seleccion)
+		{
+			.expresion  = NULL,
+			.sentencia1 = NULL,
+			.sentencia2 = NULL
+		};
+	}
+
+	return sentencia_seleccion;
+}
+
+ast_sentencia_seleccion* ast_sentencia_seleccion1(
+	ast_expresion* expresion,
+	ast_sentencia* sentencia
+)
+{
+	ast_sentencia_seleccion* sentencia_seleccion = ast_sentencia_seleccion_alloc();
+
+	if(sentencia_seleccion)
+	{
+		sentencia_seleccion->expresion  = expresion;
+		sentencia_seleccion->sentencia1 = sentencia;
+	}
+
+	return sentencia_seleccion;
+}
+
+ast_sentencia_seleccion* ast_sentencia_seleccion2(
+	ast_expresion* expresion,
+	ast_sentencia* sentencia1,
+	ast_sentencia* sentencia2
+)
+{
+	ast_sentencia_seleccion* sentencia_seleccion = ast_sentencia_seleccion1(expresion, sentencia1);
+
+	if(sentencia_seleccion)
+		sentencia_seleccion->sentencia2 = sentencia2;
+
+	return sentencia_seleccion;
+}
+
+void ast_sentencia_seleccion_free(ast_sentencia_seleccion* sentencia_seleccion)
+{
+	if(sentencia_seleccion)
+	{
+		ast_expresion_free(sentencia_seleccion->expresion);
+		//ast_sentencia_free(sentencia_seleccion->sentencia1);
+		//ast_sentencia_free(sentencia_seleccion->sentencia2);
+	}
+	free(sentencia_seleccion);
+}
