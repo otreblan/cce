@@ -28,6 +28,8 @@ typedef struct _ast_params
 } ast_params;
 
 ast_params* ast_params1(ast_lista_params* lista_params);
+
+// Sin tipo
 ast_params* ast_params2();
 
 void ast_params_free(ast_params* params);
