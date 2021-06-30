@@ -20,23 +20,17 @@
 extern "C" {
 #endif
 
-typedef struct _ast_sentencia        ast_sentencia;
-typedef struct _ast_lista_sentencias ast_lista_sentencias;
+typedef struct _ast_lista_args ast_lista_args;
 
-typedef struct _ast_lista_sentencias
+typedef struct _ast_args
 {
-	ast_lista_sentencias* next;
-	ast_sentencia*        sentencia;
-} ast_lista_sentencias;
+	ast_lista_args* lista_args;
+} ast_args;
 
-ast_lista_sentencias* ast_lista_sentencias1(
-	ast_lista_sentencias* next,
-	ast_sentencia*        sentencia
-);
+ast_args* ast_args1(ast_lista_args* lista_args);
+ast_args* ast_args2();
 
-ast_lista_sentencias* ast_lista_sentencias2();
-
-void ast_lista_sentencias_free(ast_lista_sentencias* lista_sentencias);
+void ast_args_free(ast_args* args);
 
 #ifdef __cplusplus
 } // extern "C"

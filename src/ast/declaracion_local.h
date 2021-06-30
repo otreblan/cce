@@ -34,6 +34,8 @@ ast_declaracion_local* ast_declaracion_local1(
 	ast_var_declaracion*   var_declaracion
 );
 
+ast_declaracion_local* ast_declaracion_local2();
+
 void ast_declaracion_local_free(ast_declaracion_local* declaracion_local);
 
 #ifdef __cplusplus
