@@ -22,6 +22,7 @@
 #include "ast/expresion.h"
 #include "ast/expresion_aditiva.h"
 #include "ast/expresion_simple.h"
+#include "ast/factor.h"
 #include "ast/fun_declaracion.h"
 #include "ast/lista_declaracion.h"
 #include "ast/lista_params.h"
