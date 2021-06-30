@@ -20,21 +20,26 @@
 extern "C" {
 #endif
 
-typedef struct _ast_var_declaracion   ast_var_declaracion;
-typedef struct _ast_declaracion_local ast_declaracion_local;
+typedef struct _ast_addop             ast_addop;
+typedef struct _ast_term              ast_term;
+typedef struct _ast_expresion_aditiva ast_expresion_aditiva;
 
-typedef struct _ast_declaracion_local
+typedef struct _ast_expresion_aditiva
 {
-	ast_declaracion_local* next;
-	ast_var_declaracion*   var_declaracion;
-} ast_declaracion_local;
+	ast_expresion_aditiva* expresion_aditiva;
+	ast_addop*             addop;
+	ast_term*              term;
+} ast_expresion_aditiva;
 
-ast_declaracion_local* ast_declaracion_local1(
-	ast_declaracion_local* next,
-	ast_var_declaracion*   var_declaracion
+ast_expresion_aditiva* ast_expresion_aditiva1(
+	ast_expresion_aditiva* expresion_aditiva,
+	ast_addop*             addop,
+	ast_term*              term
 );
 
-void ast_declaracion_local_free(ast_declaracion_local* declaracion_local);
+ast_expresion_aditiva* ast_expresion_aditiva2(ast_term* term);
+
+void ast_expresion_aditiva_free(ast_expresion_aditiva* expresion_aditiva);
 
 #ifdef __cplusplus
 } // extern "C"

@@ -20,11 +20,12 @@
 extern "C" {
 #endif
 
-typedef struct _ast_param ast_param;
+typedef struct _ast_param        ast_param;
+typedef struct _ast_lista_params ast_lista_params;
 
 typedef struct _ast_lista_params
 {
-	struct _ast_lista_params* next;
+	ast_lista_params* next;
 	ast_param* param;
 } ast_lista_params;
 

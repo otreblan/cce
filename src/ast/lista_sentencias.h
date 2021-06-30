@@ -20,12 +20,13 @@
 extern "C" {
 #endif
 
-typedef struct _ast_sentencia ast_sentencia;
+typedef struct _ast_sentencia        ast_sentencia;
+typedef struct _ast_lista_sentencias ast_lista_sentencias;
 
 typedef struct _ast_lista_sentencias
 {
-	struct _ast_lista_sentencias* next;
-	ast_sentencia*                sentencia;
+	ast_lista_sentencias* next;
+	ast_sentencia*        sentencia;
 } ast_lista_sentencias;
 
 ast_lista_sentencias* ast_lista_sentencias1(
