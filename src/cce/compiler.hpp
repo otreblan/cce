@@ -17,11 +17,14 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 typedef struct _ast_programa ast_programa;
 
 namespace cce
 {
+
+struct instruction;
 
 class compiler
 {
@@ -31,7 +34,7 @@ class compiler
 	std::string infile_path;
 	std::string outfile_path = "a.tm";
 
-	int compile(ast_programa* programa, int yynerrs);
+	std::vector<instruction> compile(ast_programa* programa, int yynerrs, int& exit_code);
 public:
 	compiler();
 	compiler(int argc, char* argv[]);

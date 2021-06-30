@@ -21,6 +21,7 @@
 
 #include "compiler.hpp"
 #include "parser.h"
+#include "instruction.hpp"
 
 void cce::compiler::usage(int exit_code) const
 {
@@ -95,7 +96,7 @@ int cce::compiler::run()
 	int errors = 0;
 
 	ast_programa* programa = parse_file(infile, &errors);
-	exit_code |= compile(programa, errors);
+	compile(programa, errors, exit_code);
 	ast_programa_free(programa);
 
 	fclose(infile);
@@ -104,14 +105,23 @@ int cce::compiler::run()
 	return exit_code;
 }
 
-int cce::compiler::compile(ast_programa* programa, int yynerrs)
+std::vector<cce::instruction> cce::compiler::compile(ast_programa* programa, int yynerrs, int& exit_code)
 {
+	std::vector<cce::instruction> v;
+
 	if(!programa)
-		return EXIT_FAILURE;
+	{
+		exit_code = EXIT_FAILURE;
+		return v;
+	}
 
 	if(yynerrs > 0)
-		return EXIT_FAILURE;
+	{
+		exit_code = EXIT_FAILURE;
+		return v;
+	}
 
 	// TODO
-	return EXIT_SUCCESS;
+	exit_code = EXIT_SUCCESS;
+	return v;
 }
