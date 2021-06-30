@@ -212,7 +212,7 @@ args
 	;
 
 lista_arg
-	: lista_arg ',' expresion
+	: expresion ',' lista_arg
 	| expresion
 	;
 
