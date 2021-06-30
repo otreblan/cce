@@ -13,3 +13,39 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with cce.  If not, see <http://www.gnu.org/licenses/>.
+
+#include <stdlib.h>
+
+#include "mulop.h"
+
+static ast_mulop* ast_mulop_alloc();
+
+static ast_mulop* ast_mulop_alloc()
+{
+	return malloc(sizeof(ast_mulop));
+}
+
+ast_mulop* ast_mulop_multiplicacion()
+{
+	ast_mulop* mulop = ast_mulop_alloc();
+
+	if(mulop)
+		mulop->tipo = '*';
+
+	return mulop;
+}
+
+ast_mulop* ast_mulop_division()
+{
+	ast_mulop* mulop = ast_mulop_alloc();
+
+	if(mulop)
+		mulop->tipo = '/';
+
+	return mulop;
+}
+
+void ast_mulop_free(ast_mulop* mulop)
+{
+	free(mulop);
+}
