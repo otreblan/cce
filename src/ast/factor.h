@@ -34,7 +34,7 @@ enum ast_factor_tipo
 
 typedef struct _ast_factor
 {
-	char tipo;
+	int tipo;
 	union
 	{
 		ast_expresion* expresion;
