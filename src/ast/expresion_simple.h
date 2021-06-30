@@ -30,12 +30,13 @@ typedef struct _ast_expresion_simple
 	ast_expresion_aditiva* expresion_aditiva2;
 } ast_expresion_simple;
 
-ast_expresion_simple* ast_expresion_simple1(ast_expresion_aditiva* expresion_aditiva1);
-ast_expresion_simple* ast_expresion_simple2(
+ast_expresion_simple* ast_expresion_simple1(
 	ast_expresion_aditiva* expresion_aditiva1,
 	ast_relop*             relop,
 	ast_expresion_aditiva* expresion_aditiva2
 );
+
+ast_expresion_simple* ast_expresion_simple2(ast_expresion_aditiva* expresion_aditiva1);
 
 void ast_expresion_simple_free(ast_expresion_simple* expresion_simple);
 

@@ -39,29 +39,29 @@ static ast_expresion_simple* ast_expresion_simple_alloc()
 	return expresion_simple;
 }
 
-ast_expresion_simple* ast_expresion_simple1(ast_expresion_aditiva* expresion_aditiva1)
-{
-	ast_expresion_simple* expresion_simple = ast_expresion_simple_alloc();
-
-	if(expresion_simple)
-		expresion_simple->expresion_aditiva1 = expresion_aditiva1;
-
-	return expresion_simple;
-}
-
-ast_expresion_simple* ast_expresion_simple2(
+ast_expresion_simple* ast_expresion_simple1(
 	ast_expresion_aditiva* expresion_aditiva1,
 	ast_relop*             relop,
 	ast_expresion_aditiva* expresion_aditiva2
 )
 {
-	ast_expresion_simple* expresion_simple = ast_expresion_simple1(expresion_aditiva1);
+	ast_expresion_simple* expresion_simple = ast_expresion_simple2(expresion_aditiva1);
 
 	if(expresion_simple)
 	{
 		expresion_simple->relop              = relop;
 		expresion_simple->expresion_aditiva2 = expresion_aditiva2;
 	}
+
+	return expresion_simple;
+}
+
+ast_expresion_simple* ast_expresion_simple2(ast_expresion_aditiva* expresion_aditiva1)
+{
+	ast_expresion_simple* expresion_simple = ast_expresion_simple_alloc();
+
+	if(expresion_simple)
+		expresion_simple->expresion_aditiva1 = expresion_aditiva1;
 
 	return expresion_simple;
 }

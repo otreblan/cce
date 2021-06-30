@@ -41,7 +41,6 @@ void yyerror(ast_programa** programa, const char* s);
 	ast_mulop*               mulop;
 	ast_param*               param;
 	ast_params*              params;
-	ast_programa*            programa;
 	ast_relop*               relop;
 	ast_sent_compuesta*      sent_compuesta;
 	ast_sentencia_expresion* sentencia_expresion;
@@ -74,7 +73,6 @@ void yyerror(ast_programa** programa, const char* s);
 %destructor { ast_mulop_free($$); }               <mulop>
 %destructor { ast_param_free($$); }               <param>
 %destructor { ast_params_free($$); }              <params>
-%destructor { ast_programa_free($$); }            <programa>
 %destructor { ast_relop_free($$); }               <relop>
 %destructor { ast_sent_compuesta_free($$); }      <sent_compuesta>
 %destructor { ast_sentencia_expresion_free($$); } <sentencia_expresion>
@@ -120,7 +118,6 @@ void yyerror(ast_programa** programa, const char* s);
 %type <mulop>               mulop
 %type <param>               param
 %type <params>              params
-%type <programa>            programa
 %type <relop>               relop
 %type <sent_compuesta>      sent_compuesta
 %type <sentencia_expresion> sentencia_expresion
@@ -154,7 +151,7 @@ lista_declaracion
 
 declaracion
 	: var_declaracion { $$ = ast_declaracion1($1); }
-	| fun_declaracion { $$ = NULL; } // TODO
+	| fun_declaracion { $$ = ast_declaracion2($1); }
 	;
 
 var_declaracion
@@ -163,132 +160,132 @@ var_declaracion
 	;
 
 tipo
-	: entero   {$$ = ast_tipo_entero(); }
-	| sin_tipo {$$ = ast_tipo_sin_tipo(); }
+	: entero   { $$ = ast_tipo_entero(); }
+	| sin_tipo { $$ = ast_tipo_sin_tipo(); }
 	;
 
 fun_declaracion
-	: tipo ID '(' params ')' sent_compuesta
+	: tipo ID '(' params ')' sent_compuesta { $$ = ast_fun_declaracion1($1, $2, $4, $6); }
 	;
 
 params
-	: lista_params
-	| sin_tipo
+	: lista_params { $$ = ast_params1($1); }
+	| sin_tipo     { $$ = ast_params2(); }
 	;
 
 lista_params
-	: param ',' lista_params
-	| param
+	: param ',' lista_params { $$ = ast_lista_params1($3, $1); }
+	| param                  { $$ = ast_lista_params2($1); }
 	;
 
 param
-	: tipo ID
-	| tipo ID '[' ']'
+	: tipo ID         { $$ = ast_param1($1, $2); }
+	| tipo ID '[' ']' { $$ = ast_param2($1, $2); }
 	;
 
 sent_compuesta
-	: '{' declaracion_local lista_sentencias '}'
+	: '{' declaracion_local lista_sentencias '}' { $$ = ast_sent_compuesta1($2, $3); }
 	;
 
 declaracion_local
-	: var_declaracion declaracion_local
-	| vacio
+	: var_declaracion declaracion_local { $$ = ast_declaracion_local1($2, $1); }
+	| vacio                             { $$ = ast_declaracion_local2(); }
 	;
 
 lista_sentencias
-	: sentencia lista_sentencias
-	| vacio
+	: sentencia lista_sentencias { $$ = ast_lista_sentencias1($2, $1); }
+	| vacio                      { $$ = ast_lista_sentencias2(); }
 	;
 
 sentencia
-	: sentencia_expresion
-	| sentencia_seleccion
-	| sentencia_iteracion
-	| sentencia_retorno
+	: sentencia_expresion { $$ = ast_sentencia1($1); }
+	| sentencia_seleccion { $$ = ast_sentencia2($1); }
+	| sentencia_iteracion { $$ = ast_sentencia3($1); }
+	| sentencia_retorno   { $$ = ast_sentencia4($1); }
 	;
 
 sentencia_expresion
-	: expresion ';'
-	| ';'
+	: expresion ';' { $$ = ast_sentencia_expresion1($1); }
+	| ';'           { $$ = ast_sentencia_expresion2(); }
 	;
 
 sentencia_seleccion
-	: si '(' expresion ')' sentencia %prec "entonces"
-	| si '(' expresion ')' sentencia sino sentencia
+	: si '(' expresion ')' sentencia %prec "entonces" { $$ = ast_sentencia_seleccion1($3, $5); }
+	| si '(' expresion ')' sentencia sino sentencia   { $$ = ast_sentencia_seleccion2($3, $5, $7); }
 	;
 
 sentencia_iteracion
-	: mientras '(' expresion ')' '{' lista_sentencias '}'
+	: mientras '(' expresion ')' '{' lista_sentencias '}' { $$ = ast_sentencia_iteracion1($3, $6); }
 	;
 
 sentencia_retorno
-	: retorno ';'
-	| retorno expresion ';'
+	: retorno ';'           { $$ = ast_sentencia_retorno1(); }
+	| retorno expresion ';' { $$ = ast_sentencia_retorno2($2); }
 	;
 
 expresion
-	: var '=' expresion
-	| expresion_simple
+	: var '=' expresion { $$ = ast_expresion1($1, $3); }
+	| expresion_simple  { $$ = ast_expresion2($1); }
 	;
 
 var
-	: ID
-	| ID '[' expresion ']'
+	: ID                   { $$ = ast_var1($1); }
+	| ID '[' expresion ']' { $$ = ast_var2($1, $3); }
 	;
 
 expresion_simple
-	: expresion_aditiva relop expresion_aditiva
-	| expresion_aditiva
+	: expresion_aditiva relop expresion_aditiva { $$ = ast_expresion_simple1($1, $2, $3); }
+	| expresion_aditiva                         { $$ = ast_expresion_simple2($1); }
 	;
 
 relop
-	: "<"
-	| "<="
-	| ">"
-	| ">="
-	| "=="
-	| "!="
+	: "<"  { $$ = ast_relop_le(); }
+	| "<=" { $$ = ast_relop_lq(); }
+	| ">"  { $$ = ast_relop_ge(); }
+	| ">=" { $$ = ast_relop_gq(); }
+	| "==" { $$ = ast_relop_eq(); }
+	| "!=" { $$ = ast_relop_ne(); }
 	;
 
 expresion_aditiva
-	: expresion_aditiva addop term
-	| term
+	: expresion_aditiva addop term { $$ = ast_expresion_aditiva1($1, $2, $3); }
+	| term                         { $$ = ast_expresion_aditiva2($1); }
 	;
 
 addop
-	: '+'
-	| '-'
+	: '+' { $$ = ast_addop_suma(); }
+	| '-' { $$ = ast_addop_resta(); }
 	;
 
 term
-	: term mulop factor
-	| factor
+	: term mulop factor { $$ = ast_term1($1, $2, $3); }
+	| factor            { $$ = ast_term2($1); }
 	;
 
 mulop
-	: '*'
-	| '/'
+	: '*' { $$ = ast_mulop_multiplicacion(); }
+	| '/' { $$ = ast_mulop_division(); }
 	;
 
 factor
-	: '(' expresion ')'
-	| var
-	| call
-	| NUM
+	: '(' expresion ')' { $$ = ast_factor1($2); }
+	| var               { $$ = ast_factor2($1); }
+	| call              { $$ = ast_factor3($1); }
+	| NUM               { $$ = ast_factor4($1); }
 	;
 
 call
-	: ID '(' args ')'
+	: ID '(' args ')' { $$ = ast_call1($1, $3); }
 	;
 
 args
-	: lista_arg
-	| vacio
+	: lista_arg { $$ = ast_args1($1); }
+	| vacio     { $$ = ast_args2(); }
 	;
 
 lista_arg
-	: expresion ',' lista_arg
-	| expresion
+	: expresion ',' lista_arg { $$ = ast_lista_arg1($1, $3); }
+	| expresion               { $$ = ast_lista_arg2($1); }
 	;
 
 vacio: %empty;
