@@ -97,7 +97,7 @@ int cce::compiler::run()
 
 	ast_programa* programa = parse_file(infile, &errors);
 
-	exit_code |= write_to(outfile, compile(programa, errors, exit_code));
+	write_to(outfile, compile(programa, errors, exit_code));
 
 	ast_programa_free(programa);
 
@@ -128,8 +128,8 @@ std::vector<cce::instruction> cce::compiler::compile(ast_programa* programa, int
 	return v;
 }
 
-int cce::compiler::write_to(FILE* outfile, const std::vector<instruction>& v)
+void cce::compiler::write_to(FILE* outfile, const std::vector<instruction>& v)
 {
-	// TODO
-	return EXIT_SUCCESS;
+	for(size_t i = 0; i < v.size(); i++)
+		fmt::print(outfile, "{}:    {}\n", i, v[i]);
 }

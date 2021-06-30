@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <fmt/format.h>
+
 namespace cce
 {
 
@@ -155,4 +157,92 @@ struct instruction
 
 };
 
+};
+
+template<>
+struct fmt::formatter<cce::instruction>: fmt::formatter<int>
+{
+	static const char* type_str(cce::instruction::type t)
+	{
+		switch(t)
+		{
+			case cce::instruction::type::IN:
+				return "IN";
+			case cce::instruction::type::OUT:
+				return "OUT";
+			case cce::instruction::type::ADD:
+				return "ADD";
+			case cce::instruction::type::SUB:
+				return "SUB";
+			case cce::instruction::type::MUL:
+				return "MUL";
+			case cce::instruction::type::DIV:
+				return "DIV";
+			case cce::instruction::type::HALT:
+				return "HALT";
+			case cce::instruction::type::LDC:
+				return "LDC";
+			case cce::instruction::type::LDA:
+				return "LDA";
+			case cce::instruction::type::LD:
+				return "LD";
+			case cce::instruction::type::ST:
+				return "ST";
+			case cce::instruction::type::JEQ:
+				return "JEQ";
+			case cce::instruction::type::JNE:
+				return "JNE";
+			case cce::instruction::type::JLT:
+				return "JLT";
+			case cce::instruction::type::JLE:
+				return "JLE";
+			case cce::instruction::type::JGT:
+				return "JGT";
+			case cce::instruction::type::JGE:
+				return "JGE";
+			default:
+				return "";
+		}
+	}
+
+	template <typename FormatContext>
+	auto format(const cce::instruction& i, FormatContext& ctx)
+	{
+		switch(i.opcode)
+		{
+			case cce::instruction::type::IN:
+			case cce::instruction::type::OUT:
+			case cce::instruction::type::ADD:
+			case cce::instruction::type::SUB:
+			case cce::instruction::type::MUL:
+			case cce::instruction::type::DIV:
+			case cce::instruction::type::HALT:
+				return format_to(ctx.out(),
+					"{}  {},{},{}",
+					type_str(i.opcode),
+					i.r1,
+					i.r2,
+					i.r3
+				);
+
+			case cce::instruction::type::LDC:
+			case cce::instruction::type::LDA:
+			case cce::instruction::type::LD:
+			case cce::instruction::type::ST:
+			case cce::instruction::type::JEQ:
+			case cce::instruction::type::JNE:
+			case cce::instruction::type::JLT:
+			case cce::instruction::type::JLE:
+			case cce::instruction::type::JGT:
+			case cce::instruction::type::JGE:
+				return format_to(ctx.out(),
+					"{}  {},{}({})",
+					type_str(i.opcode),
+					i.r1,
+					i.offset,
+					i.r2
+				);
+		}
+		return format_to(ctx.out(), "");
+	}
 };
