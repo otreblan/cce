@@ -99,11 +99,11 @@ void ast_factor_free(ast_factor* factor)
 		switch(factor->tipo)
 		{
 			case AST_FACTOR_EXPRESION:
-				//ast_expresion_free(factor->expresion);
+				ast_expresion_free(factor->expresion);
 				break;
 
 			case AST_FACTOR_VAR:
-				//ast_var_free(factor->var);
+				ast_var_free(factor->var);
 				break;
 
 			case AST_FACTOR_CALL:

@@ -62,7 +62,7 @@ void ast_var_free(ast_var* var)
 	if(var)
 	{
 		free(var->ID);
-		//ast_expresion_free(var->expresion);
+		ast_expresion_free(var->expresion);
 	}
 	free(var);
 }

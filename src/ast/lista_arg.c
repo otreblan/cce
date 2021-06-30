@@ -61,7 +61,7 @@ void ast_lista_arg_free(ast_lista_arg* lista_arg)
 {
 	if(lista_arg)
 	{
-		//ast_expresion_free(lista_arg->expresion);
+		ast_expresion_free(lista_arg->expresion);
 		ast_lista_arg_free(lista_arg->next);
 	}
 	free(lista_arg);
