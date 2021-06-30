@@ -26,6 +26,7 @@
 #include "ast/lista_declaracion.h"
 #include "ast/lista_params.h"
 #include "ast/lista_sentencias.h"
+#include "ast/mulop.h"
 #include "ast/param.h"
 #include "ast/params.h"
 #include "ast/programa.h"
