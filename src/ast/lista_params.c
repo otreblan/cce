@@ -13,3 +13,56 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with cce.  If not, see <http://www.gnu.org/licenses/>.
+
+#include <stdlib.h>
+
+#include "lista_params.h"
+#include "param.h"
+
+static ast_lista_params* ast_lista_params_alloc();
+
+static ast_lista_params* ast_lista_params_alloc()
+{
+	ast_lista_params* lista_params = malloc(sizeof(ast_lista_params));
+
+	if(lista_params)
+	{
+		*lista_params = (ast_lista_params)
+		{
+			.next  = NULL,
+			.param = NULL
+		};
+	}
+
+	return lista_params;
+}
+
+ast_lista_params* ast_lista_params1(ast_lista_params* next, ast_param* param)
+{
+	ast_lista_params* lista_params = ast_lista_params2(param);
+
+	if(lista_params)
+		lista_params->next = next;
+
+	return lista_params;
+}
+
+ast_lista_params* ast_lista_params2(ast_param* param)
+{
+	ast_lista_params* lista_params = ast_lista_params_alloc();
+
+	if(lista_params)
+		lista_params->param = param;
+
+	return lista_params;
+}
+
+void ast_lista_params_free(ast_lista_params* lista_params)
+{
+	if(lista_params)
+	{
+		ast_lista_params_free(lista_params->next);
+		ast_param_free(lista_params->param);
+	}
+	free(lista_params);
+};
