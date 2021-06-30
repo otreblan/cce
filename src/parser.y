@@ -203,16 +203,16 @@ factor
 	;
 
 call
-	:ID '(' args ')'
+	: ID '(' args ')'
 	;
 
 args
-	:lista_arg
+	: lista_arg
 	| vacio
 	;
 
 lista_arg
-	:lista_arg ',' expresion
+	: lista_arg ',' expresion
 	| expresion
 	;
 
