@@ -28,10 +28,10 @@ typedef struct _ast_lista_arg ast_lista_arg;
 typedef struct _ast_lista_arg
 {
 	ast_expresion* expresion;
-	ast_lista_arg* lista_arg;
+	ast_lista_arg* next;
 } ast_lista_arg;
 
-ast_lista_arg* ast_lista_arg1(ast_expresion* expresion, ast_lista_arg* lista_arg);
+ast_lista_arg* ast_lista_arg1(ast_expresion* expresion, ast_lista_arg* next);
 ast_lista_arg* ast_lista_arg2(ast_expresion* expresion);
 
 void ast_lista_arg_free(ast_lista_arg* lista_arg);

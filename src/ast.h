@@ -26,7 +26,7 @@
 #include "ast/expresion_simple.h"
 #include "ast/factor.h"
 #include "ast/fun_declaracion.h"
-#include "ast/lista_args.h"
+#include "ast/lista_arg.h"
 #include "ast/lista_declaracion.h"
 #include "ast/lista_params.h"
 #include "ast/lista_sentencias.h"
