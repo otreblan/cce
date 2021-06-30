@@ -24,18 +24,68 @@ void yyerror(ast_programa** programa, const char* s);
 	char* strval;
 
 	// Nodos
-	ast_declaracion*       declaracion;
-	ast_lista_declaracion* lista_declaracion;
-	ast_tipo*              tipo;
-	ast_var_declaracion*   var_declaracion;
+	ast_addop*               addop;
+	ast_args*                args;
+	ast_call*                call;
+	ast_declaracion*         declaracion;
+	ast_declaracion_local*   declaracion_local;
+	ast_expresion_aditiva*   expresion_aditiva;
+	ast_expresion*           expresion;
+	ast_expresion_simple*    expresion_simple;
+	ast_factor*              factor;
+	ast_fun_declaracion*     fun_declaracion;
+	ast_lista_arg*           lista_arg;
+	ast_lista_declaracion*   lista_declaracion;
+	ast_lista_params*        lista_params;
+	ast_lista_sentencias*    lista_sentencias;
+	ast_mulop*               mulop;
+	ast_param*               param;
+	ast_params*              params;
+	ast_programa*            programa;
+	ast_relop*               relop;
+	ast_sent_compuesta*      sent_compuesta;
+	ast_sentencia_expresion* sentencia_expresion;
+	ast_sentencia*           sentencia;
+	ast_sentencia_iteracion* sentencia_iteracion;
+	ast_sentencia_retorno*   sentencia_retorno;
+	ast_sentencia_seleccion* sentencia_seleccion;
+	ast_term*                term;
+	ast_tipo*                tipo;
+	ast_var_declaracion*     var_declaracion;
+	ast_var*                 var;
 }
 
-%destructor { }                                 <intval>
-%destructor { free($$); }                       <strval>
-%destructor { ast_declaracion_free($$); }       <declaracion>
-%destructor { ast_lista_declaracion_free($$); } <lista_declaracion>
-%destructor { ast_tipo_free($$); }              <tipo>
-%destructor { ast_var_declaracion_free($$); }   <var_declaracion>
+%destructor { }                                   <intval>
+%destructor { free($$); }                         <strval>
+%destructor { ast_addop_free($$); }               <addop>
+%destructor { ast_args_free($$); }                <args>
+%destructor { ast_call_free($$); }                <call>
+%destructor { ast_declaracion_free($$); }         <declaracion>
+%destructor { ast_declaracion_local_free($$); }   <declaracion_local>
+%destructor { ast_expresion_aditiva_free($$); }   <expresion_aditiva>
+%destructor { ast_expresion_free($$); }           <expresion>
+%destructor { ast_expresion_simple_free($$); }    <expresion_simple>
+%destructor { ast_factor_free($$); }              <factor>
+%destructor { ast_fun_declaracion_free($$); }     <fun_declaracion>
+%destructor { ast_lista_arg_free($$); }           <lista_arg>
+%destructor { ast_lista_declaracion_free($$); }   <lista_declaracion>
+%destructor { ast_lista_params_free($$); }        <lista_params>
+%destructor { ast_lista_sentencias_free($$); }    <lista_sentencias>
+%destructor { ast_mulop_free($$); }               <mulop>
+%destructor { ast_param_free($$); }               <param>
+%destructor { ast_params_free($$); }              <params>
+%destructor { ast_programa_free($$); }            <programa>
+%destructor { ast_relop_free($$); }               <relop>
+%destructor { ast_sent_compuesta_free($$); }      <sent_compuesta>
+%destructor { ast_sentencia_expresion_free($$); } <sentencia_expresion>
+%destructor { ast_sentencia_free($$); }           <sentencia>
+%destructor { ast_sentencia_iteracion_free($$); } <sentencia_iteracion>
+%destructor { ast_sentencia_retorno_free($$); }   <sentencia_retorno>
+%destructor { ast_sentencia_seleccion_free($$); } <sentencia_seleccion>
+%destructor { ast_term_free($$); }                <term>
+%destructor { ast_tipo_free($$); }                <tipo>
+%destructor { ast_var_declaracion_free($$); }     <var_declaracion>
+%destructor { ast_var_free($$); }                 <var>
 
 %left '+' '-'
 %left '*' '/'
@@ -53,10 +103,35 @@ void yyerror(ast_programa** programa, const char* s);
 %token sino
 
 // Nodos
-%type <lista_declaracion> lista_declaracion
-%type <declaracion>       declaracion
-%type <var_declaracion>   var_declaracion
-%type <tipo>              tipo
+%type <addop>               addop
+%type <args>                args
+%type <call>                call
+%type <declaracion>         declaracion
+%type <declaracion_local>   declaracion_local
+%type <expresion_aditiva>   expresion_aditiva
+%type <expresion>           expresion
+%type <expresion_simple>    expresion_simple
+%type <factor>              factor
+%type <fun_declaracion>     fun_declaracion
+%type <lista_arg>           lista_arg
+%type <lista_declaracion>   lista_declaracion
+%type <lista_params>        lista_params
+%type <lista_sentencias>    lista_sentencias
+%type <mulop>               mulop
+%type <param>               param
+%type <params>              params
+%type <programa>            programa
+%type <relop>               relop
+%type <sent_compuesta>      sent_compuesta
+%type <sentencia_expresion> sentencia_expresion
+%type <sentencia>           sentencia
+%type <sentencia_iteracion> sentencia_iteracion
+%type <sentencia_retorno>   sentencia_retorno
+%type <sentencia_seleccion> sentencia_seleccion
+%type <term>                term
+%type <tipo>                tipo
+%type <var_declaracion>     var_declaracion
+%type <var>                 var
 
 // Literales
 %token <intval> NUM
