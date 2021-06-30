@@ -16,19 +16,26 @@
 
 #pragma once
 
-#include "ast/declaracion.h"
-#include "ast/declaracion_local.h"
-#include "ast/fun_declaracion.h"
-#include "ast/lista_declaracion.h"
-#include "ast/lista_params.h"
-#include "ast/lista_sentencias.h"
-#include "ast/param.h"
-#include "ast/params.h"
-#include "ast/programa.h"
-#include "ast/sent_compuesta.h"
-#include "ast/sentencia.h"
-#include "ast/sentencia_expresion.h"
-#include "ast/sentencia_iteracion.h"
-#include "ast/sentencia_seleccion.h"
-#include "ast/tipo.h"
-#include "ast/var_declaracion.h"
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+typedef struct _ast_expresion ast_expresion;
+typedef struct _ast_lista_sentencias ast_lista_sentencias;
+
+typedef struct _ast_sentencia_iteracion
+{
+	ast_expresion*        expresion;
+	ast_lista_sentencias* lista_sentencias;
+} ast_sentencia_iteracion;
+
+ast_sentencia_iteracion* ast_sentencia_iteracion1(
+	ast_expresion*        expresion,
+	ast_lista_sentencias* lista_sentencias
+);
+
+void ast_sentencia_iteracion_free(ast_sentencia_iteracion* iteracion);
+
+#ifdef __cplusplus
+} // extern "C"
+#endif
