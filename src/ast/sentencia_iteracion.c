@@ -59,7 +59,7 @@ void ast_sentencia_iteracion_free(ast_sentencia_iteracion* sentencia_iteracion)
 	if(sentencia_iteracion)
 	{
 		ast_expresion_free(sentencia_iteracion->expresion);
-		//ast_lista_sentencias_free(sentencia_iteracion->lista_sentencias);
+		ast_lista_sentencias_free(sentencia_iteracion->lista_sentencias);
 	}
 	free(sentencia_iteracion);
 }
