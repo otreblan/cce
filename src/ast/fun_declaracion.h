@@ -27,14 +27,14 @@ typedef struct _ast_sent_compuesta ast_sent_compuesta;
 typedef struct _ast_fun_declaracion
 {
 	ast_tipo*           tipo;
-	char*               id;
+	char*               ID;
 	ast_params*         params;
 	ast_sent_compuesta* sent_compuesta;
 } ast_fun_declaracion;
 
 ast_fun_declaracion* ast_fun_declaracion1(
 	ast_tipo*           tipo,
-	char*               id,
+	char*               ID,
 	ast_params*         params,
 	ast_sent_compuesta* sent_compuesta
 );

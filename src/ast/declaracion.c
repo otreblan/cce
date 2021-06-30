@@ -17,8 +17,8 @@
 #include <stdlib.h>
 
 #include "declaracion.h"
+#include "fun_declaracion.h"
 #include "var_declaracion.h"
-
 
 static ast_declaracion* ast_declaracion_alloc();
 
@@ -42,7 +42,18 @@ ast_declaracion* ast_declaracion1(ast_var_declaracion* var_declaracion)
 	return declaracion;
 }
 
-//ast_declaracion* ast_declaracion2(ast_fun_declaracion* declaracion);
+ast_declaracion* ast_declaracion2(ast_fun_declaracion* fun_declaracion)
+{
+	ast_declaracion* declaracion = ast_declaracion_alloc();
+
+	if(declaracion)
+	{
+		declaracion->tipo = AST_FUN_DECLARACION;
+		declaracion->fun  = fun_declaracion;
+	}
+
+	return declaracion;
+}
 
 void ast_declaracion_free(ast_declaracion* declaracion)
 {
@@ -54,8 +65,9 @@ void ast_declaracion_free(ast_declaracion* declaracion)
 				ast_var_declaracion_free(declaracion->var);
 				break;
 
-			//case AST_FUN_DECLARACION:
-			//	break;
+			case AST_FUN_DECLARACION:
+				ast_fun_declaracion_free(declaracion->fun);
+				break;
 		}
 	}
 	free(declaracion);
