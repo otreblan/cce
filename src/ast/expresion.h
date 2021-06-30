@@ -20,20 +20,34 @@
 extern "C" {
 #endif
 
-typedef struct _ast_var_declaracion ast_var_declaracion;
+typedef struct _ast_var              ast_var;
+typedef struct _ast_expresion        ast_expresion;
+typedef struct _ast_expresion_simple ast_expresion_simple;
 
-typedef struct _ast_declaracion_local
+enum ast_expresion_tipo
 {
-	struct _ast_declaracion_local* next;
-	ast_var_declaracion*           var_declaracion;
-} ast_declaracion_local;
+	AST_ASIGNACION,
+	AST_EXPRESION_SIMPLE
+};
 
-ast_declaracion_local* ast_declaracion_local1(
-	ast_declaracion_local* next,
-	ast_var_declaracion*   var_declaracion
-);
+typedef struct _ast_expresion
+{
+	int tipo;
+	union
+	{
+		struct
+		{
+			ast_var*       var;
+			ast_expresion* expresion;
+		} asignacion;
+		ast_expresion_simple* expresion_simple;
+	} expresion;
+} ast_expresion;
 
-void ast_declaracion_local_free(ast_declaracion_local* declaracion_local);
+ast_expresion* ast_expresion1(ast_var* var, ast_expresion* expresion);
+ast_expresion* ast_expresion2(ast_expresion_simple* expresion_simple);
+
+void ast_expresion_free(ast_expresion* expresion);
 
 #ifdef __cplusplus
 } // extern "C"
