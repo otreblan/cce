@@ -34,7 +34,7 @@ ast_sentencia_iteracion* ast_sentencia_iteracion1(
 	ast_lista_sentencias* lista_sentencias
 );
 
-void ast_sentencia_iteracion_free(ast_sentencia_iteracion* iteracion);
+void ast_sentencia_iteracion_free(ast_sentencia_iteracion* sentencia_iteracion);
 
 #ifdef __cplusplus
 } // extern "C"
