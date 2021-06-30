@@ -19,9 +19,9 @@
 #include "expresion.h"
 #include "lista_arg.h"
 
-static ast_lista_arg* ast_lista_alloc();
+static ast_lista_arg* ast_lista_arg_alloc();
 
-static ast_lista_arg* ast_lista_alloc()
+static ast_lista_arg* ast_lista_arg_alloc()
 {
 	ast_lista_arg* lista_arg = malloc(sizeof(ast_lista_arg));
 
@@ -49,7 +49,7 @@ ast_lista_arg* ast_lista_arg1(ast_expresion* expresion, ast_lista_arg* next)
 
 ast_lista_arg* ast_lista_arg2(ast_expresion* expresion)
 {
-	ast_lista_arg* lista_arg = ast_lista_alloc();
+	ast_lista_arg* lista_arg = ast_lista_arg_alloc();
 
 	if(lista_arg)
 		lista_arg->expresion = expresion;

@@ -20,14 +20,14 @@
 extern "C" {
 #endif
 
-typedef struct _ast_lista_args ast_lista_args;
+typedef struct _ast_lista_arg ast_lista_arg;
 
 typedef struct _ast_args
 {
-	ast_lista_args* lista_args;
+	ast_lista_arg* lista_arg;
 } ast_args;
 
-ast_args* ast_args1(ast_lista_args* lista_args);
+ast_args* ast_args1(ast_lista_arg* lista_arg);
 ast_args* ast_args2();
 
 void ast_args_free(ast_args* args);
