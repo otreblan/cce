@@ -13,3 +13,39 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with cce.  If not, see <http://www.gnu.org/licenses/>.
+
+#include <stdlib.h>
+
+#include "addop.h"
+
+static ast_addop* ast_addop_alloc();
+
+static ast_addop* ast_addop_alloc()
+{
+	return malloc(sizeof(ast_addop));
+}
+
+ast_addop* ast_addop_suma()
+{
+	ast_addop* addop = ast_addop_alloc();
+
+	if(addop)
+		addop->tipo = '+';
+
+	return addop;
+}
+
+ast_addop* ast_addop_resta()
+{
+	ast_addop* addop = ast_addop_alloc();
+
+	if(addop)
+		addop->tipo = '-';
+
+	return addop;
+}
+
+void ast_addop_free(ast_addop* addop)
+{
+	free(addop);
+}
