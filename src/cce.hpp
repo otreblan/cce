@@ -17,4 +17,5 @@
 #pragma once
 
 #include "cce/compiler.hpp"
+#include "cce/instruction.hpp"
 #include "cce/parser.h"
