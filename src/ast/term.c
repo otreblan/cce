@@ -13,3 +13,62 @@
 //
 // You should have received a copy of the GNU General Public License
 // along with cce.  If not, see <http://www.gnu.org/licenses/>.
+
+#include <stdlib.h>
+
+#include "factor.h"
+#include "mulop.h"
+#include "term.h"
+
+static ast_term* ast_term_alloc();
+
+static ast_term* ast_term_alloc()
+{
+	ast_term* term = malloc(sizeof(ast_term));
+
+	if(term)
+	{
+		*term = (ast_term)
+		{
+			.term   = NULL,
+			.mulop  = NULL,
+			.factor = NULL
+		};
+	}
+
+	return term;
+}
+
+ast_term* ast_term1(ast_term* term, ast_mulop* mulop, ast_factor* factor)
+{
+	ast_term* _term = ast_term2(factor);
+
+	if(_term)
+	{
+		_term->term  = term;
+		_term->mulop = mulop;
+	}
+
+	return _term;
+}
+
+ast_term* ast_term2(ast_factor* factor)
+{
+	ast_term* term = ast_term_alloc();
+
+	if(term)
+		term->factor = factor;
+
+	return term;
+}
+
+void ast_term_free(ast_term* term)
+{
+	if(term)
+	{
+		ast_term_free(term->term);
+		ast_mulop_free(term->mulop);
+		ast_factor_free(term->factor);
+	}
+	free(term);
+}
