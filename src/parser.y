@@ -139,7 +139,7 @@ sentencia_expresion
 
 sentencia_seleccion
 	: si '(' expresion ')' sentencia %prec "entonces"
-	| si '('expresion ')' sentencia sino sentencia
+	| si '(' expresion ')' sentencia sino sentencia
 	;
 
 sentencia_iteracion
