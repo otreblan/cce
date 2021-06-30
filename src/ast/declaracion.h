@@ -36,7 +36,7 @@ typedef struct _ast_declaracion
 	{
 		ast_var_declaracion* var;
 		//ast_fun_declaracion* fun;
-	} declaracion;
+	};
 } ast_declaracion;
 
 ast_declaracion* ast_declaracion1(ast_var_declaracion* var_declaracion);

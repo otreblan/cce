@@ -39,9 +39,9 @@ typedef struct _ast_expresion
 		{
 			ast_var*       var;
 			ast_expresion* expresion;
-		} asignacion;
+		};
 		ast_expresion_simple* expresion_simple;
-	} expresion;
+	};
 } ast_expresion;
 
 ast_expresion* ast_expresion1(ast_var* var, ast_expresion* expresion);

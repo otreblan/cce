@@ -35,8 +35,8 @@ ast_declaracion* ast_declaracion1(ast_var_declaracion* var_declaracion)
 
 	if(declaracion)
 	{
-		declaracion->tipo            = AST_VAR_DECLARACION;
-		declaracion->declaracion.var = var_declaracion;
+		declaracion->tipo = AST_VAR_DECLARACION;
+		declaracion->var  = var_declaracion;
 	}
 
 	return declaracion;
@@ -51,7 +51,7 @@ void ast_declaracion_free(ast_declaracion* declaracion)
 		switch(declaracion->tipo)
 		{
 			case AST_VAR_DECLARACION:
-				ast_var_declaracion_free(declaracion->declaracion.var);
+				ast_var_declaracion_free(declaracion->var);
 				break;
 
 			//case AST_FUN_DECLARACION:

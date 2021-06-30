@@ -42,7 +42,7 @@ typedef struct _ast_sentencia
 		ast_sentencia_seleccion* seleccion;
 		ast_sentencia_iteracion* iteracion;
 		ast_sentencia_retorno*   retorno;
-	} sentencia;
+	};
 } ast_sentencia;
 
 ast_sentencia* ast_sentencia1(ast_sentencia_expresion* expresion);
