@@ -74,8 +74,8 @@ void ast_sentencia_seleccion_free(ast_sentencia_seleccion* sentencia_seleccion)
 	if(sentencia_seleccion)
 	{
 		ast_expresion_free(sentencia_seleccion->expresion);
-		//ast_sentencia_free(sentencia_seleccion->sentencia1);
-		//ast_sentencia_free(sentencia_seleccion->sentencia2);
+		ast_sentencia_free(sentencia_seleccion->sentencia1);
+		ast_sentencia_free(sentencia_seleccion->sentencia2);
 	}
 	free(sentencia_seleccion);
 }
