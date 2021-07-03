@@ -52,7 +52,7 @@ ast_factor* ast_factor2(ast_var* var)
 	{
 		*factor = (ast_factor)
 		{
-			.tipo = AST_FACTOR_EXPRESION,
+			.tipo = AST_FACTOR_VAR,
 			.var  = var
 		};
 	}
@@ -68,7 +68,7 @@ ast_factor* ast_factor3(ast_call* call)
 	{
 		*factor = (ast_factor)
 		{
-			.tipo = AST_FACTOR_EXPRESION,
+			.tipo = AST_FACTOR_CALL,
 			.call = call
 		};
 	}
@@ -84,7 +84,7 @@ ast_factor* ast_factor4(int NUM)
 	{
 		*factor = (ast_factor)
 		{
-			.tipo = AST_FACTOR_EXPRESION,
+			.tipo = AST_FACTOR_NUM,
 			.NUM  = NUM
 		};
 	}
