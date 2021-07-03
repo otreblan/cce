@@ -18,29 +18,29 @@ si          {  return si;         }
 sino        {  return sino;       }
 
 
-">"  		{ return relop_ge; }
-"<"			{ return relop_le; }
-">="  		{ return relop_gq; }
-"<="		{ return relop_lq; }
-"=="		{ return relop_eq; }
-"!="		{ return relop_ne; }
+">"  	    { return relop_ge; }
+"<"    	    { return relop_le; }
+">="  	    { return relop_gq; }
+"<="	    { return relop_lq; }
+"=="	    { return relop_eq; }
+"!="	    { return relop_ne; }
 
-"+"			{ return addop_suma;  }
-"-"			{ return addop_resta; }
+"+"	    { return addop_suma;  }
+"-"	    { return addop_resta; }
 
 
-"="			{ return op_assign ;	}
-";"			{ return semicolon; 	}
-","			{ return comma;			}
-"("			{ return left_par; 		}
-")"			{ return right_par;		}
-"["			{ return left_bracket;	}
-"]" 		{ return right_bracket; }
-"{"			{ return left_llave; 	}
-"}"			{ return right_llave; 	}
+"="	    { return op_assign ;    }
+";"	    { return semicolon;     }
+","	    { return comma;         }
+"("	    { return left_par; 	    }
+")"         { return right_par;	    }
+"["	    { return left_bracket;  }
+"]" 	    { return right_bracket; }
+"{"	    { return left_llave;    }
+"}"	    { return right_llave;   }
 
-"/*"		{return left_comment;	}
-"*/"		{return right comment;	}
+"/*"	    {return left_comment;   }
+"*/"	    {return right comment;  }
 
 [ \n\r\t]+ {}
 
