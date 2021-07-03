@@ -93,12 +93,19 @@ void yyerror(ast_programa** programa, const char* s);
 
 // Reservados
 %token entero
-%token main
 %token mientras
 %token retorno
 %token sin_tipo
 %token si
 %token sino
+
+// Operadores
+%token relop_ge
+%token relop_le
+%token relop_gq
+%token relop_lq
+%token relop_eq
+%token relop_ne
 
 // Nodos
 %type <addop>               addop
@@ -239,12 +246,12 @@ expresion_simple
 	;
 
 relop
-	: "<"  { $$ = ast_relop_le(); }
-	| "<=" { $$ = ast_relop_lq(); }
-	| ">"  { $$ = ast_relop_ge(); }
-	| ">=" { $$ = ast_relop_gq(); }
-	| "==" { $$ = ast_relop_eq(); }
-	| "!=" { $$ = ast_relop_ne(); }
+	: relop_le { $$ = ast_relop_le(); }
+	| relop_lq { $$ = ast_relop_lq(); }
+	| relop_ge { $$ = ast_relop_ge(); }
+	| relop_gq { $$ = ast_relop_gq(); }
+	| relop_eq { $$ = ast_relop_eq(); }
+	| relop_ne { $$ = ast_relop_ne(); }
 	;
 
 expresion_aditiva
