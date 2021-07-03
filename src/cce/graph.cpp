@@ -74,6 +74,12 @@ static void print_edge(FILE* file, int n, int i)
 static int addop_graph(FILE* file, int n, const ast_addop& addop)
 {
 	int i = n;
+
+	print_node(file, n, "addop");
+
+	print_edge(file, n, i+1);
+	i = char_graph(file, i+1, addop.tipo);
+
 	return i;
 }
 
@@ -118,24 +124,119 @@ static int declaracion_graph(FILE* file, int n, const ast_declaracion& declaraci
 static int declaracion_local_graph(FILE* file, int n, const ast_declaracion_local& declaracion_local)
 {
 	int i = n;
+	print_node(file, n, "declaracion_local");
+
+	if(declaracion_local.var_declaracion && declaracion_local.next)
+	{
+		if(declaracion_local.var_declaracion)
+		{
+			print_edge(file, n, i+1);
+			i = var_declaracion_graph(file, i+1, *declaracion_local.var_declaracion);
+		}
+
+		if(declaracion_local.next)
+		{
+			print_edge(file, n, i+1);
+			i = declaracion_local_graph(file, i+1, *declaracion_local.next);
+		}
+	}
+	else
+	{
+		print_edge(file, n, i+1);
+		i = str_graph(file, i+1, "");
+	}
+
 	return i;
 }
 
 static int expresion_aditiva_graph(FILE* file, int n, const ast_expresion_aditiva& expresion_aditiva)
 {
 	int i = n;
+
+	print_node(file, n, "expresion_aditiva");
+
+	if(expresion_aditiva.expresion_aditiva)
+	{
+		print_edge(file, n, i+1);
+		i = expresion_aditiva_graph(file, i+1, *expresion_aditiva.expresion_aditiva);
+	}
+
+	if(expresion_aditiva.addop)
+	{
+		print_edge(file, n, i+1);
+		i = addop_graph(file, i+1, *expresion_aditiva.addop);
+	}
+
+	if(expresion_aditiva.term)
+	{
+		print_edge(file, n, i+1);
+		i = term_graph(file, i+1, *expresion_aditiva.term);
+	}
+
 	return i;
 }
 
 static int expresion_graph(FILE* file, int n, const ast_expresion& expresion)
 {
 	int i = n;
+
+	print_node(file, n, "expresion");
+
+	switch(expresion.tipo)
+	{
+	case AST_ASIGNACION:
+		if(expresion.var)
+		{
+			print_edge(file, n, i+1);
+			i = var_graph(file, i+1, *expresion.var);
+		}
+
+		print_edge(file, n, i+1);
+		i = char_graph(file, i+1, '=');
+
+		if(expresion.expresion)
+		{
+			print_edge(file, n, i+1);
+			i = expresion_graph(file, i+1, *expresion.expresion);
+		}
+		break;
+
+	case AST_EXPRESION_SIMPLE:
+		if(expresion.expresion_simple)
+		{
+			print_edge(file, n, i+1);
+			i = expresion_simple_graph(file, i+1, *expresion.expresion_simple);
+		}
+		break;
+	}
+
 	return i;
 }
 
 static int expresion_simple_graph(FILE* file, int n, const ast_expresion_simple& expresion_simple)
 {
 	int i = n;
+
+	print_node(file, n, "expresion_simple");
+
+	if(expresion_simple.expresion_aditiva1)
+	{
+		print_edge(file, n, i+1);
+		i = expresion_aditiva_graph(file, i+1, *expresion_simple.expresion_aditiva1);
+	}
+
+	if(expresion_simple.relop)
+	{
+		print_edge(file, n, i+1);
+		i = relop_graph(file, i+1, *expresion_simple.relop);
+	}
+
+	if(expresion_simple.expresion_aditiva2)
+	{
+		print_edge(file, n, i+1);
+		i = expresion_aditiva_graph(file, i+1, *expresion_simple.expresion_aditiva2);
+	}
+
 	return i;
 }
 
@@ -148,6 +249,39 @@ static int factor_graph(FILE* file, int n, const ast_factor& factor)
 static int fun_declaracion_graph(FILE* file, int n, const ast_fun_declaracion& fun_declaracion)
 {
 	int i = n;
+
+	print_node(file, n, "fun_declaracion");
+
+	if(fun_declaracion.tipo)
+	{
+		print_edge(file, n, i+1);
+		i = tipo_graph(file, i+1, *fun_declaracion.tipo);
+	}
+
+	if(fun_declaracion.ID)
+	{
+		print_edge(file, n, i+1);
+		i = id_graph(file, i+1, fun_declaracion.ID);
+	}
+
+	print_edge(file, n, i+1);
+	i = char_graph(file, i+1, '(');
+
+	if(fun_declaracion.params)
+	{
+		print_edge(file, n, i+1);
+		i = params_graph(file, i+1, *fun_declaracion.params);
+	}
+
+	print_edge(file, n, i+1);
+	i = char_graph(file, i+1, ')');
+
+	if(fun_declaracion.sent_compuesta)
+	{
+		print_edge(file, n, i+1);
+		i = sent_compuesta_graph(file, i+1, *fun_declaracion.sent_compuesta);
+	}
+
 	return i;
 }
 
@@ -181,12 +315,48 @@ static int lista_declaracion_graph(FILE* file, int n, const ast_lista_declaracio
 static int lista_params_graph(FILE* file, int n, const ast_lista_params& lista_params)
 {
 	int i = n;
+	print_node(file, n, "lista_params");
+
+	if(lista_params.param)
+	{
+		print_edge(file, n, i+1);
+		i = param_graph(file, i+1, *lista_params.param);
+	}
+
+	if(lista_params.next)
+	{
+		print_edge(file, n, i+1);
+		i = lista_params_graph(file, i+1, *lista_params.next);
+	}
+
 	return i;
 }
 
 static int lista_sentencias_graph(FILE* file, int n, const ast_lista_sentencias& lista_sentencias)
 {
 	int i = n;
+	print_node(file, n, "lista_sentencias");
+
+	if(lista_sentencias.sentencia && lista_sentencias.next)
+	{
+		if(lista_sentencias.sentencia)
+		{
+			print_edge(file, n, i+1);
+			i = sentencia_graph(file, i+1, *lista_sentencias.sentencia);
+		}
+
+		if(lista_sentencias.next)
+		{
+			print_edge(file, n, i+1);
+			i = lista_sentencias_graph(file, i+1, *lista_sentencias.next);
+		}
+	}
+	else
+	{
+		print_edge(file, n, i+1);
+		i = str_graph(file, i+1, "");
+	}
+
 	return i;
 }
 
@@ -205,6 +375,19 @@ static int param_graph(FILE* file, int n, const ast_param& param)
 static int params_graph(FILE* file, int n, const ast_params& params)
 {
 	int i = n;
+	print_node(file, n, "params");
+
+	if(params.lista_params)
+	{
+		print_edge(file, n, i+1);
+		i = lista_params_graph(file, i+1, *params.lista_params);
+	}
+	else
+	{
+		print_edge(file, n, i+1);
+		i = str_graph(file, i+1, "sin_tipo");
+	}
+
 	return i;
 }
 
@@ -217,18 +400,87 @@ static int relop_graph(FILE* file, int n, const ast_relop& relop)
 static int sent_compuesta_graph(FILE* file, int n, const ast_sent_compuesta& sent_compuesta)
 {
 	int i = n;
+	print_node(file, n, "sent_compuesta");
+
+	print_edge(file, n, i+1);
+	i = char_graph(file, i+1, '{');
+
+	if(sent_compuesta.declaracion_local)
+	{
+		print_edge(file, n, i+1);
+		i = declaracion_local_graph(file, i+1, *sent_compuesta.declaracion_local);
+	}
+
+	if(sent_compuesta.lista_sentencias)
+	{
+		print_edge(file, n, i+1);
+		i = lista_sentencias_graph(file, i+1, *sent_compuesta.lista_sentencias);
+	}
+
+	print_edge(file, n, i+1);
+	i = char_graph(file, i+1, '}');
+
 	return i;
 }
 
 static int sentencia_expresion_graph(FILE* file, int n, const ast_sentencia_expresion& sentencia_expresion)
 {
 	int i = n;
+	print_node(file, n, "sentencia_expresion");
+
+	if(sentencia_expresion.expresion)
+	{
+		print_edge(file, n, i+1);
+		i = expresion_graph(file, i+1, *sentencia_expresion.expresion);
+	}
+
+	print_edge(file, n, i+1);
+	i = char_graph(file, i+1, ';');
+
 	return i;
 }
 
 static int sentencia_graph(FILE* file, int n, const ast_sentencia& sentencia)
 {
 	int i = n;
+
+	print_node(file, n, "sentencia");
+
+	switch(sentencia.tipo)
+	{
+	case AST_SENTENCIA_EXPRESION:
+		if(sentencia.expresion)
+		{
+			print_edge(file, n, i+1);
+			i = sentencia_expresion_graph(file, i+1, *sentencia.expresion);
+		}
+		break;
+
+	case AST_SENTENCIA_SELECCION:
+		if(sentencia.seleccion)
+		{
+			print_edge(file, n, i+1);
+			i = sentencia_seleccion_graph(file, i+1, *sentencia.seleccion);
+		}
+		break;
+
+	case AST_SENTENCIA_ITERACION:
+		if(sentencia.iteracion)
+		{
+			print_edge(file, n, i+1);
+			i = sentencia_iteracion_graph(file, i+1, *sentencia.iteracion);
+		}
+		break;
+
+	case AST_SENTENCIA_RETORNO:
+		if(sentencia.retorno)
+		{
+			print_edge(file, n, i+1);
+			i = sentencia_retorno_graph(file, i+1, *sentencia.retorno);
+		}
+		break;
+	}
+
 	return i;
 }
 
@@ -315,6 +567,27 @@ static int var_declaracion_graph(FILE* file, int n, const ast_var_declaracion& v
 static int var_graph(FILE* file, int n, const ast_var& var)
 {
 	int i = n;
+
+	print_node(file, n, "expresion");
+
+	if(var.ID)
+	{
+		print_edge(file, n, i+1);
+		i = id_graph(file, i+1, var.ID);
+	}
+
+	if(var.expresion)
+	{
+		print_edge(file, n, i+1);
+		i = char_graph(file, i+1, '[');
+
+		print_edge(file, n, i+1);
+		i = expresion_graph(file, i+1, *var.expresion);
+
+		print_edge(file, n, i+1);
+		i = char_graph(file, i+1, ']');
+	}
+
 	return i;
 }
 
