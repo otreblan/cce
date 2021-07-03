@@ -14,40 +14,13 @@
 // You should have received a copy of the GNU General Public License
 // along with cce.  If not, see <http://www.gnu.org/licenses/>.
 
-#pragma once
-
+#include <fmt/core.h>
 #include <cstdio>
-#include <string>
-#include <vector>
 
-typedef struct _ast_programa ast_programa;
+#include "ast.h"
+#include "graph.hpp"
 
-namespace cce
+void cce::ast_graph(FILE* file, const ast_programa* programa)
 {
-
-struct instruction;
-
-class compiler
-{
-	[[noreturn]]
-	void usage(int exit_code) const;
-
-	bool print_graph = false;
-
-	std::string infile_path;
-	std::string outfile_path;
-
-	std::vector<instruction> compile(ast_programa* programa, int yynerrs, int& exit_code);
-	int write_to_outfile(const std::vector<instruction>& v) const;
-public:
-	compiler();
-	compiler(int argc, char* argv[]);
-
-	/// Parse command line arguments.
-	void parse(int argc, char* argv[]);
-
-	/// Run the compiler and return an exit code for main().
-	int run();
-};
-
-};
+	fmt::print(file, "{}\n", (void*)programa);
+}

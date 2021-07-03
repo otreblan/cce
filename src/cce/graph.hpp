@@ -16,38 +16,13 @@
 
 #pragma once
 
-#include <cstdio>
-#include <string>
-#include <vector>
-
+typedef struct _IO_FILE FILE;
 typedef struct _ast_programa ast_programa;
 
 namespace cce
 {
 
-struct instruction;
-
-class compiler
-{
-	[[noreturn]]
-	void usage(int exit_code) const;
-
-	bool print_graph = false;
-
-	std::string infile_path;
-	std::string outfile_path;
-
-	std::vector<instruction> compile(ast_programa* programa, int yynerrs, int& exit_code);
-	int write_to_outfile(const std::vector<instruction>& v) const;
-public:
-	compiler();
-	compiler(int argc, char* argv[]);
-
-	/// Parse command line arguments.
-	void parse(int argc, char* argv[]);
-
-	/// Run the compiler and return an exit code for main().
-	int run();
-};
+/// Print a graphviz graph to the file.
+void ast_graph(FILE* file, const ast_programa* programa);
 
 };

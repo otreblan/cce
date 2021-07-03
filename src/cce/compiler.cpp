@@ -20,8 +20,9 @@
 #include <fmt/core.h>
 
 #include "compiler.hpp"
-#include "parser.h"
+#include "graph.hpp"
 #include "instruction.hpp"
+#include "parser.h"
 
 void cce::compiler::usage(int exit_code) const
 {
@@ -29,6 +30,7 @@ void cce::compiler::usage(int exit_code) const
 		"Usage: cce [options] infile\n"
 		"\t-h, --help           Show this help.\n"
 		"\t-o, --output=outfile Set output file.\n"
+		"\t-g, --graph          Print an ast graph.\n"
 	);
 
 	exit(exit_code);
@@ -47,11 +49,12 @@ void cce::compiler::parse(int argc, char* argv[])
 		usage(EXIT_FAILURE);
 
 	int c;
-	static const char shortopts[] = "ho:";
+	static const char shortopts[] = "ho:g";
 	static const option options[] =
 	{
 		{"help",   no_argument,       nullptr, 'h'},
 		{"output", required_argument, nullptr, 'o'},
+		{"graph",  no_argument,       nullptr, 'g'},
 	};
 
 	while((c = getopt_long(argc, argv, shortopts, options, nullptr)) != -1)
@@ -63,6 +66,10 @@ void cce::compiler::parse(int argc, char* argv[])
 
 			case 'o':
 				outfile_path = optarg;
+				break;
+
+			case 'g':
+				print_graph = true;
 				break;
 
 			default:
@@ -88,13 +95,19 @@ int cce::compiler::run()
 	int errors = 0;
 
 	ast_programa* programa = parse_file(infile, &errors);
+	fclose(infile);
 
-	std::vector<instruction> code = compile(programa, errors, exit_code);
-	exit_code |= write_to_outfile(code);
+	if(print_graph) // CEs -> graph
+	{
+		ast_graph(stdout, programa);
+	}
+	else // CEs -> tm
+	{
+		std::vector<instruction> code = compile(programa, errors, exit_code);
+		exit_code |= write_to_outfile(code);
+	}
 
 	ast_programa_free(programa);
-
-	fclose(infile);
 
 	return exit_code;
 }
@@ -122,7 +135,7 @@ std::vector<cce::instruction> cce::compiler::compile(ast_programa* programa, int
 
 int cce::compiler::write_to_outfile(const std::vector<instruction>& v) const
 {
-	if(FILE* outfile = fopen(outfile_path.c_str(), "w"))
+	if(FILE* outfile = fopen(outfile_path.empty()? "a.tm": outfile_path.c_str(), "w"))
 	{
 		for(size_t i = 0; i < v.size(); i++)
 			fmt::print(outfile, "{}:    {}\n", i, v[i]);
