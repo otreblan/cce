@@ -24,7 +24,7 @@ static ast_expresion_aditiva* ast_expresion_aditiva_alloc();
 
 static ast_expresion_aditiva* ast_expresion_aditiva_alloc()
 {
-	ast_expresion_aditiva* expresion_aditiva = malloc(sizeof(expresion_aditiva));
+	ast_expresion_aditiva* expresion_aditiva = malloc(sizeof(ast_expresion_aditiva));
 
 	if(expresion_aditiva)
 	{

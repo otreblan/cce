@@ -24,7 +24,7 @@ static ast_expresion_simple* ast_expresion_simple_alloc();
 
 static ast_expresion_simple* ast_expresion_simple_alloc()
 {
-	ast_expresion_simple* expresion_simple = malloc(sizeof(expresion_simple));
+	ast_expresion_simple* expresion_simple = malloc(sizeof(ast_expresion_simple));
 
 	if(expresion_simple)
 	{
