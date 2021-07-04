@@ -97,7 +97,7 @@ static int args_graph(FILE* file, int n, const ast_args& args)
 	else
 	{
 		print_edge(file, n, i+1);
-		i = str_graph(file, i+1, "");
+		i = str_graph(file, i+1, "\u03B5");
 	}
 
 	return i;
@@ -178,7 +178,7 @@ static int declaracion_local_graph(FILE* file, int n, const ast_declaracion_loca
 	else
 	{
 		print_edge(file, n, i+1);
-		i = str_graph(file, i+1, "");
+		i = str_graph(file, i+1, "\u03B5");
 	}
 
 	return i;
@@ -448,7 +448,7 @@ static int lista_sentencias_graph(FILE* file, int n, const ast_lista_sentencias&
 	else
 	{
 		print_edge(file, n, i+1);
-		i = str_graph(file, i+1, "");
+		i = str_graph(file, i+1, "\u03B5");
 	}
 
 	return i;
@@ -541,7 +541,7 @@ static int relop_graph(FILE* file, int n, const ast_relop& relop)
 		break;
 
 	case AST_EQ:
-		i = str_graph(file, i+1, "=");
+		i = str_graph(file, i+1, "==");
 		break;
 
 	case AST_NE:
@@ -839,25 +839,25 @@ static int var_graph(FILE* file, int n, const ast_var& var)
 
 static int str_graph(FILE* file, int n, std::string_view str)
 {
-	print_node(file, n, str);
+	fmt::print(file, "\t{} [label=\"{}\", fillcolor=9, style=filled];\n", n, str);
 	return n;
 }
 
 static int id_graph(FILE* file, int n, std::string_view str)
 {
-	fmt::print(file, "\t{} [label=\"\\\"{}\\\"\"];\n", n, str);
+	fmt::print(file, "\t{} [label=\"\\\"{}\\\"\", fillcolor=1, style=filled];\n", n, str);
 	return n;
 }
 
 static int char_graph(FILE* file, int n, char c)
 {
-	fmt::print(file, "\t{} [label=\"'{}'\"];\n", n, c);
+	fmt::print(file, "\t{} [label=\"'{}'\", fillcolor=5, style=filled];\n", n, c);
 	return n;
 }
 
 static int num_graph(FILE* file, int n, int num)
 {
-	print_node(file, n, num);
+	fmt::print(file, "\t{} [label=\"{}\", fillcolor=3, style=filled];\n", n, num);
 	return n;
 }
 
@@ -865,7 +865,10 @@ void cce::ast_graph(FILE* file, const ast_programa* programa)
 {
 	int n = 0;
 	int i = n;
-	fmt::print(file, "{}\n", "digraph D {");
+	fmt::print(file, "{}",
+		"digraph D {\n"
+		"node [colorscheme = paired9]\n"
+	);
 
 	if(programa)
 	{
