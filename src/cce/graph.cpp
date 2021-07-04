@@ -243,6 +243,47 @@ static int expresion_simple_graph(FILE* file, int n, const ast_expresion_simple&
 static int factor_graph(FILE* file, int n, const ast_factor& factor)
 {
 	int i = n;
+
+	print_node(file, n, "factor");
+
+	switch(factor.tipo)
+	{
+	case AST_FACTOR_EXPRESION:
+		print_edge(file, n, i+1);
+		i = char_graph(file, i+1, '(');
+
+		if(factor.expresion)
+		{
+			print_edge(file, n, i+1);
+			i = expresion_graph(file, i+1, *factor.expresion);
+		}
+
+		print_edge(file, n, i+1);
+		i = char_graph(file, i+1, ')');
+		break;
+
+	case AST_FACTOR_VAR:
+		if(factor.var)
+		{
+			print_edge(file, n, i+1);
+			i = var_graph(file, i+1, *factor.var);
+		}
+		break;
+
+	case AST_FACTOR_CALL:
+		if(factor.call)
+		{
+			print_edge(file, n, i+1);
+			i = call_graph(file, i+1, *factor.call);
+		}
+		break;
+
+	case AST_FACTOR_NUM:
+		print_edge(file, n, i+1);
+		i = num_graph(file, i+1, factor.NUM);
+		break;
+	}
+
 	return i;
 }
 
@@ -363,6 +404,12 @@ static int lista_sentencias_graph(FILE* file, int n, const ast_lista_sentencias&
 static int mulop_graph(FILE* file, int n, const ast_mulop& mulop)
 {
 	int i = n;
+
+	print_node(file, n, "mulop");
+
+	print_edge(file, n, i+1);
+	i = char_graph(file, i+1, mulop.tipo);
+
 	return i;
 }
 
@@ -505,6 +552,27 @@ static int sentencia_seleccion_graph(FILE* file, int n, const ast_sentencia_sele
 static int term_graph(FILE* file, int n, const ast_term& term)
 {
 	int i = n;
+
+	print_node(file, n, "term");
+
+	if(term.term)
+	{
+		print_edge(file, n, i+1);
+		i = term_graph(file, i+1, *term.term);
+	}
+
+	if(term.mulop)
+	{
+		print_edge(file, n, i+1);
+		i = mulop_graph(file, i+1, *term.mulop);
+	}
+
+	if(term.factor)
+	{
+		print_edge(file, n, i+1);
+		i = factor_graph(file, i+1, *term.factor);
+	}
+
 	return i;
 }
 
