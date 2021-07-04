@@ -42,4 +42,5 @@ void __parse_file_init(FILE* infile)
 void __parse_file_free(void)
 {
 	yyin = stdin;
+	yylex_destroy();
 }
