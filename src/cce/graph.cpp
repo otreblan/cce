@@ -23,42 +23,42 @@
 #include "graph.hpp"
 
 template <typename T>
-static void print_node(FILE* file, int n, const T& t);
-static void print_edge(FILE* file, int n, int i);
+static void print_node (FILE* file, int n, const T& t);
+static void print_edge (FILE* file, int n, int i);
 
-static int str_graph(FILE* file, int n, std::string_view str);
-static int id_graph(FILE* file, int n, std::string_view str);
-static int char_graph(FILE* file, int n, char c);
-static int num_graph(FILE* file, int n, int num);
+static int str_graph  (FILE* file, int n, std::string_view str);
+static int id_graph   (FILE* file, int n, std::string_view str);
+static int char_graph (FILE* file, int n, char c);
+static int num_graph  (FILE* file, int n, int num);
 
-static int addop_graph(FILE* file, int n, const ast_addop& addop);
-static int args_graph(FILE* file, int n, const ast_args& args);
-static int call_graph(FILE* file, int n, const ast_call& call);
-static int declaracion_graph(FILE* file, int n, const ast_declaracion& declaracion);
-static int declaracion_local_graph(FILE* file, int n, const ast_declaracion_local& declaracion_local);
-static int expresion_aditiva_graph(FILE* file, int n, const ast_expresion_aditiva& expresion_aditiva);
-static int expresion_graph(FILE* file, int n, const ast_expresion& expresion);
-static int expresion_simple_graph(FILE* file, int n, const ast_expresion_simple& expresion_simple);
-static int factor_graph(FILE* file, int n, const ast_factor& factor);
-static int fun_declaracion_graph(FILE* file, int n, const ast_fun_declaracion& fun_declaracion);
-static int lista_arg_graph(FILE* file, int n, const ast_lista_arg& lista_arg);
-static int lista_declaracion_graph(FILE* file, int n, const ast_lista_declaracion& lista_declaracion);
-static int lista_params_graph(FILE* file, int n, const ast_lista_params& lista_params);
-static int lista_sentencias_graph(FILE* file, int n, const ast_lista_sentencias& lista_sentencias);
-static int mulop_graph(FILE* file, int n, const ast_mulop& mulop);
-static int param_graph(FILE* file, int n, const ast_param& param);
-static int params_graph(FILE* file, int n, const ast_params& params);
-static int relop_graph(FILE* file, int n, const ast_relop& relop);
-static int sent_compuesta_graph(FILE* file, int n, const ast_sent_compuesta& sent_compuesta);
-static int sentencia_expresion_graph(FILE* file, int n, const ast_sentencia_expresion& sentencia_expresion);
-static int sentencia_graph(FILE* file, int n, const ast_sentencia& sentencia);
-static int sentencia_iteracion_graph(FILE* file, int n, const ast_sentencia_iteracion& sentencia_iteracion);
-static int sentencia_retorno_graph(FILE* file, int n, const ast_sentencia_retorno& sentencia_retorno);
-static int sentencia_seleccion_graph(FILE* file, int n, const ast_sentencia_seleccion& sentencia_seleccion);
-static int term_graph(FILE* file, int n, const ast_term& term);
-static int tipo_graph(FILE* file, int n, const ast_tipo& tipo);
-static int var_declaracion_graph(FILE* file, int n, const ast_var_declaracion& var_declaracion);
-static int var_graph(FILE* file, int n, const ast_var& var);
+static int addop_graph               (FILE* file, int n, const ast_addop& addop);
+static int args_graph                (FILE* file, int n, const ast_args& args);
+static int call_graph                (FILE* file, int n, const ast_call& call);
+static int declaracion_graph         (FILE* file, int n, const ast_declaracion& declaracion);
+static int declaracion_local_graph   (FILE* file, int n, const ast_declaracion_local& declaracion_local);
+static int expresion_aditiva_graph   (FILE* file, int n, const ast_expresion_aditiva& expresion_aditiva);
+static int expresion_graph           (FILE* file, int n, const ast_expresion& expresion);
+static int expresion_simple_graph    (FILE* file, int n, const ast_expresion_simple& expresion_simple);
+static int factor_graph              (FILE* file, int n, const ast_factor& factor);
+static int fun_declaracion_graph     (FILE* file, int n, const ast_fun_declaracion& fun_declaracion);
+static int lista_arg_graph           (FILE* file, int n, const ast_lista_arg& lista_arg);
+static int lista_declaracion_graph   (FILE* file, int n, const ast_lista_declaracion& lista_declaracion);
+static int lista_params_graph        (FILE* file, int n, const ast_lista_params& lista_params);
+static int lista_sentencias_graph    (FILE* file, int n, const ast_lista_sentencias& lista_sentencias);
+static int mulop_graph               (FILE* file, int n, const ast_mulop& mulop);
+static int param_graph               (FILE* file, int n, const ast_param& param);
+static int params_graph              (FILE* file, int n, const ast_params& params);
+static int relop_graph               (FILE* file, int n, const ast_relop& relop);
+static int sent_compuesta_graph      (FILE* file, int n, const ast_sent_compuesta& sent_compuesta);
+static int sentencia_expresion_graph (FILE* file, int n, const ast_sentencia_expresion& sentencia_expresion);
+static int sentencia_graph           (FILE* file, int n, const ast_sentencia& sentencia);
+static int sentencia_iteracion_graph (FILE* file, int n, const ast_sentencia_iteracion& sentencia_iteracion);
+static int sentencia_retorno_graph   (FILE* file, int n, const ast_sentencia_retorno& sentencia_retorno);
+static int sentencia_seleccion_graph (FILE* file, int n, const ast_sentencia_seleccion& sentencia_seleccion);
+static int term_graph                (FILE* file, int n, const ast_term& term);
+static int tipo_graph                (FILE* file, int n, const ast_tipo& tipo);
+static int var_declaracion_graph     (FILE* file, int n, const ast_var_declaracion& var_declaracion);
+static int var_graph                 (FILE* file, int n, const ast_var& var);
 
 template <typename T>
 static void print_node(FILE* file, int n, const T& t)
