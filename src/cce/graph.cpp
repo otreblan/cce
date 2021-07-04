@@ -63,12 +63,12 @@ static int var_graph                 (FILE* file, int n, const ast_var& var);
 template <typename T>
 static void print_node(FILE* file, int n, const T& t)
 {
-	fmt::print(file, "\t {} [label=\"{}\"];\n", n, t);
+	fmt::print(file, "\t{} [label=\"{}\"];\n", n, t);
 }
 
 static void print_edge(FILE* file, int n, int i)
 {
-	fmt::print(file, "\t {} -> {};\n", n, i);
+	fmt::print(file, "\t{} -> {};\n", n, i);
 }
 
 static int addop_graph(FILE* file, int n, const ast_addop& addop)
@@ -845,13 +845,13 @@ static int str_graph(FILE* file, int n, std::string_view str)
 
 static int id_graph(FILE* file, int n, std::string_view str)
 {
-	fmt::print(file, "\t {} [label=\"\\\"{}\\\"\"];\n", n, str);
+	fmt::print(file, "\t{} [label=\"\\\"{}\\\"\"];\n", n, str);
 	return n;
 }
 
 static int char_graph(FILE* file, int n, char c)
 {
-	fmt::print(file, "\t {} [label=\"'{}'\"];\n", n, c);
+	fmt::print(file, "\t{} [label=\"'{}'\"];\n", n, c);
 	return n;
 }
 
