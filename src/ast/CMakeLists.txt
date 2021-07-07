@@ -17,32 +17,25 @@
 target_sources(${PROJECT_NAME}
 	PRIVATE
 		# C
-		addop.c
 		args.c
 		call.c
 		declaracion.c
 		declaracion_local.c
 		expresion.c
-		expresion_aditiva.c
-		expresion_simple.c
-		factor.c
 		fun_declaracion.c
 		lista_arg.c
 		lista_declaracion.c
 		lista_params.c
 		lista_sentencias.c
-		mulop.c
 		param.c
 		params.c
 		programa.c
-		relop.c
 		sent_compuesta.c
 		sentencia.c
 		sentencia_expresion.c
 		sentencia_iteracion.c
 		sentencia_retorno.c
 		sentencia_seleccion.c
-		term.c
 		tipo.c
 		var.c
 		var_declaracion.c
