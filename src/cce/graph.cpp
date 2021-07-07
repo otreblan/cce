@@ -32,31 +32,25 @@ static int id_graph   (FILE* file, int n, std::string_view str);
 static int char_graph (FILE* file, int n, char c);
 static int num_graph  (FILE* file, int n, int num);
 
-static int addop_graph               (FILE* file, int n, const ast_addop& addop);
 static int args_graph                (FILE* file, int n, const ast_args& args);
 static int call_graph                (FILE* file, int n, const ast_call& call);
 static int declaracion_graph         (FILE* file, int n, const ast_declaracion& declaracion);
 static int declaracion_local_graph   (FILE* file, int n, const ast_declaracion_local& declaracion_local);
-static int expresion_aditiva_graph   (FILE* file, int n, const ast_expresion_aditiva& expresion_aditiva);
 static int expresion_graph           (FILE* file, int n, const ast_expresion& expresion);
-static int expresion_simple_graph    (FILE* file, int n, const ast_expresion_simple& expresion_simple);
-static int factor_graph              (FILE* file, int n, const ast_factor& factor);
 static int fun_declaracion_graph     (FILE* file, int n, const ast_fun_declaracion& fun_declaracion);
 static int lista_arg_graph           (FILE* file, int n, const ast_lista_arg& lista_arg);
 static int lista_declaracion_graph   (FILE* file, int n, const ast_lista_declaracion& lista_declaracion);
 static int lista_params_graph        (FILE* file, int n, const ast_lista_params& lista_params);
 static int lista_sentencias_graph    (FILE* file, int n, const ast_lista_sentencias& lista_sentencias);
-static int mulop_graph               (FILE* file, int n, const ast_mulop& mulop);
+static int op_graph                  (FILE* file, int n, const ast_op& relop);
 static int param_graph               (FILE* file, int n, const ast_param& param);
 static int params_graph              (FILE* file, int n, const ast_params& params);
-static int relop_graph               (FILE* file, int n, const ast_relop& relop);
 static int sent_compuesta_graph      (FILE* file, int n, const ast_sent_compuesta& sent_compuesta);
 static int sentencia_expresion_graph (FILE* file, int n, const ast_sentencia_expresion& sentencia_expresion);
 static int sentencia_graph           (FILE* file, int n, const ast_sentencia& sentencia);
 static int sentencia_iteracion_graph (FILE* file, int n, const ast_sentencia_iteracion& sentencia_iteracion);
 static int sentencia_retorno_graph   (FILE* file, int n, const ast_sentencia_retorno& sentencia_retorno);
 static int sentencia_seleccion_graph (FILE* file, int n, const ast_sentencia_seleccion& sentencia_seleccion);
-static int term_graph                (FILE* file, int n, const ast_term& term);
 static int tipo_graph                (FILE* file, int n, const ast_tipo& tipo);
 static int var_declaracion_graph     (FILE* file, int n, const ast_var_declaracion& var_declaracion);
 static int var_graph                 (FILE* file, int n, const ast_var& var);
@@ -70,18 +64,6 @@ static void print_node(FILE* file, int n, const T& t)
 static void print_edge(FILE* file, int n, int i)
 {
 	fmt::print(file, "\t{} -> {};\n", n, i);
-}
-
-static int addop_graph(FILE* file, int n, const ast_addop& addop)
-{
-	int i = n;
-
-	print_node(file, n, "addop");
-
-	print_edge(file, n, i+1);
-	i = char_graph(file, i+1, addop.tipo);
-
-	return i;
 }
 
 static int args_graph(FILE* file, int n, const ast_args& args)
@@ -185,33 +167,6 @@ static int declaracion_local_graph(FILE* file, int n, const ast_declaracion_loca
 	return i;
 }
 
-static int expresion_aditiva_graph(FILE* file, int n, const ast_expresion_aditiva& expresion_aditiva)
-{
-	int i = n;
-
-	print_node(file, n, "expresion_aditiva");
-
-	if(expresion_aditiva.expresion_aditiva)
-	{
-		print_edge(file, n, i+1);
-		i = expresion_aditiva_graph(file, i+1, *expresion_aditiva.expresion_aditiva);
-	}
-
-	if(expresion_aditiva.addop)
-	{
-		print_edge(file, n, i+1);
-		i = addop_graph(file, i+1, *expresion_aditiva.addop);
-	}
-
-	if(expresion_aditiva.term)
-	{
-		print_edge(file, n, i+1);
-		i = term_graph(file, i+1, *expresion_aditiva.term);
-	}
-
-	return i;
-}
-
 static int expresion_graph(FILE* file, int n, const ast_expresion& expresion)
 {
 	int i = n;
@@ -221,102 +176,58 @@ static int expresion_graph(FILE* file, int n, const ast_expresion& expresion)
 	switch(expresion.tipo)
 	{
 	case AST_ASIGNACION:
-		if(expresion.var)
+		if(expresion.asignacion.var)
 		{
 			print_edge(file, n, i+1);
-			i = var_graph(file, i+1, *expresion.var);
+			i = var_graph(file, i+1, *expresion.asignacion.var);
 		}
 
 		print_edge(file, n, i+1);
 		i = char_graph(file, i+1, '=');
 
-		if(expresion.expresion)
+		if(expresion.asignacion.expresion)
 		{
 			print_edge(file, n, i+1);
-			i = expresion_graph(file, i+1, *expresion.expresion);
+			i = expresion_graph(file, i+1, *expresion.asignacion.expresion);
 		}
 		break;
 
 	case AST_EXPRESION_SIMPLE:
-		if(expresion.expresion_simple)
+		if(expresion.expresion1)
 		{
 			print_edge(file, n, i+1);
-			i = expresion_simple_graph(file, i+1, *expresion.expresion_simple);
-		}
-		break;
-	}
-
-	return i;
-}
-
-static int expresion_simple_graph(FILE* file, int n, const ast_expresion_simple& expresion_simple)
-{
-	int i = n;
-
-	print_node(file, n, "expresion_simple");
-
-	if(expresion_simple.expresion_aditiva1)
-	{
-		print_edge(file, n, i+1);
-		i = expresion_aditiva_graph(file, i+1, *expresion_simple.expresion_aditiva1);
-	}
-
-	if(expresion_simple.relop)
-	{
-		print_edge(file, n, i+1);
-		i = relop_graph(file, i+1, *expresion_simple.relop);
-	}
-
-	if(expresion_simple.expresion_aditiva2)
-	{
-		print_edge(file, n, i+1);
-		i = expresion_aditiva_graph(file, i+1, *expresion_simple.expresion_aditiva2);
-	}
-
-	return i;
-}
-
-static int factor_graph(FILE* file, int n, const ast_factor& factor)
-{
-	int i = n;
-
-	print_node(file, n, "factor");
-
-	switch(factor.tipo)
-	{
-	case AST_FACTOR_EXPRESION:
-		print_edge(file, n, i+1);
-		i = char_graph(file, i+1, '(');
-
-		if(factor.expresion)
-		{
-			print_edge(file, n, i+1);
-			i = expresion_graph(file, i+1, *factor.expresion);
+			i = expresion_graph(file, i+1, *expresion.expresion1);
 		}
 
 		print_edge(file, n, i+1);
-		i = char_graph(file, i+1, ')');
-		break;
+		i = op_graph(file, i+1, expresion.op);
 
-	case AST_FACTOR_VAR:
-		if(factor.var)
+		if(expresion.expresion1)
 		{
 			print_edge(file, n, i+1);
-			i = var_graph(file, i+1, *factor.var);
+			i = expresion_graph(file, i+1, *expresion.expresion2);
 		}
 		break;
 
-	case AST_FACTOR_CALL:
-		if(factor.call)
+	case AST_VAR:
+		if(expresion.var)
 		{
 			print_edge(file, n, i+1);
-			i = call_graph(file, i+1, *factor.call);
+			i = var_graph(file, i+1, *expresion.var);
 		}
 		break;
 
-	case AST_FACTOR_NUM:
+	case AST_CALL:
+		if(expresion.call)
+		{
+			print_edge(file, n, i+1);
+			i = call_graph(file, i+1, *expresion.call);
+		}
+		break;
+
+	case AST_NUM:
 		print_edge(file, n, i+1);
-		i = num_graph(file, i+1, factor.NUM);
+		i = num_graph(file, i+1, expresion.NUM);
 		break;
 	}
 
@@ -455,16 +366,51 @@ static int lista_sentencias_graph(FILE* file, int n, const ast_lista_sentencias&
 	return i;
 }
 
-static int mulop_graph(FILE* file, int n, const ast_mulop& mulop)
+static int op_graph (FILE* file, int n, const ast_op& relop)
 {
-	int i = n;
+	switch(relop)
+	{
+	case AST_LE:
+		str_graph(file, n, "<");
+		break;
 
-	print_node(file, n, "mulop");
+	case AST_LQ:
+		str_graph(file, n, "<=");
+		break;
 
-	print_edge(file, n, i+1);
-	i = char_graph(file, i+1, mulop.tipo);
+	case AST_GE:
+		str_graph(file, n, ">");
+		break;
 
-	return i;
+	case AST_GQ:
+		str_graph(file, n, ">=");
+		break;
+
+	case AST_EQ:
+		str_graph(file, n, "==");
+		break;
+
+	case AST_NE:
+		str_graph(file, n, "!=");
+		break;
+
+	case AST_SUMA:
+		str_graph(file, n, "+");
+		break;
+
+	case AST_RESTA:
+		str_graph(file, n, "-");
+		break;
+
+	case AST_MULTIPLICACION:
+		str_graph(file, n, "*");
+		break;
+
+	case AST_DIVISION:
+		str_graph(file, n, "/");
+		break;
+	}
+	return n;
 }
 
 static int param_graph(FILE* file, int n, const ast_param& param)
@@ -511,43 +457,6 @@ static int params_graph(FILE* file, int n, const ast_params& params)
 	{
 		print_edge(file, n, i+1);
 		i = str_graph(file, i+1, "sin_tipo");
-	}
-
-	return i;
-}
-
-static int relop_graph(FILE* file, int n, const ast_relop& relop)
-{
-	int i = n;
-
-	print_node(file, n, "relop");
-
-	print_edge(file, n, i+1);
-	switch(relop.tipo)
-	{
-	case AST_LE:
-		i = str_graph(file, i+1, "<");
-		break;
-
-	case AST_LQ:
-		i = str_graph(file, i+1, "<=");
-		break;
-
-	case AST_GE:
-		i = str_graph(file, i+1, ">");
-		break;
-
-	case AST_GQ:
-		i = str_graph(file, i+1, ">=");
-		break;
-
-	case AST_EQ:
-		i = str_graph(file, i+1, "==");
-		break;
-
-	case AST_NE:
-		i = str_graph(file, i+1, "!=");
-		break;
 	}
 
 	return i;
@@ -723,33 +632,6 @@ static int sentencia_seleccion_graph(FILE* file, int n, const ast_sentencia_sele
 	{
 		print_edge(file, n, i+1);
 		i = sentencia_graph(file, i+1, *sentencia_seleccion.sentencia1);
-	}
-
-	return i;
-}
-
-static int term_graph(FILE* file, int n, const ast_term& term)
-{
-	int i = n;
-
-	print_node(file, n, "term");
-
-	if(term.term)
-	{
-		print_edge(file, n, i+1);
-		i = term_graph(file, i+1, *term.term);
-	}
-
-	if(term.mulop)
-	{
-		print_edge(file, n, i+1);
-		i = mulop_graph(file, i+1, *term.mulop);
-	}
-
-	if(term.factor)
-	{
-		print_edge(file, n, i+1);
-		i = factor_graph(file, i+1, *term.factor);
 	}
 
 	return i;
