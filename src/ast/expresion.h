@@ -20,32 +20,78 @@
 extern "C" {
 #endif
 
-typedef struct _ast_var              ast_var;
-typedef struct _ast_expresion        ast_expresion;
-typedef struct _ast_expresion_simple ast_expresion_simple;
+typedef struct _ast_var       ast_var;
+typedef struct _ast_expresion ast_expresion;
+typedef struct _ast_call      ast_call;
 
-enum ast_expresion_tipo
+typedef enum _ast_expresion_tipo
 {
 	AST_ASIGNACION,
-	AST_EXPRESION_SIMPLE
-};
+	AST_EXPRESION_SIMPLE,
+	AST_VAR,
+	AST_CALL,
+	AST_NUM
+} ast_expresion_tipo;
+
+typedef enum _ast_op
+{
+	// Less
+	AST_LE,
+
+	// Less equal
+	AST_LQ,
+
+	// Greater
+	AST_GE,
+
+	// Greater equal
+	AST_GQ,
+
+	// Equal
+	AST_EQ,
+
+	// Not equal
+	AST_NE,
+
+	AST_SUMA,
+	AST_RESTA,
+
+	AST_MULTIPLICACION,
+	AST_DIVISION
+} ast_op;
 
 typedef struct _ast_expresion
 {
-	int tipo;
+	ast_expresion_tipo tipo;
 	union
 	{
+		// Asignación
 		struct
 		{
 			ast_var*       var;
 			ast_expresion* expresion;
+		} asignacion;
+
+		// Expresión simple
+		struct
+		{
+			ast_expresion* expresion1;
+			ast_op         op;
+			ast_expresion* expresion2;
 		};
-		ast_expresion_simple* expresion_simple;
+
+		// Factor
+		ast_var*  var;
+		ast_call* call;
+		int       NUM;
 	};
 } ast_expresion;
 
-ast_expresion* ast_expresion1(ast_var* var, ast_expresion* expresion);
-ast_expresion* ast_expresion2(ast_expresion_simple* expresion_simple);
+ast_expresion* ast_expresion_asignacion(ast_var* var, ast_expresion* expresion);
+ast_expresion* ast_expresion_operacion(ast_expresion* expresion1, ast_op op, ast_expresion* expresion2);
+ast_expresion* ast_expresion_var(ast_var* var);
+ast_expresion* ast_expresion_call(ast_call* call);
+ast_expresion* ast_expresion_num(int NUM);
 
 void ast_expresion_free(ast_expresion* expresion);
 

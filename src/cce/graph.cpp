@@ -18,6 +18,7 @@
 #include <string_view>
 
 #include <fmt/core.h>
+#include <fmt/compile.h>
 
 #include "ast.h"
 #include "graph.hpp"
@@ -814,7 +815,7 @@ static int var_graph(FILE* file, int n, const ast_var& var)
 {
 	int i = n;
 
-	print_node(file, n, "expresion");
+	print_node(file, n, "var");
 
 	if(var.ID)
 	{
