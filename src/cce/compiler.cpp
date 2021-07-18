@@ -129,6 +129,14 @@ std::vector<cce::instruction> cce::compiler::compile(ast_programa* programa, int
 	}
 
 	// TODO
+	// Análisis semántico
+
+	// TODO
+	// Generación de código
+
+	// TODO
+	// ¿Optimización?
+
 	exit_code = EXIT_SUCCESS;
 	return v;
 }
