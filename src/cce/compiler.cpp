@@ -16,11 +16,12 @@
 
 #include <cstdlib>
 #include <getopt.h>
-
+#include <iostream>
 #include <fmt/core.h>
 
 #include "compiler.hpp"
 #include "graph.hpp"
+#include "semantic.hpp"
 #include "instruction.hpp"
 #include "parser.h"
 
@@ -112,6 +113,11 @@ int cce::compiler::run()
 	return exit_code;
 }
 
+// setea un atributo a los nodos del arbol
+
+
+
+
 std::vector<cce::instruction> cce::compiler::compile(ast_programa* programa, int yynerrs, int& exit_code)
 {
 	std::vector<cce::instruction> v;
@@ -130,6 +136,16 @@ std::vector<cce::instruction> cce::compiler::compile(ast_programa* programa, int
 
 	// TODO
 	// Análisis semántico
+
+	int semantic_errors = 0;
+	std::vector<table_elem> table_id = ast_semantic(stdout, programa, semantic_errors);
+	
+	for (auto elem: table_id){
+        std::cout <<"ID: " << elem.id_name << " , Tipo" << elem.tipo;
+        std::cout << "\n";
+    }
+
+	
 
 	// TODO
 	// Generación de código

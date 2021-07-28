@@ -14,14 +14,20 @@
 // You should have received a copy of the GNU General Public License
 // along with cce.  If not, see <http://www.gnu.org/licenses/>.
 
-#include "cce.hpp"
-#include <iostream>
+#pragma once
 
-using namespace std;
+typedef struct _IO_FILE FILE;
+typedef struct _ast_programa ast_programa;
 
-int main(int argc, char* argv[])
+struct table_elem{
+    char*   id_name;
+    int     tipo;
+};
+
+namespace cce
 {
-	cce::compiler c(argc, argv);
 
-	return c.run();
-}
+/// Semantic analisis
+std::vector<table_elem>  ast_semantic(FILE* file, const ast_programa* programa, int & errors);
+
+};

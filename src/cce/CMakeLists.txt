@@ -19,4 +19,5 @@ target_sources(${PROJECT_NAME}
 		# C++
 		compiler.cpp
 		graph.cpp
+		semantic.cpp
 )
