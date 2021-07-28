@@ -141,7 +141,17 @@ std::vector<cce::instruction> cce::compiler::compile(ast_programa* programa, int
 	std::vector<table_elem> table_id = ast_semantic(stdout, programa, semantic_errors);
 	
 	for (auto elem: table_id){
-        std::cout <<"ID: " << elem.id_name << " , Tipo" << elem.tipo;
+        std::cout <<"ID: " << elem.id_name << " , TIPO: " << elem.tipo;
+		
+		if (elem.simb_tipo == simbolo_tipo::FUNCION){
+			std::cout << "\n   args: ";
+			for (auto arg: elem.args){
+				std::cout << arg.id << " ";
+			}
+			std::cout << "\n";
+
+		}
+
         std::cout << "\n";
     }
 

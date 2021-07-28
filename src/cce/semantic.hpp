@@ -18,10 +18,26 @@
 
 typedef struct _IO_FILE FILE;
 typedef struct _ast_programa ast_programa;
+enum class simbolo_tipo{
+    FUNCION,
+    VARIABLE
+};
+
+struct arg_elem{
+    char* id;
+    int tipo;
+    simbolo_tipo simb_tipo;
+    bool    isArray;
+};
+
+
 
 struct table_elem{
     char*   id_name;
     int     tipo;
+    simbolo_tipo simb_tipo;
+    bool    isArray;
+    std::vector<arg_elem> args;
 };
 
 namespace cce

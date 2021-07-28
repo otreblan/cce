@@ -220,6 +220,38 @@ static int expresion_graph(FILE* file, int n, const ast_expresion& expresion)
 	return i;
 }
 
+std::vector<arg_elem> get_params(const ast_params& params){
+	
+	std::vector<arg_elem> ans;
+
+	if (params.lista_params){
+
+		auto lista_params = *params.lista_params;
+		
+		bool has_next = true;
+		while (true)
+		{
+			auto param = *lista_params.param;
+
+			if (param.tipo and param.ID){
+				arg_elem elem;
+				elem.id = param.ID;
+				elem.tipo = (*param.tipo).tipo;
+				elem.simb_tipo = simbolo_tipo::VARIABLE;
+				elem.isArray = param.arreglo;
+				ans.push_back(elem);
+			}
+			if (!lista_params.next){
+				break;
+			}
+			lista_params = *lista_params.next;
+		}	
+	}
+	
+	return ans;
+}
+
+
 static int fun_declaracion_graph(FILE* file, int n, const ast_fun_declaracion& fun_declaracion)
 {
 	int i = n;
@@ -230,6 +262,15 @@ static int fun_declaracion_graph(FILE* file, int n, const ast_fun_declaracion& f
         table_elem elem;
         elem.id_name = fun_declaracion.ID;
         elem.tipo = (*fun_declaracion.tipo).tipo;
+		elem.simb_tipo = simbolo_tipo::FUNCION;
+		elem.isArray = false;
+
+		if (fun_declaracion.params){
+			elem.args = get_params(*fun_declaracion.params); 
+		}
+		// añadir parametros 
+
+
         table_id.push_back(elem);
     }
     
@@ -395,6 +436,8 @@ static int param_graph(FILE* file, int n, const ast_param& param)
         table_elem elem;
         elem.id_name = param.ID;
         elem.tipo = (*param.tipo).tipo;
+		elem.simb_tipo = simbolo_tipo::VARIABLE;
+		elem.isArray = param.arreglo;
         table_id.push_back(elem);
     }
 
@@ -417,6 +460,8 @@ static int param_graph(FILE* file, int n, const ast_param& param)
 
 	return i;
 }
+
+
 
 static int params_graph(FILE* file, int n, const ast_params& params)
 {
@@ -603,8 +648,12 @@ static int var_declaracion_graph(FILE* file, int n, const ast_var_declaracion& v
         table_elem elem;
         elem.id_name = var_declaracion.id;
         elem.tipo = (*var_declaracion.tipo).tipo;
-        table_id.push_back(elem);
-    }  
+        elem.isArray = var_declaracion.es_arreglo;
+		elem.simb_tipo = simbolo_tipo::VARIABLE;
+		
+		table_id.push_back(elem);
+	
+	}  
 
 	if(var_declaracion.tipo)
 	{
