@@ -139,10 +139,10 @@ std::vector<cce::instruction> cce::compiler::compile(ast_programa* programa, int
 
 	int semantic_errors = 0;
 	std::vector<table_elem> table_id = ast_semantic(stdout, programa, semantic_errors);
-	
+
 	for (auto elem: table_id){
-        std::cout <<"ID: " << elem.id_name << " , TIPO: " << elem.tipo;
-		
+		std::cout <<"ID: " << elem.id_name << " , TIPO: " << elem.tipo;
+
 		if (elem.simb_tipo == simbolo_tipo::FUNCION){
 			std::cout << "\n   args: ";
 			for (auto arg: elem.args){
@@ -152,10 +152,10 @@ std::vector<cce::instruction> cce::compiler::compile(ast_programa* programa, int
 
 		}
 
-        std::cout << "\n";
-    }
+		std::cout << "\n";
+	}
 
-	
+
 
 	// TODO
 	// Generación de código
@@ -180,4 +180,9 @@ int cce::compiler::write_to_outfile(const std::vector<instruction>& v) const
 
 	perror(outfile_path.c_str());
 	return EXIT_FAILURE;
+}
+
+int cce::compiler::label_alloc()
+{
+	return next_label++;
 }

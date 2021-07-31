@@ -39,6 +39,11 @@ class compiler
 
 	std::vector<instruction> compile(ast_programa* programa, int yynerrs, int& exit_code);
 	int write_to_outfile(const std::vector<instruction>& v) const;
+
+	int next_label = 0;
+
+	/// Allocate a new label.
+	int label_alloc();
 public:
 	compiler();
 	compiler(int argc, char* argv[]);
