@@ -42,26 +42,25 @@ struct instruction
 		JLE,
 		JGT,
 		JGE,
-		LABEL
+
+		// Extensions
+		LABEL,
+		GOTO,
 	};
 
 	type opcode;
+
+	int r1;
+	int r2;
 	union
 	{
-		struct
-		{
-			int r1;
-			int r2;
-			union
-			{
-				int r3;
-				int offset;
-			};
-		};
+		int r3;
+		int offset;
 
 		// Label name
 		int name;
 	};
+
 
 	/// Read an integer from stdin and place result in r1; ignore operands r2 and r3.
 	static instruction IN(int r1)
@@ -168,7 +167,13 @@ struct instruction
 	/// Label
 	static instruction LABEL(int name)
 	{
-		return {.opcode = type::LABEL, .name = name};
+		return {.opcode = type::LABEL, .r1 = 0, .r2 = 0, .name = name};
+	}
+
+	/// Go to label
+	static instruction GOTO(int name)
+	{
+		return {.opcode = type::GOTO, .r1 = 0, .r2 = 0, .name = name};
 	}
 };
 
