@@ -41,7 +41,8 @@ struct instruction
 		JLT,
 		JLE,
 		JGT,
-		JGE
+		JGE,
+		LABEL
 	};
 
 	type opcode;
@@ -155,6 +156,11 @@ struct instruction
 		return {.opcode = type::JGE, .r1 = r1, .r2 = r2, .offset = offset};
 	}
 
+	/// Label
+	static instruction LABEL(int name)
+	{
+		return {.opcode = type::LABEL, .r1 = name};
+	}
 };
 
 };
@@ -242,6 +248,8 @@ struct fmt::formatter<cce::instruction>: fmt::formatter<int>
 					i.offset,
 					i.r2
 				);
+			default:
+				break;
 		}
 		return format_to(ctx.out(), "");
 	}
