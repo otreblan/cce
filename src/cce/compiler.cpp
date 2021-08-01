@@ -168,7 +168,7 @@ std::vector<cce::instruction> cce::compiler::compile(ast_programa* programa, int
 	// ¿Optimización?
 
 	exit_code = EXIT_SUCCESS;
-	return v;
+	return expand_extensions(v);
 }
 
 int cce::compiler::write_to_outfile(const std::vector<instruction>& v) const
