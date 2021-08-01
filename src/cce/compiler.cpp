@@ -26,6 +26,9 @@
 #include "instruction.hpp"
 #include "parser.h"
 
+const int cce::compiler::PC = 7;
+const int cce::compiler::SP = 6;
+
 void cce::compiler::usage(int exit_code) const
 {
 	fmt::print(
@@ -209,7 +212,22 @@ std::vector<cce::instruction> cce::compiler::expand_extensions(
 		}
 	}
 
-	// TODO
+	for(const auto& inst: v)
+	{
+		switch(inst.opcode)
+		{
+			case instruction::type::GOTO_LABEL:
+				r.push_back(instruction::LDC(PC, label_pos[inst.name]));
+				break;
+
+			case instruction::type::LABEL:
+				break;
+
+			default:
+				r.push_back(inst);
+				break;
+		}
+	}
 
 	return r;
 }
