@@ -44,6 +44,8 @@ class compiler
 
 	/// Allocate a new label.
 	int label_alloc();
+
+	std::vector<instruction> expand_extensions(const std::vector<instruction>& v);
 public:
 	compiler();
 	compiler(int argc, char* argv[]);

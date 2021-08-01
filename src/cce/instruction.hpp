@@ -45,7 +45,7 @@ struct instruction
 
 		// Extensions
 		LABEL,
-		GOTO,
+		GOTO_LABEL,
 	};
 
 	type opcode;
@@ -171,9 +171,9 @@ struct instruction
 	}
 
 	/// Go to label
-	static instruction GOTO(int name)
+	static instruction GOTO_LABEL(int name)
 	{
-		return {.opcode = type::GOTO, .r1 = 0, .r2 = 0, .name = name};
+		return {.opcode = type::GOTO_LABEL, .r1 = 0, .r2 = 0, .name = name};
 	}
 };
 

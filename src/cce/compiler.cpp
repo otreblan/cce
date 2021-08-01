@@ -15,9 +15,10 @@
 // along with cce.  If not, see <http://www.gnu.org/licenses/>.
 
 #include <cstdlib>
+#include <fmt/core.h>
 #include <getopt.h>
 #include <iostream>
-#include <fmt/core.h>
+#include <unordered_map>
 
 #include "compiler.hpp"
 #include "graph.hpp"
@@ -185,4 +186,30 @@ int cce::compiler::write_to_outfile(const std::vector<instruction>& v) const
 int cce::compiler::label_alloc()
 {
 	return next_label++;
+}
+
+std::vector<cce::instruction> cce::compiler::expand_extensions(
+	const std::vector<instruction>& v
+	)
+{
+	std::vector<cce::instruction> r;
+
+	std::unordered_map<int, size_t> label_pos;
+	int i = 0;
+
+	for(const auto& inst: v)
+	{
+		if(inst.opcode == instruction::type::LABEL)
+		{
+			label_pos[inst.name] = i+1;
+		}
+		else
+		{
+			i++;
+		}
+	}
+
+	// TODO
+
+	return r;
 }
