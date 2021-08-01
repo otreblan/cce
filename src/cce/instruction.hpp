@@ -46,12 +46,21 @@ struct instruction
 	};
 
 	type opcode;
-	int r1;
-	int r2;
 	union
 	{
-		int r3;
-		int offset;
+		struct
+		{
+			int r1;
+			int r2;
+			union
+			{
+				int r3;
+				int offset;
+			};
+		};
+
+		// Label name
+		int name;
 	};
 
 	/// Read an integer from stdin and place result in r1; ignore operands r2 and r3.
@@ -159,7 +168,7 @@ struct instruction
 	/// Label
 	static instruction LABEL(int name)
 	{
-		return {.opcode = type::LABEL, .r1 = name};
+		return {.opcode = type::LABEL, .name = name};
 	}
 };
 
