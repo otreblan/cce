@@ -106,6 +106,7 @@ int cce::compiler::run()
 	else // CEs -> tm
 	{
 		exit_code |= compile(programa, errors);
+		expand_extensions();
 		exit_code |= write_to_outfile();
 	}
 

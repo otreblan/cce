@@ -42,7 +42,7 @@ class compiler
 	static constexpr int LR = 5;
 
 	/// Registers saved when calling a function
-	static constexpr std::bitset<8> saved_registers = 0b01111100;
+	static constexpr std::bitset<8> saved_registers = 0b00111110;
 
 	[[noreturn]]
 	void usage(int exit_code) const;
