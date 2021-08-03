@@ -193,7 +193,7 @@ void cce::compiler::expand_extensions()
 	{
 		if(inst.opcode == instruction::type::LABEL)
 		{
-			label_pos[inst.name] = i+1;
+			label_pos[inst.name] = i;
 		}
 		else
 		{
@@ -206,7 +206,7 @@ void cce::compiler::expand_extensions()
 		switch(inst.opcode)
 		{
 			case instruction::type::GOTO_LABEL:
-				r.push_back(instruction::LDC(PC, label_pos[inst.name]));
+				r.push_back(instruction::LDC(PC, label_pos.at(inst.name)));
 				break;
 
 			case instruction::type::LABEL:
