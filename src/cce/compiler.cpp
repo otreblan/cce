@@ -254,7 +254,21 @@ void cce::compiler::args_gen(ast_args& args)
 
 void cce::compiler::call_gen(ast_call& call)
 {
-	// TODO
+	if(call.args)
+	{
+		for(auto* list = call.args->lista_arg; list; list = list->next)
+		{
+			if(auto* expresion = list->expresion)
+			{
+				expresion_gen(*expresion);
+
+				// Push arguments.
+				save_register(0);
+			}
+		}
+	}
+
+	compiler::call(call.ID);
 }
 
 void cce::compiler::declaracion_gen(ast_declaracion& declaracion)
