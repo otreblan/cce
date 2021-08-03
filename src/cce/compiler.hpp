@@ -31,9 +31,14 @@ struct instruction;
 
 class compiler
 {
-	static const int PC; /// Program counter
-	static const int SP; /// Stack pointer
-	static const int LR; /// Link register
+	/// Program counter
+	static const int PC;
+
+	/// Stack pointer
+	static const int SP;
+
+	/// Link register
+	static const int LR;
 
 	[[noreturn]]
 	void usage(int exit_code) const;
@@ -193,6 +198,10 @@ class compiler
 	{
 		code.push_back(instruction::GOTO_LABEL(name));
 	}
+
+
+	/// Calls a function, the arguments must be pushed to the stack before.
+	void call(std::string_view function);
 public:
 	compiler();
 	compiler(int argc, char* argv[]);

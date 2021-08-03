@@ -241,7 +241,7 @@ void cce::compiler::programa_gen(ast_programa& programa)
 	// TODO
 
 	// Call main
-	// TODO
+	call("main");
 
 	HALT();
 }
@@ -401,3 +401,18 @@ void cce::compiler::var_gen(ast_var& var)
 	// TODO
 }
 
+
+void cce::compiler::call(std::string_view function)
+{
+	// Save registers
+	// TODO
+
+	// Get function and return labels
+	int fun_label =  0; // TODO
+	int return_label = label_alloc();
+
+	// Save label address to the link register.
+	GOTO_LABEL(fun_label);
+
+	LABEL(return_label);
+}
