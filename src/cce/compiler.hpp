@@ -82,7 +82,6 @@ class compiler
 	void sentencia_iteracion_gen (ast_sentencia_iteracion& sentencia_iteracion);
 	void sentencia_retorno_gen   (ast_sentencia_retorno& sentencia_retorno);
 	void sentencia_seleccion_gen (ast_sentencia_seleccion& sentencia_seleccion);
-	void tipo_gen                (ast_tipo& tipo);
 	void var_declaracion_gen     (ast_var_declaracion& var_declaracion);
 	void var_gen                 (ast_var& var);
 

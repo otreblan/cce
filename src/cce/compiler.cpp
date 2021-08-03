@@ -444,11 +444,6 @@ void cce::compiler::sentencia_seleccion_gen(ast_sentencia_seleccion& sentencia_s
 	}
 }
 
-void cce::compiler::tipo_gen(ast_tipo& tipo)
-{
-	// TODO
-}
-
 void cce::compiler::var_declaracion_gen(ast_var_declaracion& var_declaracion)
 {
 	// TODO
