@@ -262,26 +262,6 @@ void cce::compiler::fun_declaracion_gen(ast_fun_declaracion& fun_declaracion)
 	// TODO
 }
 
-void cce::compiler::lista_arg_gen(ast_lista_arg& lista_arg)
-{
-	// TODO
-}
-
-void cce::compiler::lista_declaracion_gen(ast_lista_declaracion& lista_declaracion)
-{
-	// TODO
-}
-
-void cce::compiler::lista_params_gen(ast_lista_params& lista_params)
-{
-	// TODO
-}
-
-void cce::compiler::lista_sentencias_gen(ast_lista_sentencias& lista_sentencias)
-{
-	// TODO
-}
-
 void cce::compiler::op_gen(ast_op& relop)
 {
 	// TODO
