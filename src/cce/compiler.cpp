@@ -257,7 +257,22 @@ void cce::compiler::call_gen(ast_call& call)
 
 void cce::compiler::declaracion_gen(ast_declaracion& declaracion)
 {
-	// TODO
+	switch(declaracion.tipo)
+	{
+		case AST_VAR_DECLARACION:
+			if(auto* var = declaracion.var)
+			{
+				var_declaracion_gen(*var);
+			}
+			break;
+
+		case AST_FUN_DECLARACION:
+			if(auto* fun = declaracion.fun)
+			{
+				fun_declaracion_gen(*fun);
+			}
+			break;
+	}
 }
 
 void cce::compiler::declaracion_local_gen(ast_declaracion_local& declaracion_local)
