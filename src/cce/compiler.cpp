@@ -293,7 +293,7 @@ void cce::compiler::fun_declaracion_gen(ast_fun_declaracion& fun_declaracion)
 	}
 
 	// Default return
-	// TODO
+	return_function();
 
 	current_function = {};
 }
@@ -429,6 +429,15 @@ void cce::compiler::call(std::string_view function)
 			restore_register(i);
 		}
 	}
+}
+
+void cce::compiler::return_function()
+{
+	// Pop arguments of the current function.
+	// TODO
+
+	// Set PC
+	LDA(PC, 0, LR);
 }
 
 void cce::compiler::save_register(int r)

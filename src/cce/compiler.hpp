@@ -210,6 +210,9 @@ class compiler
 	/// Calls a function, the arguments must be pushed to the stack before.
 	void call(std::string_view function);
 
+	/// Pops the arguments and sets PC to the contents of the link register.
+	void return_function();
+
 	/// Saves the contents of a register into the stack.
 	void save_register(int r);
 
