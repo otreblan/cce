@@ -16,6 +16,8 @@
 
 #pragma once
 
+#include <vector>
+
 typedef struct _IO_FILE FILE;
 typedef struct _ast_programa ast_programa;
 enum class simbolo_tipo{

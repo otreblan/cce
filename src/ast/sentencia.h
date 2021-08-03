@@ -25,17 +25,17 @@ typedef struct _ast_sentencia_seleccion ast_sentencia_seleccion;
 typedef struct _ast_sentencia_iteracion ast_sentencia_iteracion;
 typedef struct _ast_sentencia_retorno   ast_sentencia_retorno;
 
-enum ast_sentencia_tipo
+typedef enum _ast_sentencia_tipo
 {
 	AST_SENTENCIA_EXPRESION,
 	AST_SENTENCIA_SELECCION,
 	AST_SENTENCIA_ITERACION,
 	AST_SENTENCIA_RETORNO
-};
+} ast_sentencia_tipo;
 
 typedef struct _ast_sentencia
 {
-	int tipo;
+	ast_sentencia_tipo tipo;
 	union
 	{
 		ast_sentencia_expresion* expresion;
