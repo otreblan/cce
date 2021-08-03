@@ -16,6 +16,7 @@
 
 #pragma once
 
+#include <bitset>
 #include <cstdio>
 #include <string>
 #include <string_view>
@@ -32,13 +33,16 @@ struct instruction;
 class compiler
 {
 	/// Program counter
-	static const int PC;
+	static constexpr int PC = 7;
 
 	/// Stack pointer
-	static const int SP;
+	static constexpr int SP = 6;
 
 	/// Link register
-	static const int LR;
+	static constexpr int LR = 5;
+
+	/// Registers saved when calling a function
+	static constexpr std::bitset<8> saved_registers = 0b01111100;
 
 	[[noreturn]]
 	void usage(int exit_code) const;

@@ -26,10 +26,6 @@
 #include "instruction.hpp"
 #include "parser.h"
 
-const int cce::compiler::PC = 7;
-const int cce::compiler::SP = 6;
-const int cce::compiler::LR = 5;
-
 void cce::compiler::usage(int exit_code) const
 {
 	fmt::print(
@@ -405,7 +401,13 @@ void cce::compiler::var_gen(ast_var& var)
 void cce::compiler::call(std::string_view function)
 {
 	// Save registers
-	// TODO
+	for(size_t i = 0; i < saved_registers.size(); i++)
+	{
+		if(saved_registers[i])
+		{
+			// TODO push registers
+		}
+	}
 
 	// Get function and return labels
 	label_t fun_label =  0; // TODO
@@ -415,4 +417,15 @@ void cce::compiler::call(std::string_view function)
 	GOTO_LABEL(fun_label);
 
 	LABEL(return_label);
+
+	// Restore registers
+	for(size_t _i = 0; _i < saved_registers.size(); _i++)
+	{
+		size_t i = saved_registers.size() - _i - 1;
+
+		if(saved_registers[i])
+		{
+			// TODO pop registers
+		}
+	}
 }
