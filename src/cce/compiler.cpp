@@ -28,6 +28,7 @@
 
 const int cce::compiler::PC = 7;
 const int cce::compiler::SP = 6;
+const int cce::compiler::LR = 5;
 
 void cce::compiler::usage(int exit_code) const
 {

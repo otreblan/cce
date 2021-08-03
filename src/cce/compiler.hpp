@@ -33,6 +33,7 @@ class compiler
 {
 	static const int PC; /// Program counter
 	static const int SP; /// Stack pointer
+	static const int LR; /// Link register
 
 	[[noreturn]]
 	void usage(int exit_code) const;
