@@ -346,6 +346,8 @@ void cce::compiler::expresion_gen(ast_expresion& expresion)
 
 void cce::compiler::fun_declaracion_gen(ast_fun_declaracion& fun_declaracion)
 {
+	assert(stack_temp_n == 0);
+
 	current_function = fun_declaracion.ID;
 
 	if(auto* sent_compuesta = fun_declaracion.sent_compuesta)
@@ -558,6 +560,20 @@ void cce::compiler::restore_register(int r)
 
 	// Shrink the stack by 1
 	LDA(SP, 1, SP);
+}
+
+void cce::compiler::push_temporal(int r)
+{
+	save_register(r);
+	stack_temp_n++;
+}
+
+void cce::compiler::pop_temporal(int r)
+{
+	assert(stack_temp_n > 0);
+
+	restore_register(r);
+	stack_temp_n--;
 }
 
 int cce::compiler::var_pos(std::string_view variable)

@@ -221,6 +221,12 @@ class compiler
 	/// Restores the register from the content of the top of the stack.
 	void restore_register(int r);
 
+	/// Save temporal data in the stack.
+	void push_temporal(int r);
+
+	/// Recover temporal data in the stack.
+	void pop_temporal(int r);
+
 	/// Get variable position relative to the stack pointer.
 	int var_pos(std::string_view variable);
 public:
