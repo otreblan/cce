@@ -28,7 +28,9 @@
 
 
 // Tabla de id y tipo
-std::vector<table_elem> table_id;
+//std::vector<table_elem> table_id;
+
+std::map <char*, table_elem> table_id;
 
 
 template <typename T>
@@ -42,12 +44,12 @@ static int num_graph  (FILE* file, int n, int num);
 
 static int args_graph                (FILE* file, int n, const ast_args& args);
 static int call_graph                (FILE* file, int n, const ast_call& call);
-static int declaracion_graph         (FILE* file, int n, const ast_declaracion& declaracion);
+static int declaracion_graph         (FILE* file, int n, const ast_declaracion& declaracion, cce::label_t &next_label);
 static int declaracion_local_graph   (FILE* file, int n, const ast_declaracion_local& declaracion_local);
 static int expresion_graph           (FILE* file, int n, const ast_expresion& expresion);
-static int fun_declaracion_graph     (FILE* file, int n, const ast_fun_declaracion& fun_declaracion);
+static int fun_declaracion_graph     (FILE* file, int n, const ast_fun_declaracion& fun_declaracion, cce::label_t &next_label);
 static int lista_arg_graph           (FILE* file, int n, const ast_lista_arg& lista_arg);
-static int lista_declaracion_graph   (FILE* file, int n, const ast_lista_declaracion& lista_declaracion);
+static int lista_declaracion_graph   (FILE* file, int n, const ast_lista_declaracion& lista_declaracion, cce::label_t &next_label);
 static int lista_params_graph        (FILE* file, int n, const ast_lista_params& lista_params);
 static int lista_sentencias_graph    (FILE* file, int n, const ast_lista_sentencias& lista_sentencias);
 static int op_graph                  (FILE* file, int n, const ast_op& relop);
@@ -114,7 +116,7 @@ static int call_graph(FILE* file, int n, const ast_call& call)
 	return i;
 }
 
-static int declaracion_graph(FILE* file, int n, const ast_declaracion& declaracion)
+static int declaracion_graph(FILE* file, int n, const ast_declaracion& declaracion, cce::label_t &next_label)
 {
 	int i = n;
 	
@@ -130,7 +132,7 @@ static int declaracion_graph(FILE* file, int n, const ast_declaracion& declaraci
 	case AST_FUN_DECLARACION:
 		if(declaracion.fun)
 		{
-			i = fun_declaracion_graph(file, i+1, *declaracion.fun);
+			i = fun_declaracion_graph(file, i+1, *declaracion.fun, next_label);
 		}
 		break;
 	}
@@ -252,7 +254,7 @@ std::vector<arg_elem> get_params(const ast_params& params){
 }
 
 
-static int fun_declaracion_graph(FILE* file, int n, const ast_fun_declaracion& fun_declaracion)
+static int fun_declaracion_graph(FILE* file, int n, const ast_fun_declaracion& fun_declaracion, cce::label_t &next_label)
 {
 	int i = n;
 
@@ -264,14 +266,15 @@ static int fun_declaracion_graph(FILE* file, int n, const ast_fun_declaracion& f
         elem.tipo = (*fun_declaracion.tipo).tipo;
 		elem.simb_tipo = simbolo_tipo::FUNCION;
 		elem.isArray = false;
+		elem.label = next_label++; // alloc label
+
 
 		if (fun_declaracion.params){
 			elem.args = get_params(*fun_declaracion.params); 
 		}
 		// añadir parametros 
-
-
-        table_id.push_back(elem);
+			
+        table_id.insert({elem.id_name, elem});
     }
     
 
@@ -321,19 +324,19 @@ static int lista_arg_graph(FILE* file, int n, const ast_lista_arg& lista_arg)
 	return i;
 }
 
-static int lista_declaracion_graph(FILE* file, int n, const ast_lista_declaracion& lista_declaracion)
+static int lista_declaracion_graph(FILE* file, int n, const ast_lista_declaracion& lista_declaracion, cce::label_t &next_label)
 {
 	int i = n;
 
 	
 	if(lista_declaracion.declaracion)
 	{
-		i = declaracion_graph(file, i+1, *lista_declaracion.declaracion);
+		i = declaracion_graph(file, i+1, *lista_declaracion.declaracion, next_label);
 	}
 
 	if(lista_declaracion.next)
 	{
-		i = lista_declaracion_graph(file, i+1, *lista_declaracion.next);
+		i = lista_declaracion_graph(file, i+1, *lista_declaracion.next, next_label);
 	}
 
 	return i;
@@ -438,7 +441,7 @@ static int param_graph(FILE* file, int n, const ast_param& param)
         elem.tipo = (*param.tipo).tipo;
 		elem.simb_tipo = simbolo_tipo::VARIABLE;
 		elem.isArray = param.arreglo;
-        table_id.push_back(elem);
+        table_id.insert({ elem.id_name ,elem});
     }
 
 	if(param.tipo)
@@ -651,7 +654,8 @@ static int var_declaracion_graph(FILE* file, int n, const ast_var_declaracion& v
         elem.isArray = var_declaracion.es_arreglo;
 		elem.simb_tipo = simbolo_tipo::VARIABLE;
 		
-		table_id.push_back(elem);
+		table_id.insert({elem.id_name, elem});
+		
 	
 	}  
 
@@ -722,7 +726,7 @@ static int num_graph(FILE* file, int n, int num)
 	return n;
 }
 
-std::vector<table_elem> cce::ast_semantic(FILE* file, const ast_programa* programa, int & errors)
+std::map<char*,table_elem> cce::ast_semantic(FILE* file, const ast_programa* programa, int & errors, cce::label_t &next_label)
 {
 	int n = 0;
 	int i = n;
@@ -731,7 +735,7 @@ std::vector<table_elem> cce::ast_semantic(FILE* file, const ast_programa* progra
 	{
 		if(programa->lista_declaraciones)
 		{
-			i = lista_declaracion_graph(file, i+1, *programa->lista_declaraciones);
+			i = lista_declaracion_graph(file, i+1, *programa->lista_declaraciones, next_label);
 		}
 	}
     

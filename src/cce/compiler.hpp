@@ -24,6 +24,7 @@
 
 #include "ast.h"
 #include "instruction.hpp"
+#include "semantic.hpp"
 
 namespace cce
 {
@@ -31,7 +32,9 @@ namespace cce
 struct instruction;
 
 class compiler
-{
+{	
+	// friend function semantic analisis
+	//friend std::map<char *,table_elem> cce::ast_semantic(FILE* file, const ast_programa* programa, int & errors, cce::compiler compiler);
 	/// Program counter
 	static constexpr int PC = 7;
 
@@ -43,6 +46,8 @@ class compiler
 
 	/// Registers saved when calling a function
 	static constexpr std::bitset<8> saved_registers = 0b00111110;
+
+
 
 	[[noreturn]]
 	void usage(int exit_code) const;

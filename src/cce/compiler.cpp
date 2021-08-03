@@ -128,24 +128,30 @@ int cce::compiler::compile(ast_programa* programa, int yynerrs)
 	if(yynerrs > 0)
 		return EXIT_FAILURE;
 
+
 	// TODO
 	// Análisis semántico
 
 	int semantic_errors = 0;
-	std::vector<table_elem> table_id = ast_semantic(stdout, programa, semantic_errors);
+	
+	std::map<char *,table_elem> table_id = ast_semantic(stdout, programa, semantic_errors, next_label);
+	
+	//std::cout <<"next :" << next_label << std::endl;
+	
+	for (const auto &item: table_id){
+		auto elem = item.second;
+		std::cout <<"ID: " << item.first << " , TIPO: " << item.second.tipo;
 
-	for (auto elem: table_id){
-		std::cout <<"ID: " << elem.id_name << " , TIPO: " << elem.tipo;
-
+		
 		if (elem.simb_tipo == simbolo_tipo::FUNCION){
 			std::cout << "\n   args: ";
 			for (auto arg: elem.args){
 				std::cout << arg.id << " ";
+
 			}
+			std::cout << "\nlabel: " << elem.label;
 			std::cout << "\n";
-
 		}
-
 		std::cout << "\n";
 	}
 
@@ -154,7 +160,7 @@ int cce::compiler::compile(ast_programa* programa, int yynerrs)
 	// TODO
 	// Generación de código
 
-	programa_gen(*programa);
+	//programa_gen(*programa);
 
 	// TODO
 	// ¿Optimización?
