@@ -418,6 +418,7 @@ void cce::compiler::sentencia_seleccion_gen(ast_sentencia_seleccion& sentencia_s
 	}
 
 	int after_false = label_alloc();
+	int after_else = -1;
 
 	GOTO_LABEL_IF_NULL(after_false, 0);
 
@@ -426,14 +427,19 @@ void cce::compiler::sentencia_seleccion_gen(ast_sentencia_seleccion& sentencia_s
 		sentencia_gen(*sentencia);
 	}
 
+	if(sentencia_seleccion.sentencia2)
+	{
+		GOTO_LABEL(after_else = label_alloc());
+	}
+
 	LABEL(after_false);
 
-	// TODO else
-
-	//if exp
-	// sent
-	//[else]
-	// [sent]
+	// Else
+	if(auto* sentencia = sentencia_seleccion.sentencia2)
+	{
+		sentencia_gen(*sentencia);
+		LABEL(after_else);
+	}
 }
 
 void cce::compiler::tipo_gen(ast_tipo& tipo)
