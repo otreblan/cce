@@ -180,7 +180,7 @@ int cce::compiler::write_to_outfile() const
 	return EXIT_FAILURE;
 }
 
-int cce::compiler::label_alloc()
+cce::compiler::label_t cce::compiler::label_alloc()
 {
 	return next_label++;
 }
@@ -408,8 +408,8 @@ void cce::compiler::call(std::string_view function)
 	// TODO
 
 	// Get function and return labels
-	int fun_label =  0; // TODO
-	int return_label = label_alloc();
+	label_t fun_label =  0; // TODO
+	label_t return_label = label_alloc();
 
 	// Save label address to the link register.
 	GOTO_LABEL(fun_label);

@@ -31,6 +31,9 @@ struct instruction;
 
 class compiler
 {
+	using label_t = int;
+
+
 	/// Program counter
 	static const int PC;
 
@@ -54,10 +57,10 @@ class compiler
 	int compile(ast_programa* programa, int yynerrs);
 	int write_to_outfile() const;
 
-	int next_label = 0;
+	label_t next_label = 0;
 
 	/// Allocate a new label.
-	int label_alloc();
+	label_t label_alloc();
 
 	void expand_extensions();
 
