@@ -313,7 +313,10 @@ void cce::compiler::expresion_gen(ast_expresion& expresion)
 			break;
 
 		case AST_CALL:
-			// TODO
+			if(auto* call = expresion.call)
+			{
+				call_gen(*call);
+			}
 			break;
 
 		case AST_NUM:
