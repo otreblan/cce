@@ -75,9 +75,6 @@ class compiler
 	void declaracion_local_gen   (ast_declaracion_local& declaracion_local);
 	void expresion_gen           (ast_expresion& expresion);
 	void fun_declaracion_gen     (ast_fun_declaracion& fun_declaracion);
-	void op_gen                  (ast_op& relop);
-	void param_gen               (ast_param& param);
-	void params_gen              (ast_params& params);
 	void programa_gen            (ast_programa& programa);
 	void sent_compuesta_gen      (ast_sent_compuesta& sent_compuesta);
 	void sentencia_expresion_gen (ast_sentencia_expresion& sentencia_expresion);

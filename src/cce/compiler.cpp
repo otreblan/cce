@@ -302,21 +302,6 @@ void cce::compiler::fun_declaracion_gen(ast_fun_declaracion& fun_declaracion)
 	current_function = {};
 }
 
-void cce::compiler::op_gen(ast_op& relop)
-{
-	// TODO
-}
-
-void cce::compiler::param_gen(ast_param& param)
-{
-	// TODO
-}
-
-void cce::compiler::params_gen(ast_params& params)
-{
-	// TODO
-}
-
 void cce::compiler::sent_compuesta_gen(ast_sent_compuesta& sent_compuesta)
 {
 	if(auto* declaracion_local = sent_compuesta.declaracion_local)
