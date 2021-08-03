@@ -30,8 +30,6 @@ struct arg_elem{
     bool    isArray;
 };
 
-
-
 struct table_elem{
     char*   id_name;
     int     tipo;
