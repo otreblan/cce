@@ -370,7 +370,29 @@ void cce::compiler::sentencia_gen(ast_sentencia& sentencia)
 
 void cce::compiler::sentencia_iteracion_gen(ast_sentencia_iteracion& sentencia_iteracion)
 {
+	label_t start = label_alloc();
+	label_t end = label_alloc();
+
+	LABEL(start);
+
+	if(auto* expresion = sentencia_iteracion.expresion)
+	{
+		expresion_gen(*expresion);
+	}
+
+	// Go label end if R0 is 0
 	// TODO
+
+	for(auto* list = sentencia_iteracion.lista_sentencias; list; list = list->next)
+	{
+		if(auto* sentencia = list->sentencia)
+		{
+			sentencia_gen(*sentencia);
+		}
+	}
+
+	GOTO_LABEL(start);
+	LABEL(end);
 }
 
 void cce::compiler::sentencia_retorno_gen(ast_sentencia_retorno& sentencia_retorno)
