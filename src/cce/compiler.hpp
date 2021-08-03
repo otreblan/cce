@@ -220,6 +220,9 @@ class compiler
 
 	/// Restores the register from the content of the top of the stack.
 	void restore_register(int r);
+
+	/// Get variable position relative to the stack pointer.
+	int var_pos(std::string_view variable);
 public:
 	compiler();
 	compiler(int argc, char* argv[]);

@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with cce.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <cassert>
 #include <cstdlib>
 #include <fmt/core.h>
 #include <getopt.h>
@@ -301,7 +302,25 @@ void cce::compiler::expresion_gen(ast_expresion& expresion)
 	switch(expresion.tipo)
 	{
 		case AST_ASIGNACION:
-			// TODO
+			if(auto* var = expresion.asignacion.var)
+			{
+				int offset = var_pos(var->ID);
+
+				if(auto* expresion1 = var->expresion)
+				{
+					// TODO arrays
+					assert(false);
+				}
+
+				if(auto* expresion2 = expresion.asignacion.expresion)
+				{
+					expresion_gen(*expresion2);
+				}
+
+				// Store the contents of R0 in SP[offset].
+				ST(0, offset, SP);
+			}
+
 			break;
 
 		case AST_EXPRESION_SIMPLE:
@@ -539,4 +558,10 @@ void cce::compiler::restore_register(int r)
 
 	// Shrink the stack by 1
 	LDA(SP, 1, SP);
+}
+
+int cce::compiler::var_pos(std::string_view variable)
+{
+	// TODO
+	return 0;
 }
