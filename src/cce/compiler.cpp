@@ -108,8 +108,8 @@ int cce::compiler::run()
 	}
 	else // CEs -> tm
 	{
-		std::vector<instruction> code = compile(programa, errors, exit_code);
-		exit_code |= write_to_outfile(code);
+		exit_code |= compile(programa, errors);
+		exit_code |= write_to_outfile();
 	}
 
 	ast_programa_free(programa);
@@ -122,21 +122,13 @@ int cce::compiler::run()
 
 
 
-std::vector<cce::instruction> cce::compiler::compile(ast_programa* programa, int yynerrs, int& exit_code)
+int cce::compiler::compile(ast_programa* programa, int yynerrs)
 {
-	std::vector<cce::instruction> v;
-
 	if(!programa)
-	{
-		exit_code = EXIT_FAILURE;
-		return v;
-	}
+		return EXIT_FAILURE;
 
 	if(yynerrs > 0)
-	{
-		exit_code = EXIT_FAILURE;
-		return v;
-	}
+		return EXIT_FAILURE;
 
 	// TODO
 	// Análisis semántico
@@ -164,19 +156,20 @@ std::vector<cce::instruction> cce::compiler::compile(ast_programa* programa, int
 	// TODO
 	// Generación de código
 
+	programa_gen(*programa);
+
 	// TODO
 	// ¿Optimización?
 
-	exit_code = EXIT_SUCCESS;
-	return expand_extensions(v);
+	return EXIT_SUCCESS;
 }
 
-int cce::compiler::write_to_outfile(const std::vector<instruction>& v) const
+int cce::compiler::write_to_outfile() const
 {
 	if(FILE* outfile = fopen(outfile_path.empty()? "a.tm": outfile_path.c_str(), "w"))
 	{
-		for(size_t i = 0; i < v.size(); i++)
-			fmt::print(outfile, "{}:    {}\n", i, v[i]);
+		for(size_t i = 0; i < code.size(); i++)
+			fmt::print(outfile, "{}:    {}\n", i, code[i]);
 
 		fclose(outfile);
 		return EXIT_SUCCESS;
@@ -191,16 +184,14 @@ int cce::compiler::label_alloc()
 	return next_label++;
 }
 
-std::vector<cce::instruction> cce::compiler::expand_extensions(
-	const std::vector<instruction>& v
-	)
+void cce::compiler::expand_extensions()
 {
 	std::vector<cce::instruction> r;
 
 	std::unordered_map<int, size_t> label_pos;
 	int i = 0;
 
-	for(const auto& inst: v)
+	for(const auto& inst: code)
 	{
 		if(inst.opcode == instruction::type::LABEL)
 		{
@@ -212,7 +203,7 @@ std::vector<cce::instruction> cce::compiler::expand_extensions(
 		}
 	}
 
-	for(const auto& inst: v)
+	for(const auto& inst: code)
 	{
 		switch(inst.opcode)
 		{
@@ -229,5 +220,10 @@ std::vector<cce::instruction> cce::compiler::expand_extensions(
 		}
 	}
 
-	return r;
+	code = r;
+}
+
+void cce::compiler::programa_gen(ast_programa& programa)
+{
+	code.push_back(instruction::HALT());
 }

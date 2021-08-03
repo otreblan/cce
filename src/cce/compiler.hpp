@@ -40,15 +40,19 @@ class compiler
 	std::string infile_path;
 	std::string outfile_path;
 
-	std::vector<instruction> compile(ast_programa* programa, int yynerrs, int& exit_code);
-	int write_to_outfile(const std::vector<instruction>& v) const;
+	std::vector<instruction> code;
+	int compile(ast_programa* programa, int yynerrs);
+	int write_to_outfile() const;
 
 	int next_label = 0;
 
 	/// Allocate a new label.
 	int label_alloc();
 
-	std::vector<instruction> expand_extensions(const std::vector<instruction>& v);
+	void expand_extensions();
+
+	// Code generation
+	void programa_gen(ast_programa& programa);
 public:
 	compiler();
 	compiler(int argc, char* argv[]);
