@@ -412,7 +412,28 @@ void cce::compiler::sentencia_retorno_gen(ast_sentencia_retorno& sentencia_retor
 
 void cce::compiler::sentencia_seleccion_gen(ast_sentencia_seleccion& sentencia_seleccion)
 {
-	// TODO
+	if(auto* expresion = sentencia_seleccion.expresion)
+	{
+		expresion_gen(*expresion);
+	}
+
+	int after_false = label_alloc();
+
+	GOTO_LABEL_IF_NULL(after_false, 0);
+
+	if(auto* sentencia = sentencia_seleccion.sentencia1)
+	{
+		sentencia_gen(*sentencia);
+	}
+
+	LABEL(after_false);
+
+	// TODO else
+
+	//if exp
+	// sent
+	//[else]
+	// [sent]
 }
 
 void cce::compiler::tipo_gen(ast_tipo& tipo)
