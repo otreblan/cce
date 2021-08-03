@@ -18,6 +18,7 @@
 
 #include <cstdio>
 #include <string>
+#include <string_view>
 #include <vector>
 
 #include "ast.h"
@@ -41,7 +42,9 @@ class compiler
 	std::string infile_path;
 	std::string outfile_path;
 
+	std::string_view         current_function;
 	std::vector<instruction> code;
+
 	int compile(ast_programa* programa, int yynerrs);
 	int write_to_outfile() const;
 

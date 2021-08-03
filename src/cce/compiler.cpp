@@ -287,7 +287,11 @@ void cce::compiler::expresion_gen(ast_expresion& expresion)
 
 void cce::compiler::fun_declaracion_gen(ast_fun_declaracion& fun_declaracion)
 {
+	current_function = fun_declaracion.ID;
+
 	// TODO
+
+	current_function = {};
 }
 
 void cce::compiler::op_gen(ast_op& relop)
