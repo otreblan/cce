@@ -293,6 +293,8 @@ void cce::compiler::fun_declaracion_gen(ast_fun_declaracion& fun_declaracion)
 	{
 		sent_compuesta_gen(*sent_compuesta);
 	}
+
+	// Default return
 	// TODO
 
 	current_function = {};
@@ -315,7 +317,18 @@ void cce::compiler::params_gen(ast_params& params)
 
 void cce::compiler::sent_compuesta_gen(ast_sent_compuesta& sent_compuesta)
 {
-	// TODO
+	if(auto* declaracion_local = sent_compuesta.declaracion_local)
+	{
+		declaracion_local_gen(*declaracion_local);
+	}
+
+	for(auto* list = sent_compuesta.lista_sentencias; list; list = list->next)
+	{
+		if(auto* sentencia = list->sentencia)
+		{
+			sentencia_gen(*sentencia);
+		}
+	}
 }
 
 void cce::compiler::sentencia_expresion_gen(ast_sentencia_expresion& sentencia_expresion)
