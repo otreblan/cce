@@ -289,6 +289,10 @@ void cce::compiler::fun_declaracion_gen(ast_fun_declaracion& fun_declaracion)
 {
 	current_function = fun_declaracion.ID;
 
+	if(auto* sent_compuesta = fun_declaracion.sent_compuesta)
+	{
+		sent_compuesta_gen(*sent_compuesta);
+	}
 	// TODO
 
 	current_function = {};
