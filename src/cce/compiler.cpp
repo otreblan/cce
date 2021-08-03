@@ -320,8 +320,10 @@ void cce::compiler::sent_compuesta_gen(ast_sent_compuesta& sent_compuesta)
 
 void cce::compiler::sentencia_expresion_gen(ast_sentencia_expresion& sentencia_expresion)
 {
-	// TODO
-	//
+	if(auto* expresion = sentencia_expresion.expresion)
+	{
+		expresion_gen(*expresion);
+	}
 }
 
 void cce::compiler::sentencia_gen(ast_sentencia& sentencia)
