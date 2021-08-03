@@ -225,5 +225,117 @@ void cce::compiler::expand_extensions()
 
 void cce::compiler::programa_gen(ast_programa& programa)
 {
+	// TODO
 	HALT();
 }
+
+void cce::compiler::args_gen(ast_args& args)
+{
+	// TODO
+}
+
+void cce::compiler::call_gen(ast_call& call)
+{
+	// TODO
+}
+
+void cce::compiler::declaracion_gen(ast_declaracion& declaracion)
+{
+	// TODO
+}
+
+void cce::compiler::declaracion_local_gen(ast_declaracion_local& declaracion_local)
+{
+	// TODO
+}
+
+void cce::compiler::expresion_gen(ast_expresion& expresion)
+{
+	// TODO
+}
+
+void cce::compiler::fun_declaracion_gen(ast_fun_declaracion& fun_declaracion)
+{
+	// TODO
+}
+
+void cce::compiler::lista_arg_gen(ast_lista_arg& lista_arg)
+{
+	// TODO
+}
+
+void cce::compiler::lista_declaracion_gen(ast_lista_declaracion& lista_declaracion)
+{
+	// TODO
+}
+
+void cce::compiler::lista_params_gen(ast_lista_params& lista_params)
+{
+	// TODO
+}
+
+void cce::compiler::lista_sentencias_gen(ast_lista_sentencias& lista_sentencias)
+{
+	// TODO
+}
+
+void cce::compiler::op_gen(ast_op& relop)
+{
+	// TODO
+}
+
+void cce::compiler::param_gen(ast_param& param)
+{
+	// TODO
+}
+
+void cce::compiler::params_gen(ast_params& params)
+{
+	// TODO
+}
+
+void cce::compiler::sent_compuesta_gen(ast_sent_compuesta& sent_compuesta)
+{
+	// TODO
+}
+
+void cce::compiler::sentencia_expresion_gen(ast_sentencia_expresion& sentencia_expresion)
+{
+	// TODO
+}
+
+void cce::compiler::sentencia_gen(ast_sentencia& sentencia)
+{
+	// TODO
+}
+
+void cce::compiler::sentencia_iteracion_gen(ast_sentencia_iteracion& sentencia_iteracion)
+{
+	// TODO
+}
+
+void cce::compiler::sentencia_retorno_gen(ast_sentencia_retorno& sentencia_retorno)
+{
+	// TODO
+}
+
+void cce::compiler::sentencia_seleccion_gen(ast_sentencia_seleccion& sentencia_seleccion)
+{
+	// TODO
+}
+
+void cce::compiler::tipo_gen(ast_tipo& tipo)
+{
+	// TODO
+}
+
+void cce::compiler::var_declaracion_gen(ast_var_declaracion& var_declaracion)
+{
+	// TODO
+}
+
+void cce::compiler::var_gen(ast_var& var)
+{
+	// TODO
+}
+

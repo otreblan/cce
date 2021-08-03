@@ -20,9 +20,8 @@
 #include <string>
 #include <vector>
 
+#include "ast.h"
 #include "instruction.hpp"
-
-typedef struct _ast_programa ast_programa;
 
 namespace cce
 {
@@ -54,7 +53,30 @@ class compiler
 	void expand_extensions();
 
 	// Code generation
-	void programa_gen(ast_programa& programa);
+	void args_gen                (ast_args& args);
+	void call_gen                (ast_call& call);
+	void declaracion_gen         (ast_declaracion& declaracion);
+	void declaracion_local_gen   (ast_declaracion_local& declaracion_local);
+	void expresion_gen           (ast_expresion& expresion);
+	void fun_declaracion_gen     (ast_fun_declaracion& fun_declaracion);
+	void lista_arg_gen           (ast_lista_arg& lista_arg);
+	void lista_declaracion_gen   (ast_lista_declaracion& lista_declaracion);
+	void lista_params_gen        (ast_lista_params& lista_params);
+	void lista_sentencias_gen    (ast_lista_sentencias& lista_sentencias);
+	void op_gen                  (ast_op& relop);
+	void param_gen               (ast_param& param);
+	void params_gen              (ast_params& params);
+	void programa_gen            (ast_programa& programa);
+	void sent_compuesta_gen      (ast_sent_compuesta& sent_compuesta);
+	void sentencia_expresion_gen (ast_sentencia_expresion& sentencia_expresion);
+	void sentencia_gen           (ast_sentencia& sentencia);
+	void sentencia_iteracion_gen (ast_sentencia_iteracion& sentencia_iteracion);
+	void sentencia_retorno_gen   (ast_sentencia_retorno& sentencia_retorno);
+	void sentencia_seleccion_gen (ast_sentencia_seleccion& sentencia_seleccion);
+	void tipo_gen                (ast_tipo& tipo);
+	void var_declaracion_gen     (ast_var_declaracion& var_declaracion);
+	void var_gen                 (ast_var& var);
+
 
 	// Helper functions
 
