@@ -225,6 +225,9 @@ void cce::compiler::expand_extensions()
 
 void cce::compiler::programa_gen(ast_programa& programa)
 {
+	// Setup stack
+	LD(SP, 0, 0);
+
 	// TODO
 	HALT();
 }
