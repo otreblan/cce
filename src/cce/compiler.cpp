@@ -375,7 +375,13 @@ void cce::compiler::sentencia_iteracion_gen(ast_sentencia_iteracion& sentencia_i
 
 void cce::compiler::sentencia_retorno_gen(ast_sentencia_retorno& sentencia_retorno)
 {
-	// TODO
+	if(auto* expresion = sentencia_retorno.expresion)
+	{
+		expresion_gen(*expresion);
+	}
+
+	// Returns whatever is in R0.
+	return_function();
 }
 
 void cce::compiler::sentencia_seleccion_gen(ast_sentencia_seleccion& sentencia_seleccion)
