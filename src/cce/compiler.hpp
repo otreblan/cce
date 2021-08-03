@@ -31,9 +31,6 @@ struct instruction;
 
 class compiler
 {
-	using label_t = int;
-
-
 	/// Program counter
 	static const int PC;
 
@@ -191,13 +188,13 @@ class compiler
 	}
 
 	/// Label
-	void LABEL(int name)
+	void LABEL(label_t name)
 	{
 		code.push_back(instruction::LABEL(name));
 	}
 
 	/// Go to label
-	void GOTO_LABEL(int name)
+	void GOTO_LABEL(label_t name)
 	{
 		code.push_back(instruction::GOTO_LABEL(name));
 	}

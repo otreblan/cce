@@ -180,7 +180,7 @@ int cce::compiler::write_to_outfile() const
 	return EXIT_FAILURE;
 }
 
-cce::compiler::label_t cce::compiler::label_alloc()
+cce::label_t cce::compiler::label_alloc()
 {
 	return next_label++;
 }
@@ -189,8 +189,8 @@ void cce::compiler::expand_extensions()
 {
 	std::vector<cce::instruction> r;
 
-	std::unordered_map<int, size_t> label_pos;
-	int i = 0;
+	std::unordered_map<label_t, size_t> label_pos;
+	size_t i = 0;
 
 	for(const auto& inst: code)
 	{

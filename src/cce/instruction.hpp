@@ -21,6 +21,8 @@
 namespace cce
 {
 
+using label_t = int;
+
 struct instruction
 {
 	enum class type
@@ -58,7 +60,7 @@ struct instruction
 		int offset;
 
 		// Label name
-		int name;
+		label_t name;
 	};
 
 
