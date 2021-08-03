@@ -225,5 +225,5 @@ void cce::compiler::expand_extensions()
 
 void cce::compiler::programa_gen(ast_programa& programa)
 {
-	code.push_back(instruction::HALT());
+	HALT();
 }

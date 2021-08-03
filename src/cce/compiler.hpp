@@ -20,6 +20,8 @@
 #include <string>
 #include <vector>
 
+#include "instruction.hpp"
+
 typedef struct _ast_programa ast_programa;
 
 namespace cce
@@ -53,6 +55,122 @@ class compiler
 
 	// Code generation
 	void programa_gen(ast_programa& programa);
+
+	// Helper functions
+
+	/// Read an integer from stdin and place result in r1; ignore operands r2 and r3.
+	void IN(int r1)
+	{
+		code.push_back(instruction::IN(r1));
+	}
+
+	/// Write contents of r1 to stdout; ignore operands r2 and r3.
+	void OUT(int r1)
+	{
+		code.push_back(instruction::OUT(r1));
+	}
+
+	/// Add contents of r2 and r3 and place result in r1.
+	void ADD(int r1, int r2, int r3)
+	{
+		code.push_back(instruction::ADD(r1, r2, r3));
+	}
+
+	/// Subtract contents of r3 from contents of r2 and place result in r1.
+	void SUB(int r1, int r2, int r3)
+	{
+		code.push_back(instruction::SUB(r1, r2, r3));
+	}
+
+	/// Multiply contents of r2 and contents of r3 and place result in r1.
+	void MUL(int r1, int r2, int r3)
+	{
+		code.push_back(instruction::MUL(r1, r2, r3));
+	}
+
+	/// Divide contents of r2 by contents of r3 and place result in r1.
+	void DIV(int r1, int r2, int r3)
+	{
+		code.push_back(instruction::DIV(r1, r2, r3));
+	}
+
+	/// Ignore operands and terminate the machine.
+	void HALT()
+	{
+		code.push_back(instruction::HALT());
+	}
+
+	/// Place the constant offset in r1; ignore r2.
+	void LDC(int r1, int offset)
+	{
+		code.push_back(instruction::LDC(r1, offset));
+	}
+
+	/// Place the address address in r1.
+	void LDA(int r1, int offset, int r2)
+	{
+		code.push_back(instruction::LDA(r1, offset, r2));
+	}
+
+	/// Place the contents of data memory location address in r1.
+	void LD(int r1, int offset, int r2)
+	{
+		code.push_back(instruction::LD(r1, offset, r2));
+	}
+
+	/// Place the contents of r1 to data memory location address
+	void ST(int r1, int offset, int r2)
+	{
+		code.push_back(instruction::ST(r1, offset, r2));
+	}
+
+	/// Branch to address if r1 is equal to 0.
+	void JEQ(int r1, int offset, int r2)
+	{
+		code.push_back(instruction::JEQ(r1, offset, r2));
+	}
+
+	/// Branch to address if r1 is not equal to 0.
+	void JNE(int r1, int offset, int r2)
+	{
+		code.push_back(instruction::JNE(r1, offset, r2));
+	}
+
+	/// Branch to address if r1 is less than 0.
+	void JLT(int r1, int offset, int r2)
+	{
+		code.push_back(instruction::JLT(r1, offset, r2));
+	}
+
+	/// Branch to address if r1 is less than or equal to 0.
+	void JLE(int r1, int offset, int r2)
+	{
+		code.push_back(instruction::JLE(r1, offset, r2));
+	}
+
+	/// Branch to address if r1 is greater than 0.
+	void JGT(int r1, int offset, int r2)
+	{
+		code.push_back(instruction::JGT(r1, offset, r2));
+	}
+
+	/// Branch to address if r1 is greater than or equal to 0.
+	void JGE(int r1, int offset, int r2)
+	{
+		code.push_back(instruction::JGE(r1, offset, r2));
+	}
+
+	/// Label
+	void LABEL(int name)
+	{
+		code.push_back(instruction::LABEL(name));
+	}
+
+	/// Go to label
+	void GOTO_LABEL(int name)
+	{
+		code.push_back(instruction::GOTO_LABEL(name));
+	}
 public:
 	compiler();
 	compiler(int argc, char* argv[]);
