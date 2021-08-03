@@ -338,7 +338,36 @@ void cce::compiler::sentencia_expresion_gen(ast_sentencia_expresion& sentencia_e
 
 void cce::compiler::sentencia_gen(ast_sentencia& sentencia)
 {
-	// TODO
+	switch(sentencia.tipo)
+	{
+		case AST_SENTENCIA_EXPRESION:
+			if(auto* expresion = sentencia.expresion)
+			{
+				sentencia_expresion_gen(*expresion);
+			}
+			break;
+
+		case AST_SENTENCIA_SELECCION:
+			if(auto* seleccion = sentencia.seleccion)
+			{
+				sentencia_seleccion_gen(*seleccion);
+			}
+			break;
+
+		case AST_SENTENCIA_ITERACION:
+			if(auto* iteracion = sentencia.iteracion)
+			{
+				sentencia_iteracion_gen(*iteracion);
+			}
+			break;
+
+		case AST_SENTENCIA_RETORNO:
+			if(auto* retorno = sentencia.retorno)
+			{
+				sentencia_retorno_gen(*retorno);
+			}
+			break;
+	}
 }
 
 void cce::compiler::sentencia_iteracion_gen(ast_sentencia_iteracion& sentencia_iteracion)
