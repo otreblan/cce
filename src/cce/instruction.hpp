@@ -167,13 +167,13 @@ struct instruction
 	}
 
 	/// Label
-	static instruction LABEL(int name)
+	static instruction LABEL(label_t name)
 	{
 		return {.opcode = type::LABEL, .r1 = 0, .r2 = 0, .name = name};
 	}
 
 	/// Go to label
-	static instruction GOTO_LABEL(int name)
+	static instruction GOTO_LABEL(label_t name)
 	{
 		return {.opcode = type::GOTO_LABEL, .r1 = 0, .r2 = 0, .name = name};
 	}
