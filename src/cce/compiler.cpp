@@ -228,7 +228,20 @@ void cce::compiler::programa_gen(ast_programa& programa)
 	// Setup stack
 	LD(SP, 0, 0);
 
+	for(auto* list = programa.lista_declaraciones; list; list = list->next)
+	{
+		if(auto* declaracion = list->declaracion)
+		{
+			declaracion_gen(*declaracion);
+		}
+	}
+
+	// Setup global variables
 	// TODO
+
+	// Call main
+	// TODO
+
 	HALT();
 }
 
