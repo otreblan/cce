@@ -48,6 +48,7 @@ struct instruction
 		// Extensions
 		LABEL,
 		GOTO_LABEL,
+		GOTO_LABEL_IF_NULL,
 	};
 
 	type opcode;
@@ -176,6 +177,12 @@ struct instruction
 	static instruction GOTO_LABEL(label_t name)
 	{
 		return {.opcode = type::GOTO_LABEL, .r1 = 0, .r2 = 0, .name = name};
+	}
+
+	/// Go to label if the contents of R1 is 0
+	static instruction GOTO_LABEL_IF_NULL(label_t name, int r1)
+	{
+		return {.opcode = type::GOTO_LABEL_IF_NULL, .r1 = r1, .r2 = 0, .name = name};
 	}
 };
 

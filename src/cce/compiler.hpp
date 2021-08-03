@@ -206,6 +206,12 @@ class compiler
 		code.push_back(instruction::GOTO_LABEL(name));
 	}
 
+	/// Go to label if the contents of R1 is 0
+	void GOTO_LABEL_IF_NULL(label_t name, int r1)
+	{
+		code.push_back(instruction::GOTO_LABEL_IF_NULL(name, r1));
+	}
+
 
 	/// Calls a function, the arguments must be pushed to the stack before.
 	void call(std::string_view function);

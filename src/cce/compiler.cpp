@@ -209,6 +209,10 @@ void cce::compiler::expand_extensions()
 				r.push_back(instruction::LDC(PC, label_pos.at(inst.name)));
 				break;
 
+			case instruction::type::GOTO_LABEL_IF_NULL:
+				r.push_back(instruction::JEQ(inst.r1, 0, label_pos.at(inst.name)));
+				break;
+
 			case instruction::type::LABEL:
 				break;
 
@@ -381,7 +385,7 @@ void cce::compiler::sentencia_iteracion_gen(ast_sentencia_iteracion& sentencia_i
 	}
 
 	// Go label end if R0 is 0
-	// TODO
+	GOTO_LABEL_IF_NULL(end, 0);
 
 	for(auto* list = sentencia_iteracion.lista_sentencias; list; list = list->next)
 	{
