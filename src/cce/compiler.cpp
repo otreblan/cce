@@ -336,6 +336,7 @@ void cce::compiler::sent_compuesta_gen(ast_sent_compuesta& sent_compuesta)
 void cce::compiler::sentencia_expresion_gen(ast_sentencia_expresion& sentencia_expresion)
 {
 	// TODO
+	//
 }
 
 void cce::compiler::sentencia_gen(ast_sentencia& sentencia)
@@ -488,11 +489,14 @@ void cce::compiler::call(std::string_view function)
 			restore_register(i);
 		}
 	}
+
+	// Pop arguments
+	// TODO
 }
 
 void cce::compiler::return_function()
 {
-	// Pop arguments of the current function.
+	// Pop local declarations of the current function.
 	// TODO
 
 	// Set PC
