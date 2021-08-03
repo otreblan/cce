@@ -405,7 +405,7 @@ void cce::compiler::call(std::string_view function)
 	{
 		if(saved_registers[i])
 		{
-			// TODO push registers
+			save_register(i);
 		}
 	}
 
@@ -425,7 +425,25 @@ void cce::compiler::call(std::string_view function)
 
 		if(saved_registers[i])
 		{
-			// TODO pop registers
+			restore_register(i);
 		}
 	}
+}
+
+void cce::compiler::save_register(int r)
+{
+	// Grow the stack by 1.
+	LDA(SP, -1, SP);
+
+	// Store the register
+	ST(r, 0, SP);
+}
+
+void cce::compiler::restore_register(int r)
+{
+	// Load the register
+	LD(r, 0, SP);
+
+	// Shrink the stack by 1
+	LDA(SP, 1, SP);
 }

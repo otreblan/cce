@@ -55,6 +55,9 @@ class compiler
 	std::string_view         current_function;
 	std::vector<instruction> code;
 
+	/// Number of temporal variables in the stack.
+	int stack_temp_n = 0;
+
 	int compile(ast_programa* programa, int yynerrs);
 	int write_to_outfile() const;
 
@@ -206,6 +209,12 @@ class compiler
 
 	/// Calls a function, the arguments must be pushed to the stack before.
 	void call(std::string_view function);
+
+	/// Saves the contents of a register into the stack.
+	void save_register(int r);
+
+	/// Restores the register from the content of the top of the stack.
+	void restore_register(int r);
 public:
 	compiler();
 	compiler(int argc, char* argv[]);
