@@ -20,15 +20,15 @@
 extern "C" {
 #endif
 
-enum ast_tipo_sin_tipo
+typedef enum _ast_tipo_sin_tipo
 {
 	AST_ENTERO,
 	AST_SIN_TIPO
-};
+} ast_tipo_kind;
 
 typedef struct _ast_tipo
 {
-	int tipo;
+	ast_tipo_kind tipo;
 } ast_tipo;
 
 ast_tipo* ast_tipo_entero();

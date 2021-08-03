@@ -23,15 +23,15 @@ extern "C" {
 typedef struct _ast_var_declaracion ast_var_declaracion;
 typedef struct _ast_fun_declaracion ast_fun_declaracion;
 
-enum ast_declaracion_tipo
+typedef enum _ast_declaracion_tipo
 {
 	AST_VAR_DECLARACION,
 	AST_FUN_DECLARACION
-};
+} ast_declaracion_tipo;
 
 typedef struct _ast_declaracion
 {
-	int tipo;
+	ast_declaracion_tipo tipo;
 	union
 	{
 		ast_var_declaracion* var;
