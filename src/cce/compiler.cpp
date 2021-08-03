@@ -298,7 +298,28 @@ void cce::compiler::declaracion_local_gen(ast_declaracion_local& declaracion_loc
 
 void cce::compiler::expresion_gen(ast_expresion& expresion)
 {
-	// TODO
+	switch(expresion.tipo)
+	{
+		case AST_ASIGNACION:
+			// TODO
+			break;
+
+		case AST_EXPRESION_SIMPLE:
+			// TODO
+			break;
+
+		case AST_VAR:
+			// TODO
+			break;
+
+		case AST_CALL:
+			// TODO
+			break;
+
+		case AST_NUM:
+			LDC(0, expresion.NUM);
+			break;
+	}
 }
 
 void cce::compiler::fun_declaracion_gen(ast_fun_declaracion& fun_declaracion)
