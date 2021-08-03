@@ -80,9 +80,6 @@ class compiler
 	void declaracion_local_gen   (ast_declaracion_local& declaracion_local);
 	void expresion_gen           (ast_expresion& expresion);
 	void fun_declaracion_gen     (ast_fun_declaracion& fun_declaracion);
-	void op_gen                  (ast_op& relop);
-	void param_gen               (ast_param& param);
-	void params_gen              (ast_params& params);
 	void programa_gen            (ast_programa& programa);
 	void sent_compuesta_gen      (ast_sent_compuesta& sent_compuesta);
 	void sentencia_expresion_gen (ast_sentencia_expresion& sentencia_expresion);
@@ -90,7 +87,6 @@ class compiler
 	void sentencia_iteracion_gen (ast_sentencia_iteracion& sentencia_iteracion);
 	void sentencia_retorno_gen   (ast_sentencia_retorno& sentencia_retorno);
 	void sentencia_seleccion_gen (ast_sentencia_seleccion& sentencia_seleccion);
-	void tipo_gen                (ast_tipo& tipo);
 	void var_declaracion_gen     (ast_var_declaracion& var_declaracion);
 	void var_gen                 (ast_var& var);
 
@@ -229,6 +225,15 @@ class compiler
 
 	/// Restores the register from the content of the top of the stack.
 	void restore_register(int r);
+
+	/// Save temporal data in the stack.
+	void push_temporal(int r);
+
+	/// Recover temporal data in the stack.
+	void pop_temporal(int r);
+
+	/// Get variable position relative to the stack pointer.
+	int var_pos(std::string_view variable);
 public:
 	compiler();
 	compiler(int argc, char* argv[]);

@@ -14,6 +14,7 @@
 // You should have received a copy of the GNU General Public License
 // along with cce.  If not, see <http://www.gnu.org/licenses/>.
 
+#include <cassert>
 #include <cstdlib>
 #include <fmt/core.h>
 #include <getopt.h>
@@ -255,12 +256,26 @@ void cce::compiler::programa_gen(ast_programa& programa)
 
 void cce::compiler::args_gen(ast_args& args)
 {
-	// TODO
+	for(auto* list = args.lista_arg; list; list = list->next)
+	{
+		if(auto* expresion = list->expresion)
+		{
+			expresion_gen(*expresion);
+
+			// Push arguments.
+			save_register(0);
+		}
+	}
 }
 
 void cce::compiler::call_gen(ast_call& call)
 {
-	// TODO
+	if(auto* args = call.args)
+	{
+		args_gen(*args);
+	}
+
+	compiler::call(call.ID);
 }
 
 void cce::compiler::declaracion_gen(ast_declaracion& declaracion)
@@ -290,11 +305,55 @@ void cce::compiler::declaracion_local_gen(ast_declaracion_local& declaracion_loc
 
 void cce::compiler::expresion_gen(ast_expresion& expresion)
 {
-	// TODO
+	switch(expresion.tipo)
+	{
+		case AST_ASIGNACION:
+			if(auto* var = expresion.asignacion.var)
+			{
+				int offset = var_pos(var->ID);
+
+				if(auto* expresion1 = var->expresion)
+				{
+					// TODO arrays
+					assert(false);
+				}
+
+				if(auto* expresion2 = expresion.asignacion.expresion)
+				{
+					expresion_gen(*expresion2);
+				}
+
+				// Store the contents of R0 in SP[offset].
+				ST(0, offset, SP);
+			}
+
+			break;
+
+		case AST_EXPRESION_SIMPLE:
+			// TODO
+			break;
+
+		case AST_VAR:
+			// TODO
+			break;
+
+		case AST_CALL:
+			if(auto* call = expresion.call)
+			{
+				call_gen(*call);
+			}
+			break;
+
+		case AST_NUM:
+			LDC(0, expresion.NUM);
+			break;
+	}
 }
 
 void cce::compiler::fun_declaracion_gen(ast_fun_declaracion& fun_declaracion)
 {
+	assert(stack_temp_n == 0);
+
 	current_function = fun_declaracion.ID;
 
 	if(auto* sent_compuesta = fun_declaracion.sent_compuesta)
@@ -306,21 +365,6 @@ void cce::compiler::fun_declaracion_gen(ast_fun_declaracion& fun_declaracion)
 	return_function();
 
 	current_function = {};
-}
-
-void cce::compiler::op_gen(ast_op& relop)
-{
-	// TODO
-}
-
-void cce::compiler::param_gen(ast_param& param)
-{
-	// TODO
-}
-
-void cce::compiler::params_gen(ast_params& params)
-{
-	// TODO
 }
 
 void cce::compiler::sent_compuesta_gen(ast_sent_compuesta& sent_compuesta)
@@ -341,7 +385,10 @@ void cce::compiler::sent_compuesta_gen(ast_sent_compuesta& sent_compuesta)
 
 void cce::compiler::sentencia_expresion_gen(ast_sentencia_expresion& sentencia_expresion)
 {
-	// TODO
+	if(auto* expresion = sentencia_expresion.expresion)
+	{
+		expresion_gen(*expresion);
+	}
 }
 
 void cce::compiler::sentencia_gen(ast_sentencia& sentencia)
@@ -448,11 +495,6 @@ void cce::compiler::sentencia_seleccion_gen(ast_sentencia_seleccion& sentencia_s
 	}
 }
 
-void cce::compiler::tipo_gen(ast_tipo& tipo)
-{
-	// TODO
-}
-
 void cce::compiler::var_declaracion_gen(ast_var_declaracion& var_declaracion)
 {
 	// TODO
@@ -494,11 +536,14 @@ void cce::compiler::call(std::string_view function)
 			restore_register(i);
 		}
 	}
+
+	// Pop arguments
+	// TODO
 }
 
 void cce::compiler::return_function()
 {
-	// Pop arguments of the current function.
+	// Pop local declarations of the current function.
 	// TODO
 
 	// Set PC
@@ -521,4 +566,24 @@ void cce::compiler::restore_register(int r)
 
 	// Shrink the stack by 1
 	LDA(SP, 1, SP);
+}
+
+void cce::compiler::push_temporal(int r)
+{
+	save_register(r);
+	stack_temp_n++;
+}
+
+void cce::compiler::pop_temporal(int r)
+{
+	assert(stack_temp_n > 0);
+
+	restore_register(r);
+	stack_temp_n--;
+}
+
+int cce::compiler::var_pos(std::string_view variable)
+{
+	// TODO
+	return 0;
 }
