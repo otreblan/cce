@@ -42,7 +42,7 @@ struct table_elem{
     std::vector<arg_elem> args;
     
     std::vector<arg_elem> local_vars;
-
+    
     cce::label_t label; // si es funcion
     
 };

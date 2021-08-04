@@ -253,6 +253,42 @@ std::vector<arg_elem> get_params(const ast_params& params){
 	return ans;
 }
 
+std::vector<arg_elem> get_local_vars(const ast_sent_compuesta & sent_compuesta){
+
+	std::vector<arg_elem> ans;	
+
+	if(sent_compuesta.declaracion_local)
+	{	
+		auto current_declaracion_local = sent_compuesta.declaracion_local;
+		while (true)
+		{
+			if (current_declaracion_local->var_declaracion and current_declaracion_local->next){
+				
+				// añadir var declaracion al verctor ans
+
+				ast_var_declaracion var_declaracion = *current_declaracion_local->var_declaracion;
+				
+				if (var_declaracion.tipo and var_declaracion.id){
+					arg_elem elem;
+					elem.id = var_declaracion.id;
+					elem.tipo = (*var_declaracion.tipo).tipo;
+					elem.isArray = var_declaracion.es_arreglo;
+					elem.simb_tipo = simbolo_tipo::VARIABLE;
+					ans.push_back(elem);
+				}  
+
+				current_declaracion_local = current_declaracion_local->next;
+
+			}else{
+				break;
+			}
+			
+		}
+	}
+	return ans;
+
+	
+}
 
 static int fun_declaracion_graph(FILE* file, int n, const ast_fun_declaracion& fun_declaracion, cce::label_t &next_label)
 {
@@ -273,6 +309,11 @@ static int fun_declaracion_graph(FILE* file, int n, const ast_fun_declaracion& f
 			elem.args = get_params(*fun_declaracion.params); 
 		}
 		// añadir parametros 
+		if (fun_declaracion.sent_compuesta){
+			elem.local_vars = get_local_vars(*fun_declaracion.sent_compuesta);
+
+		}
+
 			
         table_id.insert({elem.id_name, elem});
     }
@@ -313,7 +354,7 @@ static int lista_arg_graph(FILE* file, int n, const ast_lista_arg& lista_arg)
 	{
 		i = expresion_graph(file, i+1, *lista_arg.expresion);
 	}
-
+	
 	if(lista_arg.next)
 	{
 		i = char_graph(file, i+1, ',');
@@ -655,8 +696,6 @@ static int var_declaracion_graph(FILE* file, int n, const ast_var_declaracion& v
 		elem.simb_tipo = simbolo_tipo::VARIABLE;
 		
 		table_id.insert({elem.id_name, elem});
-		
-	
 	}  
 
 	if(var_declaracion.tipo)
