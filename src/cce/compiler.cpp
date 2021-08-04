@@ -682,7 +682,7 @@ int cce::compiler::var_pos(std::string_view variable)
 
 	ssize_t i = -1;
 	int pos = stack_temp_n;
-	const table_elem& var_elem = table_id.at(variable);
+	const table_elem& var_elem = table_id.at(current_function);
 
 	if((i = var_index(variable, var_elem.local_vars)) != -1) // Local
 	{
