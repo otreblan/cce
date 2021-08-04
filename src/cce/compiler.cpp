@@ -302,7 +302,6 @@ void cce::compiler::args_gen(ast_args& args)
 			expresion_gen(*expresion);
 
 			// Push arguments.
-			COMMENT(fmt::format("Push {}() argument", current_function));
 			save_register(0);
 		}
 	}
@@ -312,6 +311,7 @@ void cce::compiler::call_gen(ast_call& call)
 {
 	if(auto* args = call.args)
 	{
+		COMMENT(fmt::format("Push {}() argument", call.ID));
 		args_gen(*args);
 	}
 
