@@ -41,13 +41,14 @@ struct table_elem{
     simbolo_tipo simb_tipo;
     bool         isArray;
 
-    std::vector<arg_elem> args;
-    
+    // si es función
+    std::vector<arg_elem> args; 
     std::vector<arg_elem> local_vars;
-    
-    cce::label_t label; // si es funcion
-    
+    cce::label_t label; 
 };
+
+
+
 
 namespace cce
 {

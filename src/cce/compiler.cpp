@@ -133,6 +133,12 @@ int cce::compiler::compile(ast_programa* programa, int yynerrs)
 
 	table_id = ast_semantic(stdout, programa, semantic_errors, next_label);
 
+	if(semantic_errors > 0){
+		std::cout << "semantic errors: " << semantic_errors<< std::endl;
+		return EXIT_FAILURE;
+	}
+
+	
 	for (const auto &item: table_id){
 		auto elem = item.second;
 		//std::cout <<"ID: " << item.first << " , TIPO: " << item.second.tipo;

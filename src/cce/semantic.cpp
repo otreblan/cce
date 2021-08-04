@@ -31,7 +31,7 @@
 //std::vector<table_elem> table_id;
 
 std::map <std::string_view, table_elem> table_id;
-
+int n_errors = 0;
 
 template <typename T>
 static void print_node (FILE* file, int n, const T& t);
@@ -95,9 +95,67 @@ static int args_graph(FILE* file, int n, const ast_args& args)
 	return i;
 }
 
+int get_number_args(ast_args args){
+	int ans = 0;
+
+	if (args.lista_arg){
+		ans ++;
+	}
+	auto lista_args = args.lista_arg;
+
+
+	while (true)
+	{
+		if (lista_args->next){
+			lista_args = lista_args->next;
+			ans ++;
+		}else{
+			break;	
+		}
+	}
+	return ans;
+
+}
+
 static int call_graph(FILE* file, int n, const ast_call& call)
 {
 	int i = n;
+	
+	if (call.ID and call.args){
+		// revisar si existe la declaración
+		
+		std::string_view id_name{call.ID};
+		
+		
+		// verificar los args
+		
+
+		if (table_id.find(id_name) != table_id.end()){
+			
+			table_elem element = table_id.find(id_name)->second;
+			
+			//std::cout << " id call in table: " << id_name << std::endl;
+
+			// elementos sin 
+			//if (element.simb_tipo == )
+
+			int n_args1 = element.args.size();
+
+			int n_args2 = get_number_args(*call.args);
+			
+			//std::cout <<"n2: " <<n_args2 << std::endl;
+
+			// numero de argumentos diferentes
+			if (n_args1 != n_args2 ) n_errors ++;
+
+ 
+		}else{
+			if (id_name != "entrada" and id_name != "salida"){
+				n_errors ++;
+			}
+		}
+
+	}
 
 	if(call.ID)
 	{
@@ -780,5 +838,7 @@ std::map<std::string_view ,table_elem> cce::ast_semantic(FILE* file, const ast_p
 		}
 	}
     
+	errors = n_errors;
+
     return table_id;
 }
