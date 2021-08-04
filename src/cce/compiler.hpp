@@ -76,7 +76,6 @@ class compiler
 	// Code generation
 	void args_gen                (ast_args& args);
 	void call_gen                (ast_call& call);
-	void declaracion_gen         (ast_declaracion& declaracion);
 	void declaracion_local_gen   (ast_declaracion_local& declaracion_local);
 	void expresion_gen           (ast_expresion& expresion);
 	void fun_declaracion_gen     (ast_fun_declaracion& fun_declaracion);

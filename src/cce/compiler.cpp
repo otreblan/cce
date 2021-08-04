@@ -237,16 +237,35 @@ void cce::compiler::programa_gen(ast_programa& programa)
 	// Setup stack
 	LD(SP, 0, 0);
 
+	// Setup global variables
 	for(auto* list = programa.lista_declaraciones; list; list = list->next)
 	{
 		if(auto* declaracion = list->declaracion)
 		{
-			declaracion_gen(*declaracion);
+			if(declaracion->tipo == AST_VAR_DECLARACION)
+			{
+				if(auto* var = declaracion->var)
+				{
+					var_declaracion_gen(*var);
+				}
+			}
 		}
 	}
 
-	// Setup global variables
-	// TODO
+	// Functions
+	for(auto* list = programa.lista_declaraciones; list; list = list->next)
+	{
+		if(auto* declaracion = list->declaracion)
+		{
+			if(declaracion->tipo == AST_FUN_DECLARACION)
+			{
+				if(auto* fun = declaracion->fun)
+				{
+					fun_declaracion_gen(*fun);
+				}
+			}
+		}
+	}
 
 	// Call main
 	call("main");
@@ -276,26 +295,6 @@ void cce::compiler::call_gen(ast_call& call)
 	}
 
 	compiler::call(call.ID);
-}
-
-void cce::compiler::declaracion_gen(ast_declaracion& declaracion)
-{
-	switch(declaracion.tipo)
-	{
-		case AST_VAR_DECLARACION:
-			if(auto* var = declaracion.var)
-			{
-				var_declaracion_gen(*var);
-			}
-			break;
-
-		case AST_FUN_DECLARACION:
-			if(auto* fun = declaracion.fun)
-			{
-				fun_declaracion_gen(*fun);
-			}
-			break;
-	}
 }
 
 void cce::compiler::declaracion_local_gen(ast_declaracion_local& declaracion_local)
