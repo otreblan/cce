@@ -606,7 +606,11 @@ void cce::compiler::call(std::string_view function)
 	}
 
 	// Pop arguments
-	// TODO
+	const auto& fun_elem = table_id.at(function);
+	if(!fun_elem.args.empty())
+	{
+		LDA(SP, fun_elem.args.size(), SP);
+	}
 }
 
 void cce::compiler::return_function()
