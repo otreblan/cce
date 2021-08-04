@@ -305,7 +305,7 @@ void cce::compiler::call_gen(ast_call& call)
 
 				// Push arguments.
 				COMMENT(fmt::format("Push {}() argument", call.ID));
-				save_register(0);
+				push_temporal(0);
 			}
 		}
 	}
@@ -568,6 +568,10 @@ void cce::compiler::call(std::string_view function)
 	{
 		restore_register(0);
 		OUT(0);
+
+		// Pushed arguments.
+		stack_temp_n -= 1;
+
 		return;
 	}
 
@@ -606,6 +610,7 @@ void cce::compiler::call(std::string_view function)
 	if(!fun_elem.args.empty())
 	{
 		LDA(SP, fun_elem.args.size(), SP);
+		stack_temp_n -= fun_elem.args.size();
 	}
 }
 
