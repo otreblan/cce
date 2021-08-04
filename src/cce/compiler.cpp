@@ -297,11 +297,6 @@ void cce::compiler::call_gen(ast_call& call)
 	compiler::call(call.ID);
 }
 
-void cce::compiler::declaracion_local_gen(ast_declaracion_local& declaracion_local)
-{
-	// TODO
-}
-
 void cce::compiler::expresion_gen(ast_expresion& expresion)
 {
 	switch(expresion.tipo)
@@ -396,9 +391,12 @@ void cce::compiler::fun_declaracion_gen(ast_fun_declaracion& fun_declaracion)
 
 void cce::compiler::sent_compuesta_gen(ast_sent_compuesta& sent_compuesta)
 {
-	if(auto* declaracion_local = sent_compuesta.declaracion_local)
+	for(auto* list = sent_compuesta.declaracion_local; list; list = list->next)
 	{
-		declaracion_local_gen(*declaracion_local);
+		if(auto* var_declaracion = list->var_declaracion)
+		{
+			var_declaracion_gen(*var_declaracion);
+		}
 	}
 
 	for(auto* list = sent_compuesta.lista_sentencias; list; list = list->next)
@@ -526,12 +524,6 @@ void cce::compiler::var_declaracion_gen(ast_var_declaracion& var_declaracion)
 {
 	// TODO
 }
-
-void cce::compiler::var_gen(ast_var& var)
-{
-	// TODO
-}
-
 
 void cce::compiler::call(std::string_view function)
 {
