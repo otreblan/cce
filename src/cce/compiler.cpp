@@ -551,7 +551,13 @@ void cce::compiler::var_declaracion_gen(ast_var_declaracion& var_declaracion)
 	}
 	else // Local declaration
 	{
-		// TODO
+		// Grow the stack by size.
+		int size = 1;
+
+		if(var_declaracion.es_arreglo)
+			size = var_declaracion.num;
+
+		LDA(SP, -size, SP);
 	}
 }
 
