@@ -45,7 +45,7 @@ class compiler
 	static constexpr int LR = 5;
 
 	/// Registers saved when calling a function
-	static constexpr std::bitset<8> saved_registers = 0b00111110;
+	static constexpr std::bitset<8> saved_registers = 0b00100000;
 
 	// table id 
 	std::map<std::string_view, table_elem >  table_id;

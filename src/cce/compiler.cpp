@@ -707,19 +707,19 @@ void cce::compiler::operation(int result, int left, ast_op op, int right)
 	switch(op)
 	{
 		case AST_SUMA:
-			ADD(result, left, right);
+			ADD(result, right, left);
 			break;
 
 		case AST_RESTA:
-			SUB(result, left, right);
+			SUB(result, right, left);
 			break;
 
 		case AST_MULTIPLICACION:
-			MUL(result, left, right);
+			MUL(result, right, left);
 			break;
 
 		case AST_DIVISION:
-			DIV(result, left, right);
+			DIV(result, right, left);
 			break;
 
 		case AST_EQ:
@@ -735,33 +735,33 @@ void cce::compiler::operation(int result, int left, ast_op op, int right)
 
 void cce::compiler::rel_operation(int result, int left, ast_op op, int right)
 {
-	SUB(result, right, left);
+	SUB(result, left, right);
 
 	// Jump 3 instructions forward if left op right is true.
 	switch(op)
 	{
 		case AST_LE:
-			JLT(result, 3, PC);
+			JLT(result, 2, PC);
 			break;
 
 		case AST_LQ:
-			JLE(result, 3, PC);
+			JLE(result, 2, PC);
 			break;
 
 		case AST_GE:
-			JGT(result, 3, PC);
+			JGT(result, 2, PC);
 			break;
 
 		case AST_GQ:
-			JGE(result, 3, PC);
+			JGE(result, 2, PC);
 			break;
 
 		case AST_EQ:
-			JEQ(result, 3, PC);
+			JEQ(result, 2, PC);
 			break;
 
 		case AST_NE:
-			JNE(result, 3, PC);
+			JNE(result, 2, PC);
 			break;
 
 		default:
@@ -773,7 +773,7 @@ void cce::compiler::rel_operation(int result, int left, ast_op op, int right)
 	LDC(result, 0);
 
 	// Jump 2 instructions forward
-	JEQ(result, 2, PC);
+	JEQ(result, 1, PC);
 
 	// Set result to true.
 	LDC(result, 1);
