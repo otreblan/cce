@@ -32,7 +32,7 @@ namespace cce
 struct instruction;
 
 class compiler
-{	
+{
 	// friend function semantic analisis
 	//friend std::map<char *,table_elem> cce::ast_semantic(FILE* file, const ast_programa* programa, int & errors, cce::compiler compiler);
 	/// Program counter
@@ -80,8 +80,6 @@ class compiler
 	// Code generation
 	void args_gen                (ast_args& args);
 	void call_gen                (ast_call& call);
-	void declaracion_gen         (ast_declaracion& declaracion);
-	void declaracion_local_gen   (ast_declaracion_local& declaracion_local);
 	void expresion_gen           (ast_expresion& expresion);
 	void fun_declaracion_gen     (ast_fun_declaracion& fun_declaracion);
 	void programa_gen            (ast_programa& programa);
@@ -92,7 +90,6 @@ class compiler
 	void sentencia_retorno_gen   (ast_sentencia_retorno& sentencia_retorno);
 	void sentencia_seleccion_gen (ast_sentencia_seleccion& sentencia_seleccion);
 	void var_declaracion_gen     (ast_var_declaracion& var_declaracion);
-	void var_gen                 (ast_var& var);
 
 
 	// Helper functions
@@ -238,6 +235,10 @@ class compiler
 
 	/// Get variable position relative to the stack pointer.
 	int var_pos(std::string_view variable);
+
+	/// Executes result = left op right.
+	void operation(int result, int left, ast_op op, int right);
+	void rel_operation(int result, int left, ast_op op, int right);
 public:
 	compiler();
 	compiler(int argc, char* argv[]);

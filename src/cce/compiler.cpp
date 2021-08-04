@@ -134,17 +134,23 @@ int cce::compiler::compile(ast_programa* programa, int yynerrs)
 	// Análisis semántico
 
 	int semantic_errors = 0;
+<<<<<<< HEAD
 	
 	table_id = ast_semantic(stdout, programa, semantic_errors, next_label);
 	
 	
+=======
+
+	std::map<char *,table_elem> table_id = ast_semantic(stdout, programa, semantic_errors, next_label);
+
+>>>>>>> 2ec4a1d3f47c290d9d36064d55232a831003c89e
 	//std::cout <<"next :" << next_label << std::endl;
-	
+
 	for (const auto &item: table_id){
 		auto elem = item.second;
 		std::cout <<"ID: " << item.first << " , TIPO: " << item.second.tipo;
 
-		
+
 		if (elem.simb_tipo == simbolo_tipo::FUNCION){
 			std::cout << "\n   args: ";
 			for (auto arg: elem.args){
@@ -162,7 +168,7 @@ int cce::compiler::compile(ast_programa* programa, int yynerrs)
 	// TODO
 	// Generación de código
 
-	//programa_gen(*programa);
+	programa_gen(*programa);
 
 	// TODO
 	// ¿Optimización?
@@ -238,21 +244,40 @@ void cce::compiler::programa_gen(ast_programa& programa)
 	// Setup stack
 	LD(SP, 0, 0);
 
-	for(auto* list = programa.lista_declaraciones; list; list = list->next)
-	{
-		if(auto* declaracion = list->declaracion)
-		{
-			declaracion_gen(*declaracion);
-		}
-	}
-
-	// Setup global variables
-	// TODO
-
 	// Call main
 	call("main");
 
 	HALT();
+
+	// Setup global variables
+	for(auto* list = programa.lista_declaraciones; list; list = list->next)
+	{
+		if(auto* declaracion = list->declaracion)
+		{
+			if(declaracion->tipo == AST_VAR_DECLARACION)
+			{
+				if(auto* var = declaracion->var)
+				{
+					var_declaracion_gen(*var);
+				}
+			}
+		}
+	}
+
+	// Functions
+	for(auto* list = programa.lista_declaraciones; list; list = list->next)
+	{
+		if(auto* declaracion = list->declaracion)
+		{
+			if(declaracion->tipo == AST_FUN_DECLARACION)
+			{
+				if(auto* fun = declaracion->fun)
+				{
+					fun_declaracion_gen(*fun);
+				}
+			}
+		}
+	}
 }
 
 void cce::compiler::args_gen(ast_args& args)
@@ -279,31 +304,6 @@ void cce::compiler::call_gen(ast_call& call)
 	compiler::call(call.ID);
 }
 
-void cce::compiler::declaracion_gen(ast_declaracion& declaracion)
-{
-	switch(declaracion.tipo)
-	{
-		case AST_VAR_DECLARACION:
-			if(auto* var = declaracion.var)
-			{
-				var_declaracion_gen(*var);
-			}
-			break;
-
-		case AST_FUN_DECLARACION:
-			if(auto* fun = declaracion.fun)
-			{
-				fun_declaracion_gen(*fun);
-			}
-			break;
-	}
-}
-
-void cce::compiler::declaracion_local_gen(ast_declaracion_local& declaracion_local)
-{
-	// TODO
-}
-
 void cce::compiler::expresion_gen(ast_expresion& expresion)
 {
 	switch(expresion.tipo)
@@ -313,11 +313,11 @@ void cce::compiler::expresion_gen(ast_expresion& expresion)
 			{
 				int offset = var_pos(var->ID);
 
-				if(auto* expresion1 = var->expresion)
-				{
-					// TODO arrays
-					assert(false);
-				}
+				// TODO arrays
+				//if(auto* expresion1 = var->expresion)
+				//{
+				//	assert(false);
+				//}
 
 				if(auto* expresion2 = expresion.asignacion.expresion)
 				{
@@ -331,11 +331,39 @@ void cce::compiler::expresion_gen(ast_expresion& expresion)
 			break;
 
 		case AST_EXPRESION_SIMPLE:
-			// TODO
+			if(auto* expresion1 = expresion.expresion1)
+			{
+				if(auto* expresion2 = expresion.expresion2)
+				{
+#ifndef NDEBUG
+					int current_temp_n = stack_temp_n;
+#endif
+					expresion_gen(*expresion1);
+					push_temporal(0); // Push expresion result
+
+					expresion_gen(*expresion2);
+					pop_temporal(1);
+
+					assert(current_temp_n == stack_temp_n);
+					operation(0, 1, expresion.op, 0);
+				}
+			}
 			break;
 
 		case AST_VAR:
-			// TODO
+			if(auto* var = expresion.var)
+			{
+				int offset = var_pos(var->ID);
+
+				// TODO arrays
+				//if(auto* expresion = var->expresion)
+				//{
+				//	assert(false);
+				//}
+
+				// Load the contents of SP[offset] into R0.
+				LD(0, offset, SP);
+			}
 			break;
 
 		case AST_CALL:
@@ -357,6 +385,10 @@ void cce::compiler::fun_declaracion_gen(ast_fun_declaracion& fun_declaracion)
 
 	current_function = fun_declaracion.ID;
 
+	// TODO get current function label.
+	label_t fun_label = 0;
+	LABEL(fun_label);
+
 	if(auto* sent_compuesta = fun_declaracion.sent_compuesta)
 	{
 		sent_compuesta_gen(*sent_compuesta);
@@ -370,9 +402,12 @@ void cce::compiler::fun_declaracion_gen(ast_fun_declaracion& fun_declaracion)
 
 void cce::compiler::sent_compuesta_gen(ast_sent_compuesta& sent_compuesta)
 {
-	if(auto* declaracion_local = sent_compuesta.declaracion_local)
+	for(auto* list = sent_compuesta.declaracion_local; list; list = list->next)
 	{
-		declaracion_local_gen(*declaracion_local);
+		if(auto* var_declaracion = list->var_declaracion)
+		{
+			var_declaracion_gen(*var_declaracion);
+		}
 	}
 
 	for(auto* list = sent_compuesta.lista_sentencias; list; list = list->next)
@@ -498,17 +533,30 @@ void cce::compiler::sentencia_seleccion_gen(ast_sentencia_seleccion& sentencia_s
 
 void cce::compiler::var_declaracion_gen(ast_var_declaracion& var_declaracion)
 {
-	// TODO
+	if(current_function.empty()) // Global declaration
+	{
+		// TODO
+	}
+	else // Local declaration
+	{
+		// TODO
+	}
 }
-
-void cce::compiler::var_gen(ast_var& var)
-{
-	// TODO
-}
-
 
 void cce::compiler::call(std::string_view function)
 {
+	if(function == "entrada")
+	{
+		IN(0);
+		return;
+	}
+	else if(function == "salida")
+	{
+		restore_register(0);
+		OUT(0);
+		return;
+	}
+
 	// Save registers
 	for(size_t i = 0; i < saved_registers.size(); i++)
 	{
@@ -587,4 +635,81 @@ int cce::compiler::var_pos(std::string_view variable)
 {
 	// TODO
 	return 0;
+}
+
+void cce::compiler::operation(int result, int left, ast_op op, int right)
+{
+	switch(op)
+	{
+		case AST_SUMA:
+			ADD(result, left, right);
+			break;
+
+		case AST_RESTA:
+			SUB(result, left, right);
+			break;
+
+		case AST_MULTIPLICACION:
+			MUL(result, left, right);
+			break;
+
+		case AST_DIVISION:
+			DIV(result, left, right);
+			break;
+
+		case AST_EQ:
+		case AST_GE:
+		case AST_GQ:
+		case AST_LE:
+		case AST_LQ:
+		case AST_NE:
+			rel_operation(result, left, op, right);
+			break;
+	}
+}
+
+void cce::compiler::rel_operation(int result, int left, ast_op op, int right)
+{
+	SUB(result, right, left);
+
+	// Jump 3 instructions forward if left op right is true.
+	switch(op)
+	{
+		case AST_LE:
+			JLT(result, 3, PC);
+			break;
+
+		case AST_LQ:
+			JLE(result, 3, PC);
+			break;
+
+		case AST_GE:
+			JGT(result, 3, PC);
+			break;
+
+		case AST_GQ:
+			JGE(result, 3, PC);
+			break;
+
+		case AST_EQ:
+			JEQ(result, 3, PC);
+			break;
+
+		case AST_NE:
+			JNE(result, 3, PC);
+			break;
+
+		default:
+			assert(false);
+			break;
+	}
+
+	// Set result to false.
+	LDC(result, 0);
+
+	// Jump 2 instructions forward
+	JEQ(result, 2, PC);
+
+	// Set result to true.
+	LDC(result, 1);
 }
