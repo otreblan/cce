@@ -707,19 +707,19 @@ void cce::compiler::operation(int result, int left, ast_op op, int right)
 	switch(op)
 	{
 		case AST_SUMA:
-			ADD(result, right, left);
+			ADD(result, left, right);
 			break;
 
 		case AST_RESTA:
-			SUB(result, right, left);
+			SUB(result, left, right);
 			break;
 
 		case AST_MULTIPLICACION:
-			MUL(result, right, left);
+			MUL(result, left, right);
 			break;
 
 		case AST_DIVISION:
-			DIV(result, right, left);
+			DIV(result, left, right);
 			break;
 
 		case AST_EQ:
