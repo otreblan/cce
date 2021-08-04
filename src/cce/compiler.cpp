@@ -135,7 +135,8 @@ int cce::compiler::compile(ast_programa* programa, int yynerrs)
 
 	int semantic_errors = 0;
 	
-	std::map<char *,table_elem> table_id = ast_semantic(stdout, programa, semantic_errors, next_label);
+	table_id = ast_semantic(stdout, programa, semantic_errors, next_label);
+	
 	
 	//std::cout <<"next :" << next_label << std::endl;
 	
@@ -155,7 +156,7 @@ int cce::compiler::compile(ast_programa* programa, int yynerrs)
 		}
 		std::cout << "\n";
 	}
-
+	
 
 
 	// TODO

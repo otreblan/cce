@@ -30,7 +30,7 @@
 // Tabla de id y tipo
 //std::vector<table_elem> table_id;
 
-std::map <char*, table_elem> table_id;
+std::map <std::string_view, table_elem> table_id;
 
 
 template <typename T>
@@ -726,7 +726,7 @@ static int num_graph(FILE* file, int n, int num)
 	return n;
 }
 
-std::map<char*,table_elem> cce::ast_semantic(FILE* file, const ast_programa* programa, int & errors, cce::label_t &next_label)
+std::map<std::string_view ,table_elem> cce::ast_semantic(FILE* file, const ast_programa* programa, int & errors, cce::label_t &next_label)
 {
 	int n = 0;
 	int i = n;

@@ -19,7 +19,6 @@
 #include <vector>
 #include <map>
 #include "instruction.hpp"
-#include "compiler.hpp"
 
 typedef struct _IO_FILE FILE;
 typedef struct _ast_programa ast_programa;
@@ -41,6 +40,9 @@ struct table_elem{
     simbolo_tipo simb_tipo;
     bool    isArray;
     std::vector<arg_elem> args;
+    
+    std::vector<arg_elem> local_vars;
+
     cce::label_t label; // si es funcion
     
 };
@@ -50,6 +52,6 @@ namespace cce
 
 /// Semantic analisis
 // ID -> Table elem
-std::map<char *,table_elem>  ast_semantic(FILE* file, const ast_programa* programa, int & errors, cce::label_t &mext_label);
+std::map<std::string_view , table_elem>  ast_semantic(FILE* file, const ast_programa* programa, int & errors, cce::label_t &mext_label);
 
 };

@@ -47,6 +47,8 @@ class compiler
 	/// Registers saved when calling a function
 	static constexpr std::bitset<8> saved_registers = 0b00111110;
 
+	// table id 
+	std::map<std::string_view, table_elem >  table_id;
 
 
 	[[noreturn]]
@@ -60,6 +62,8 @@ class compiler
 	std::string_view         current_function;
 	std::vector<instruction> code;
 
+	
+	
 	/// Number of temporal variables in the stack.
 	int stack_temp_n = 0;
 
