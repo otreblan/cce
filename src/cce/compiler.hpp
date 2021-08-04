@@ -214,6 +214,11 @@ class compiler
 		code.push_back(instruction::GOTO_LABEL_IF_NULL(name, r1));
 	}
 
+	/// Prints a comment
+	void COMMENT(std::string_view str)
+	{
+		code.push_back(instruction::COMMENT(str));
+	}
 
 	/// Calls a function, the arguments must be pushed to the stack before.
 	void call(std::string_view function);
