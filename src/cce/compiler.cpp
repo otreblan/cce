@@ -134,17 +134,8 @@ int cce::compiler::compile(ast_programa* programa, int yynerrs)
 	// Análisis semántico
 
 	int semantic_errors = 0;
-<<<<<<< HEAD
-	
+
 	table_id = ast_semantic(stdout, programa, semantic_errors, next_label);
-	
-	
-=======
-
-	std::map<char *,table_elem> table_id = ast_semantic(stdout, programa, semantic_errors, next_label);
-
->>>>>>> 2ec4a1d3f47c290d9d36064d55232a831003c89e
-	//std::cout <<"next :" << next_label << std::endl;
 
 	for (const auto &item: table_id){
 		auto elem = item.second;
@@ -162,7 +153,7 @@ int cce::compiler::compile(ast_programa* programa, int yynerrs)
 		}
 		std::cout << "\n";
 	}
-	
+
 
 
 	// TODO
