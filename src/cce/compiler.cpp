@@ -212,14 +212,17 @@ void cce::compiler::expand_extensions()
 		switch(inst.opcode)
 		{
 			case instruction::type::GOTO_LABEL:
+				r.push_back(instruction::COMMENT(fmt::format("GOTO_LABEL L{}", inst.name)));
 				r.push_back(instruction::LDC(PC, label_pos.at(inst.name)));
 				break;
 
 			case instruction::type::GOTO_LABEL_IF_NULL:
+				r.push_back(instruction::COMMENT(fmt::format("GOTO_LABEL_IF_NULL L{}", inst.name)));
 				r.push_back(instruction::JEQ(inst.r1, label_pos.at(inst.name), inst.r1));
 				break;
 
 			case instruction::type::LABEL:
+				r.push_back(instruction::COMMENT(fmt::format("L{}:", inst.name)));
 				break;
 
 			default:
