@@ -522,7 +522,14 @@ void cce::compiler::sentencia_seleccion_gen(ast_sentencia_seleccion& sentencia_s
 
 void cce::compiler::var_declaracion_gen(ast_var_declaracion& var_declaracion)
 {
-	// TODO
+	if(current_function.empty()) // Global declaration
+	{
+		// TODO
+	}
+	else // Local declaration
+	{
+		// TODO
+	}
 }
 
 void cce::compiler::call(std::string_view function)
