@@ -28,17 +28,19 @@ enum class simbolo_tipo{
 };
 
 struct arg_elem{
-    char* id;
-    int tipo;
+    char*        id;
+    int          tipo;
     simbolo_tipo simb_tipo;
-    bool    isArray;
+    bool         isArray;
+    size_t       size;
 };
 
 struct table_elem{
-    char*   id_name;
-    int     tipo;
+    char*        id_name;
+    int          tipo;
     simbolo_tipo simb_tipo;
-    bool    isArray;
+    bool         isArray;
+
     std::vector<arg_elem> args;
     
     std::vector<arg_elem> local_vars;

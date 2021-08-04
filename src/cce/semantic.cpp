@@ -237,10 +237,11 @@ std::vector<arg_elem> get_params(const ast_params& params){
 
 			if (param.tipo and param.ID){
 				arg_elem elem;
-				elem.id = param.ID;
-				elem.tipo = (*param.tipo).tipo;
+				elem.id        = param.ID;
+				elem.tipo      = (*param.tipo).tipo;
 				elem.simb_tipo = simbolo_tipo::VARIABLE;
-				elem.isArray = param.arreglo;
+				elem.isArray   = param.arreglo;
+				elem.size      = 1;
 				ans.push_back(elem);
 			}
 			if (!lista_params.next){
@@ -270,9 +271,10 @@ std::vector<arg_elem> get_local_vars(const ast_sent_compuesta & sent_compuesta){
 				
 				if (var_declaracion.tipo and var_declaracion.id){
 					arg_elem elem;
-					elem.id = var_declaracion.id;
-					elem.tipo = (*var_declaracion.tipo).tipo;
-					elem.isArray = var_declaracion.es_arreglo;
+					elem.id        = var_declaracion.id;
+					elem.tipo      = (*var_declaracion.tipo).tipo;
+					elem.isArray   = var_declaracion.es_arreglo;
+					elem.size      = elem.isArray ? var_declaracion.num : 1;
 					elem.simb_tipo = simbolo_tipo::VARIABLE;
 					ans.push_back(elem);
 				}  

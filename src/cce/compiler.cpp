@@ -616,7 +616,18 @@ void cce::compiler::call(std::string_view function)
 void cce::compiler::return_function()
 {
 	// Pop local declarations of the current function.
-	// TODO
+	const auto& fun_elem = table_id.at(current_function);
+	if(!fun_elem.local_vars.empty())
+	{
+		size_t size = 0;
+
+		for(const auto& local: fun_elem.local_vars)
+		{
+			size += local.size;
+		}
+
+		LDA(SP, size, SP);
+	}
 
 	// Set PC
 	LDA(PC, 0, LR);
