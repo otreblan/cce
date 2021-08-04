@@ -32,7 +32,7 @@ namespace cce
 struct instruction;
 
 class compiler
-{	
+{
 	// friend function semantic analisis
 	//friend std::map<char *,table_elem> cce::ast_semantic(FILE* file, const ast_programa* programa, int & errors, cce::compiler compiler);
 	/// Program counter
@@ -235,8 +235,8 @@ class compiler
 	/// Get variable position relative to the stack pointer.
 	int var_pos(std::string_view variable);
 
-	/// Executes R0 = left_register op right_register.
-	void execute_expresion(ast_op op, int left_register, int right_register);
+	/// Executes result = left op right.
+	void execute_expresion(int result, int left, ast_op op, int right);
 public:
 	compiler();
 	compiler(int argc, char* argv[]);

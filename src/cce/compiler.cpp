@@ -312,11 +312,11 @@ void cce::compiler::expresion_gen(ast_expresion& expresion)
 			{
 				int offset = var_pos(var->ID);
 
-				if(auto* expresion1 = var->expresion)
-				{
-					// TODO arrays
-					assert(false);
-				}
+				// TODO arrays
+				//if(auto* expresion1 = var->expresion)
+				//{
+				//	assert(false);
+				//}
 
 				if(auto* expresion2 = expresion.asignacion.expresion)
 				{
@@ -344,7 +344,7 @@ void cce::compiler::expresion_gen(ast_expresion& expresion)
 					pop_temporal(1);
 
 					assert(current_temp_n == stack_temp_n);
-					execute_expresion(expresion.op, 1, 0);
+					execute_expresion(0, 1, expresion.op, 0);
 				}
 			}
 			break;
@@ -354,11 +354,11 @@ void cce::compiler::expresion_gen(ast_expresion& expresion)
 			{
 				int offset = var_pos(var->ID);
 
-				if(auto* expresion = var->expresion)
-				{
-					// TODO arrays
-					assert(false);
-				}
+				// TODO arrays
+				//if(auto* expresion = var->expresion)
+				//{
+				//	assert(false);
+				//}
 
 				// Load the contents of SP[offset] into R0.
 				LD(0, offset, SP);
@@ -616,7 +616,24 @@ int cce::compiler::var_pos(std::string_view variable)
 	return 0;
 }
 
-void execute_expresion(ast_op op, int left_register, int right_register)
+void cce::compiler::execute_expresion(int result, int left, ast_op op, int right)
 {
-	// TODO
+	switch(op)
+	{
+		case AST_SUMA:
+			ADD(result, left, right);
+			break;
+
+		case AST_RESTA:
+			SUB(result, left, right);
+			break;
+
+		case AST_MULTIPLICACION:
+			MUL(result, left, right);
+			break;
+
+		case AST_DIVISION:
+			DIV(result, left, right);
+			break;
+	}
 }
