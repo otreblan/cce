@@ -134,31 +134,33 @@ int cce::compiler::compile(ast_programa* programa, int yynerrs)
 	// Análisis semántico
 
 	int semantic_errors = 0;
-<<<<<<< HEAD
 	
 	table_id = ast_semantic(stdout, programa, semantic_errors, next_label);
 	
 	
-=======
-
-	std::map<char *,table_elem> table_id = ast_semantic(stdout, programa, semantic_errors, next_label);
-
->>>>>>> 2ec4a1d3f47c290d9d36064d55232a831003c89e
 	//std::cout <<"next :" << next_label << std::endl;
 
 	for (const auto &item: table_id){
 		auto elem = item.second;
-		std::cout <<"ID: " << item.first << " , TIPO: " << item.second.tipo;
+		//std::cout <<"ID: " << item.first << " , TIPO: " << item.second.tipo;
 
 
 		if (elem.simb_tipo == simbolo_tipo::FUNCION){
+			std::cout <<"Func id: " << item.first << " , TIPO: " << item.second.tipo;
+
 			std::cout << "\n   args: ";
 			for (auto arg: elem.args){
 				std::cout << arg.id << " ";
 
 			}
-			std::cout << "\nlabel: " << elem.label;
-			std::cout << "\n";
+			std::cout << "\tlabel: " << elem.label;
+			
+
+			std::cout << "\n   local_vars: ";
+			for (auto arg: elem.local_vars){
+				std::cout << arg.id << " ";
+
+			}
 		}
 		std::cout << "\n";
 	}
