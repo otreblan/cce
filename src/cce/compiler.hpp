@@ -78,7 +78,6 @@ class compiler
 	void expand_extensions();
 
 	// Code generation
-	void args_gen                (ast_args& args);
 	void call_gen                (ast_call& call);
 	void expresion_gen           (ast_expresion& expresion);
 	void fun_declaracion_gen     (ast_fun_declaracion& fun_declaracion);

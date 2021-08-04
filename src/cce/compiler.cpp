@@ -293,26 +293,21 @@ void cce::compiler::programa_gen(ast_programa& programa)
 	}
 }
 
-void cce::compiler::args_gen(ast_args& args)
-{
-	for(auto* list = args.lista_arg; list; list = list->next)
-	{
-		if(auto* expresion = list->expresion)
-		{
-			expresion_gen(*expresion);
-
-			// Push arguments.
-			save_register(0);
-		}
-	}
-}
-
 void cce::compiler::call_gen(ast_call& call)
 {
 	if(auto* args = call.args)
 	{
-		COMMENT(fmt::format("Push {}() argument", call.ID));
-		args_gen(*args);
+		for(auto* list = args->lista_arg; list; list = list->next)
+		{
+			if(auto* expresion = list->expresion)
+			{
+				expresion_gen(*expresion);
+
+				// Push arguments.
+				COMMENT(fmt::format("Push {}() argument", call.ID));
+				save_register(0);
+			}
+		}
 	}
 
 	compiler::call(call.ID);
