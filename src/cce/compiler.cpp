@@ -330,7 +330,23 @@ void cce::compiler::expresion_gen(ast_expresion& expresion)
 			break;
 
 		case AST_EXPRESION_SIMPLE:
-			// TODO
+			if(auto* expresion1 = expresion.expresion1)
+			{
+				if(auto* expresion2 = expresion.expresion2)
+				{
+#ifndef NDEBUG
+					int current_temp_n = stack_temp_n;
+#endif
+					expresion_gen(*expresion1);
+					push_temporal(0); // Push expresion result
+
+					expresion_gen(*expresion2);
+					pop_temporal(1);
+
+					assert(current_temp_n == stack_temp_n);
+					execute_expresion(expresion.op, 1, 0);
+				}
+			}
 			break;
 
 		case AST_VAR:
@@ -598,4 +614,9 @@ int cce::compiler::var_pos(std::string_view variable)
 {
 	// TODO
 	return 0;
+}
+
+void execute_expresion(ast_op op, int left_register, int right_register)
+{
+	// TODO
 }

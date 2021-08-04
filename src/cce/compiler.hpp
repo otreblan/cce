@@ -234,6 +234,9 @@ class compiler
 
 	/// Get variable position relative to the stack pointer.
 	int var_pos(std::string_view variable);
+
+	/// Executes R0 = left_register op right_register.
+	void execute_expresion(ast_op op, int left_register, int right_register);
 public:
 	compiler();
 	compiler(int argc, char* argv[]);
