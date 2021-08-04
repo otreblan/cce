@@ -536,6 +536,18 @@ void cce::compiler::var_gen(ast_var& var)
 
 void cce::compiler::call(std::string_view function)
 {
+	if(function == "entrada")
+	{
+		IN(0);
+		return;
+	}
+	else if(function == "salida")
+	{
+		restore_register(0);
+		OUT(0);
+		return;
+	}
+
 	// Save registers
 	for(size_t i = 0; i < saved_registers.size(); i++)
 	{
