@@ -8,7 +8,19 @@
 %option noinput
 %option nounput
 
+%x IN_COMMENT
+
 %%
+<INITIAL>{
+"/*"      BEGIN(IN_COMMENT);
+}
+<IN_COMMENT>{
+"*/"      BEGIN(INITIAL);
+[^*\n]+   // eat comment in chunks
+"*"       // eat the lone star
+\n        yylineno++;
+}
+
 entero   { return entero;   }
 mientras { return mientras; }
 retorno  { return retorno;  }
@@ -30,8 +42,6 @@ sino     { return sino;     }
 
 [a-zA-Z_]+ { yylval.strval = strdup(yytext); return ID;   }
 -?[0-9]+   { yylval.intval = atoi(yytext); return NUM; }
-
-"/*".*"*/" {}
 %%
 
 void __parse_file_init(FILE* infile)
