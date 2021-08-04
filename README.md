@@ -24,3 +24,5 @@ cd build
 cmake ..
 make
 ```
+
+![image](https://user-images.githubusercontent.com/39320840/128218124-b4c2e494-9b6d-4255-812f-c7a7375b4641.png)
