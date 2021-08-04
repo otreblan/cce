@@ -334,7 +334,19 @@ void cce::compiler::expresion_gen(ast_expresion& expresion)
 			break;
 
 		case AST_VAR:
-			// TODO
+			if(auto* var = expresion.var)
+			{
+				int offset = var_pos(var->ID);
+
+				if(auto* expresion = var->expresion)
+				{
+					// TODO arrays
+					assert(false);
+				}
+
+				// Load the contents of SP[offset] into R0.
+				LD(0, offset, SP);
+			}
 			break;
 
 		case AST_CALL:
