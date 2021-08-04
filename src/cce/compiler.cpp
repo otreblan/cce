@@ -646,8 +646,38 @@ void cce::compiler::pop_temporal(int r)
 
 int cce::compiler::var_pos(std::string_view variable)
 {
-	// TODO
-	return 0;
+	auto var_index = [](std::string_view variable, const std::vector<arg_elem>& v)
+	{
+		ssize_t i = 0;
+		for(const auto& arg: v)
+		{
+			if(variable == arg.id)
+				return i;
+
+			i++;
+		}
+		return -1L;
+	};
+
+	ssize_t i = -1;
+	int pos = stack_temp_n;
+	const table_elem& var_elem = table_id.at(variable);
+
+	if((i = var_index(variable, var_elem.local_vars)) != -1) // Local
+	{
+		pos += var_elem.local_vars.size() - 1 - i;
+	}
+	else if((i = var_index(variable, var_elem.args)) != -1) // Arguments
+	{
+		pos += saved_registers.count();
+		pos += var_elem.args.size() - 1 - i;
+	}
+	else
+	{
+		assert(false);
+	}
+
+	return pos;
 }
 
 void cce::compiler::operation(int result, int left, ast_op op, int right)
