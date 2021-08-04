@@ -236,7 +236,8 @@ class compiler
 	int var_pos(std::string_view variable);
 
 	/// Executes result = left op right.
-	void execute_expresion(int result, int left, ast_op op, int right);
+	void operation(int result, int left, ast_op op, int right);
+	void rel_operation(int result, int left, ast_op op, int right);
 public:
 	compiler();
 	compiler(int argc, char* argv[]);

@@ -344,7 +344,7 @@ void cce::compiler::expresion_gen(ast_expresion& expresion)
 					pop_temporal(1);
 
 					assert(current_temp_n == stack_temp_n);
-					execute_expresion(0, 1, expresion.op, 0);
+					operation(0, 1, expresion.op, 0);
 				}
 			}
 			break;
@@ -616,7 +616,7 @@ int cce::compiler::var_pos(std::string_view variable)
 	return 0;
 }
 
-void cce::compiler::execute_expresion(int result, int left, ast_op op, int right)
+void cce::compiler::operation(int result, int left, ast_op op, int right)
 {
 	switch(op)
 	{
@@ -635,5 +635,60 @@ void cce::compiler::execute_expresion(int result, int left, ast_op op, int right
 		case AST_DIVISION:
 			DIV(result, left, right);
 			break;
+
+		case AST_EQ:
+		case AST_GE:
+		case AST_GQ:
+		case AST_LE:
+		case AST_LQ:
+		case AST_NE:
+			rel_operation(result, left, op, right);
+			break;
 	}
+}
+
+void cce::compiler::rel_operation(int result, int left, ast_op op, int right)
+{
+	SUB(result, right, left);
+
+	// Jump 3 instructions forward if left op right is true.
+	switch(op)
+	{
+		case AST_LE:
+			JLT(result, 3, PC);
+			break;
+
+		case AST_LQ:
+			JLE(result, 3, PC);
+			break;
+
+		case AST_GE:
+			JGT(result, 3, PC);
+			break;
+
+		case AST_GQ:
+			JGE(result, 3, PC);
+			break;
+
+		case AST_EQ:
+			JEQ(result, 3, PC);
+			break;
+
+		case AST_NE:
+			JNE(result, 3, PC);
+			break;
+
+		default:
+			assert(false);
+			break;
+	}
+
+	// Set result to false.
+	LDC(result, 0);
+
+	// Jump 2 instructions forward
+	JEQ(result, 2, PC);
+
+	// Set result to true.
+	LDC(result, 1);
 }
