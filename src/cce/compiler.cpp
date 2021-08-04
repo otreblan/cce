@@ -237,6 +237,11 @@ void cce::compiler::programa_gen(ast_programa& programa)
 	// Setup stack
 	LD(SP, 0, 0);
 
+	// Call main
+	call("main");
+
+	HALT();
+
 	// Setup global variables
 	for(auto* list = programa.lista_declaraciones; list; list = list->next)
 	{
@@ -266,11 +271,6 @@ void cce::compiler::programa_gen(ast_programa& programa)
 			}
 		}
 	}
-
-	// Call main
-	call("main");
-
-	HALT();
 }
 
 void cce::compiler::args_gen(ast_args& args)
