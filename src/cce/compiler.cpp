@@ -691,6 +691,7 @@ int cce::compiler::var_pos(std::string_view variable)
 	else if((i = var_index(variable, var_elem.args)) != -1) // Arguments
 	{
 		pos += saved_registers.count();
+		pos += var_elem.local_vars.size();
 		pos += var_elem.args.size() - 1 - i;
 	}
 	else
