@@ -16,6 +16,9 @@
 
 #pragma once
 
+#include <string>
+#include <string_view>
+
 #include <fmt/format.h>
 
 namespace cce
@@ -49,6 +52,8 @@ struct instruction
 		LABEL,
 		GOTO_LABEL,
 		GOTO_LABEL_IF_NULL,
+
+		COMMENT,
 	};
 
 	type opcode;
@@ -63,6 +68,7 @@ struct instruction
 		// Label name
 		label_t name;
 	};
+	std::string comment = "";
 
 
 	/// Read an integer from stdin and place result in r1; ignore operands r2 and r3.
@@ -184,6 +190,12 @@ struct instruction
 	{
 		return {.opcode = type::GOTO_LABEL_IF_NULL, .r1 = r1, .r2 = 0, .name = name};
 	}
+
+	/// Prints a comment
+	static instruction COMMENT(std::string_view str)
+	{
+		return {.opcode = type::COMMENT, .r1 = 0, .r2 = 0, .r3 = 0, .comment = str.data()};
+	}
 };
 
 };
@@ -271,6 +283,13 @@ struct fmt::formatter<cce::instruction>: fmt::formatter<int>
 					i.offset,
 					i.r2
 				);
+
+			case cce::instruction::type::COMMENT:
+				return format_to(ctx.out(),
+					"* {}",
+					i.comment
+				);
+
 			default:
 				break;
 		}

@@ -163,7 +163,17 @@ int cce::compiler::write_to_outfile() const
 	if(FILE* outfile = fopen(outfile_path.empty()? "a.tm": outfile_path.c_str(), "w"))
 	{
 		for(size_t i = 0; i < code.size(); i++)
-			fmt::print(outfile, "{}:    {}\n", i, code[i]);
+		{
+			const auto& instr = code[i];
+			if(instr.opcode == instruction::type::COMMENT)
+			{
+				fmt::print(outfile, "{}\n", code[i]);
+			}
+			else
+			{
+				fmt::print(outfile, "{}:    {}\n", i, code[i]);
+			}
+		}
 
 		fclose(outfile);
 		return EXIT_SUCCESS;
@@ -367,6 +377,7 @@ void cce::compiler::fun_declaracion_gen(ast_fun_declaracion& fun_declaracion)
 
 	current_function = fun_declaracion.ID;
 
+	COMMENT(current_function);
 	LABEL(table_id.at(current_function).label);
 
 	if(auto* sent_compuesta = fun_declaracion.sent_compuesta)
