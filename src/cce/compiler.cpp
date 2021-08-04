@@ -147,7 +147,6 @@ int cce::compiler::compile(ast_programa* programa, int yynerrs)
 
 			}
 			std::cout << "\tlabel: " << elem.label;
-			
 
 			std::cout << "\n   local_vars: ";
 			for (auto arg: elem.local_vars){
@@ -170,16 +169,17 @@ int cce::compiler::write_to_outfile() const
 {
 	if(FILE* outfile = fopen(outfile_path.empty()? "a.tm": outfile_path.c_str(), "w"))
 	{
-		for(size_t i = 0; i < code.size(); i++)
+		int i = 0;
+		for(const auto& instr: code)
 		{
-			const auto& instr = code[i];
 			if(instr.opcode == instruction::type::COMMENT)
 			{
-				fmt::print(outfile, "{}\n", code[i]);
+				fmt::print(outfile, "{}\n", instr);
 			}
 			else
 			{
-				fmt::print(outfile, "{}:    {}\n", i, code[i]);
+				fmt::print(outfile, "{}:    {}\n", i, instr);
+				i++;
 			}
 		}
 
@@ -205,13 +205,18 @@ void cce::compiler::expand_extensions()
 
 	for(const auto& inst: code)
 	{
-		if(inst.opcode == instruction::type::LABEL)
+		switch(inst.opcode)
 		{
-			label_pos[inst.name] = i;
-		}
-		else
-		{
-			i++;
+			case instruction::type::LABEL:
+				label_pos[inst.name] = i;
+				break;
+
+			case instruction::type::COMMENT:
+				break;
+
+			default:
+				i++;
+				break;
 		}
 	}
 
@@ -227,6 +232,11 @@ void cce::compiler::expand_extensions()
 			case instruction::type::GOTO_LABEL_IF_NULL:
 				r.push_back(instruction::COMMENT(fmt::format("GOTO_LABEL_IF_NULL L{}", inst.name)));
 				r.push_back(instruction::JEQ(inst.r1, label_pos.at(inst.name), inst.r1));
+				break;
+
+			case instruction::type::LDC_LABEL:
+				r.push_back(instruction::COMMENT(fmt::format("LDC_LABEL L{}", inst.name)));
+				r.push_back(instruction::LDC(inst.r1, label_pos.at(inst.name)));
 				break;
 
 			case instruction::type::LABEL:
@@ -573,6 +583,7 @@ void cce::compiler::call(std::string_view function)
 	label_t return_label = label_alloc();
 
 	// Save label address to the link register.
+	LDC_LABEL(return_label, LR);
 	GOTO_LABEL(fun_label);
 
 	LABEL(return_label);

@@ -214,6 +214,12 @@ class compiler
 		code.push_back(instruction::GOTO_LABEL_IF_NULL(name, r1));
 	}
 
+	/// Save label position into a register
+	void LDC_LABEL(label_t name, int r1)
+	{
+		code.push_back(instruction::LDC_LABEL(name, r1));
+	}
+
 	/// Prints a comment
 	void COMMENT(std::string_view str)
 	{

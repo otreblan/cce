@@ -52,6 +52,7 @@ struct instruction
 		LABEL,
 		GOTO_LABEL,
 		GOTO_LABEL_IF_NULL,
+		LDC_LABEL,
 
 		COMMENT,
 	};
@@ -189,6 +190,12 @@ struct instruction
 	static instruction GOTO_LABEL_IF_NULL(label_t name, int r1)
 	{
 		return {.opcode = type::GOTO_LABEL_IF_NULL, .r1 = r1, .r2 = 0, .name = name};
+	}
+
+	/// Save label position into a register
+	static instruction LDC_LABEL(label_t name, int r1)
+	{
+		return {.opcode = type::LDC_LABEL, .r1 = r1, .r2 = 0, .name = name};
 	}
 
 	/// Prints a comment
