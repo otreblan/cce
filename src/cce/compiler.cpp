@@ -129,10 +129,6 @@ int cce::compiler::compile(ast_programa* programa, int yynerrs)
 	if(yynerrs > 0)
 		return EXIT_FAILURE;
 
-
-	// TODO
-	// Análisis semántico
-
 	int semantic_errors = 0;
 
 	table_id = ast_semantic(stdout, programa, semantic_errors, next_label);
@@ -153,11 +149,6 @@ int cce::compiler::compile(ast_programa* programa, int yynerrs)
 		}
 		std::cout << "\n";
 	}
-
-
-
-	// TODO
-	// Generación de código
 
 	programa_gen(*programa);
 
@@ -215,7 +206,7 @@ void cce::compiler::expand_extensions()
 				break;
 
 			case instruction::type::GOTO_LABEL_IF_NULL:
-				r.push_back(instruction::JEQ(inst.r1, 0, label_pos.at(inst.name)));
+				r.push_back(instruction::JEQ(inst.r1, label_pos.at(inst.name), inst.r1));
 				break;
 
 			case instruction::type::LABEL:
@@ -376,9 +367,7 @@ void cce::compiler::fun_declaracion_gen(ast_fun_declaracion& fun_declaracion)
 
 	current_function = fun_declaracion.ID;
 
-	// TODO get current function label.
-	label_t fun_label = 0;
-	LABEL(fun_label);
+	LABEL(table_id.at(current_function).label);
 
 	if(auto* sent_compuesta = fun_declaracion.sent_compuesta)
 	{
@@ -558,7 +547,7 @@ void cce::compiler::call(std::string_view function)
 	}
 
 	// Get function and return labels
-	label_t fun_label =  0; // TODO
+	label_t fun_label    = table_id.at(function).label;
 	label_t return_label = label_alloc();
 
 	// Save label address to the link register.
