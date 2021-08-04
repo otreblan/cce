@@ -378,6 +378,10 @@ void cce::compiler::fun_declaracion_gen(ast_fun_declaracion& fun_declaracion)
 
 	current_function = fun_declaracion.ID;
 
+	// TODO get current function label.
+	label_t fun_label = 0;
+	LABEL(fun_label);
+
 	if(auto* sent_compuesta = fun_declaracion.sent_compuesta)
 	{
 		sent_compuesta_gen(*sent_compuesta);
