@@ -302,6 +302,7 @@ void cce::compiler::args_gen(ast_args& args)
 			expresion_gen(*expresion);
 
 			// Push arguments.
+			COMMENT(fmt::format("Push {}() argument", current_function));
 			save_register(0);
 		}
 	}
@@ -687,12 +688,14 @@ int cce::compiler::var_pos(std::string_view variable)
 	if((i = var_index(variable, var_elem.local_vars)) != -1) // Local
 	{
 		pos += var_elem.local_vars.size() - 1 - i;
+		COMMENT(fmt::format("Load \"{}\" local variable", variable));
 	}
 	else if((i = var_index(variable, var_elem.args)) != -1) // Arguments
 	{
 		pos += saved_registers.count();
 		pos += var_elem.local_vars.size();
 		pos += var_elem.args.size() - 1 - i;
+		COMMENT(fmt::format("Load \"{}\" argument", variable));
 	}
 	else
 	{
