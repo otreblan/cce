@@ -254,7 +254,7 @@ struct fmt::formatter<cce::instruction>: fmt::formatter<int>
 	}
 
 	template <typename FormatContext>
-	auto format(const cce::instruction& i, FormatContext& ctx)
+	auto format(const cce::instruction& i, FormatContext& ctx) const
 	{
 		switch(i.opcode)
 		{

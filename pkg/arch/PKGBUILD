@@ -1,7 +1,7 @@
 # Maintainer: Otreblan <otreblain@gmail.com>
 
 pkgname=cce-git
-pkgver=1.1.0.r0.g6267278
+pkgver=1.1.0.r2.gb9aa5d1
 pkgrel=1
 epoch=
 pkgdesc="Compilador CEs"
